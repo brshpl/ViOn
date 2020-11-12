@@ -9,15 +9,16 @@ enum Mode { INSERT, COMMAND };
 
 class TextEditor {
 public:
-    TextEditor();
+    TextEditor() = default;
     void run();
     void update();
+    Mode getMode();
+    void changeMode(Mode newMode);
 private:
-    void changeMode();
     void editText();
     Mode mode;
-    Listener listener;
-    View view;
+    Listener listener{};
+    View view{};
     TextStorage text;
 };
 
