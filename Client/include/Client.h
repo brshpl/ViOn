@@ -3,10 +3,10 @@
 
 #include "change.h"
 #include <sys/socket.h>
-#include <thread>
+#include <netinet/in.h>
 
 
-class CLient {
+class Client {
 public:
     Client(int _socket, struct sockaddr_in _address);
     ~Client();

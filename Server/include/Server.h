@@ -2,6 +2,7 @@
 #define VION_SERVER_INCLUDE_SERVER_H_
 
 #include <sys/socket.h>
+#include <netinet/in.h>
 #include <thread>
 
 

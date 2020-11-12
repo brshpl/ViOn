@@ -1,4 +1,5 @@
-#include "../include/CLient.h"
+#include "Client.h"
+#include <thread>
 
 
 Client(int _socket, struct sockaddr_in _address) {}
