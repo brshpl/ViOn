@@ -1,0 +1,38 @@
+cmake_minimum_required(VERSION 3.17)
+
+project(ViOn)
+
+set(CMAKE_CXX_STANDARD 17)
+
+##
+### Test definitions ###
+
+configure_file(CMakeLists.txt.in
+        googletest-download/CMakeLists.txt)
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
+execute_process(COMMAND ${CMAKE_COMMAND} --build .
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
+
+add_subdirectory(${CMAKE_BINARY_DIR}/googletest-src
+        ${CMAKE_BINARY_DIR}/googletest-build)
+
+enable_testing()
+add_subdirectory(test)
+
+
+##
+### Source definitions ###
+##
+
+set(INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/FileController)
+set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+include_directories(${INC_DIR})
+
+file(GLOB sources
+        "${PROJECT_SOURCE_DIR}/include/FileController/*.h"
+        "${PROJECT_SOURCE_DIR}/src/*.cpp")
+
+add_executable(ViOn ${sources})
+

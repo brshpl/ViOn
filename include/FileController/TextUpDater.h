@@ -4,7 +4,8 @@
 
 #ifndef VION_TEXTUPDATER_H
 #define VION_TEXTUPDATER_H
-
+#include <iostream>
+#include "TextManager.h"
 
 class TextUpDater {
 public:
@@ -31,7 +32,7 @@ class InsertString : public TextUpDater{
 public:
     InsertString();
     ~InsertString();
-    InsertChar char;
+    InsertChar symbol;
 private:
     std::string getString();
     void insertString();
@@ -49,7 +50,7 @@ class DeleteString : public TextUpDater{
 public:
     DeleteString();
     ~DeleteString();
-    DeleteChar char;
+    DeleteChar symbol;
 private:
     std::string getString();
     void deleteString();

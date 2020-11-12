@@ -5,6 +5,7 @@
 #ifndef VION_CHANGEAPPLIER_H
 #define VION_CHANGEAPPLIER_H
 #include "TextManager.h"
+#include "TextUpDater.h"
 
 class ChangeApplier {
 public:

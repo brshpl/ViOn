@@ -4,31 +4,38 @@
 
 #ifndef VION_TEXTMANAGER_H
 #define VION_TEXTMANAGER_H
+#include <iostream>
+#include <vector>
+#include "Parser.h"
+
+struct Change{
+    //пустая структура для тестов
+};
 
 struct SymbolState{
     char symbol;
     bool is_visible;
-    size_t id;
+    std::size_t id;
 };
 
 struct StringState{
     std::vector<SymbolState> symbols;
-    size_t id;
+    std::size_t id;
 };
 
 struct TextStorage{
     std::vector<StringState> strings;
-    size_t file_id;
-    size_t password;
+    std::size_t file_id;
+    std::size_t password;
 };
 
 class IDGenerator{
 public:
-    size_t getIdForChar();
-    size_t getIdForString();
+    std::size_t getIdForChar();
+    std::size_t getIdForString();
     static IDGenerator& Instance();
-    static size_t charLastId;
-    static size_t stringLastId;
+    static std::size_t charLastId;
+    static std::size_t stringLastId;
 private:
     IDGenerator();
     IDGenerator(IDGenerator const&) = delete;
@@ -40,7 +47,7 @@ private:
 class TextManager {
 public:
     static TextManager& Instance();
-    struct TextStorage;
+    struct TextStorage text;
     IDGenerator idGen;
 private:
     TextManager();
@@ -51,10 +58,9 @@ private:
 
 class TextManagerClient : public TextManager{
 private:
-    ParseState parser;
+    ParserState parser;
     TextManagerClient();
     ~TextManagerClient();
-    TextStorage parseText();
 };
 
 class TextManagerServer : public TextManager{
