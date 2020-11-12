@@ -17,47 +17,9 @@ public:
 
 protected:
     Change ch;
-    IDGenerator idGen;
-    TextManager manager
+    TextUpDater upDater;
+    TextManager textManager;
 };
-
-class InsertChar : public ChangeApplier{
-public:
-    InsertChar();
-    ~InsertChar();
-    char getSymbol();
-    void insertSymbol();
-};
-
-class InsertString : public ChangeApplier{
-public:
-    InsertString();
-    ~InsertString();
-    InsertChar char;
-private:
-    std::string getString();
-    void insertString();
-};
-
-class DeleteChar{
-public:
-    DeleteChar();
-    ~DeleteChar();
-    char getSymbol();
-    void deleteSymbol();
-};
-
-class DeleteString{
-public:
-    DeleteString();
-    ~DeleteString();
-    DeleteChar char;
-private:
-    std::string getString();
-    void deleteString();
-
-};
-
 
 
 #endif //VION_CHANGEAPPLIER_H

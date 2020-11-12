@@ -19,20 +19,7 @@ struct StringState{
 struct TextStorage{
     std::vector<StringState> strings;
     size_t file_id;
-};
-
-class TextManager {
-public:
-    static TextManager& Instance();
-    bool createFile();
-    bool deleteFile();
-    struct TextStorage getText();
-    struct TextStorage;
-private:
-    TextManager();
-    TextManager(TextManager const&) = delete;
-    TextManager& operator= (TextManager const&) = delete;
-    ~TextManager();
+    size_t password;
 };
 
 class IDGenerator{
@@ -47,6 +34,37 @@ private:
     IDGenerator(IDGenerator const&) = delete;
     IDGenerator& operator= (IDGenerator const&) = delete;
     ~IDGenerator();
+};
+
+
+class TextManager {
+public:
+    static TextManager& Instance();
+    struct TextStorage;
+    IDGenerator idGen;
+private:
+    TextManager();
+    TextManager(TextManager const&) = delete;
+    TextManager& operator= (TextManager const&) = delete;
+    ~TextManager();
+};
+
+class TextManagerClient : public TextManager{
+private:
+    ParseState parser;
+    TextManagerClient();
+    ~TextManagerClient();
+    TextStorage parseText();
+};
+
+class TextManagerServer : public TextManager{
+public:
+    TextManagerServer();
+    ~TextManagerServer();
+    bool createFile();
+    bool deleteFile();
+    size_t createIdFile();
+    size_t createPassword();
 };
 
 #endif //VION_TEXTMANAGER_H
