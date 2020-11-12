@@ -11,10 +11,10 @@ public:
     StartInterface(ChangeCreator changeCreator, TextEditor textEditor)
         : mChangeCreator {changeCreator}, editor {textEditor} {}
 
+    int CreateFile(std::string name) {return -1;};
+    int UploadFile(std::string name) {return -1;};
+    int DownloadFile(std::string path) {return -1;};
 private:
-    int CreateFile(std::string name);
-    int UploadFile(std::string name);
-    int DownloadFile(std::string path);
     ChangeCreator mChangeCreator;
     TextEditor editor;
 };
