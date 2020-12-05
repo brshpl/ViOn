@@ -9,17 +9,19 @@
 
 class ChangeApplier {
 public:
-    ChangeApplier(Change ch);
-    ChangeApplier(Change ch, IDGenerator idGen, TextManager manager);
+    ChangeApplier(Change ch, struct FileStorage file);
+//    ChangeApplier(Change ch, IDGenerator idGen, TextManager manager);
     ~ChangeApplier();
-    bool applyChanges();
     bool inputIdIntoChange();
     bool sendChange();
-
-protected:
-    Change ch;
-    TextUpDater upDater;
-    TextManager textManager;
+    Change m_ch{};
+private:
+    bool applyChange();
+//    Change remove_id(Change ch, const FileStorage& file);
+    char m_symbol{};
+    FileStorage m_file;
+//    TextUpDater upDater;
+//    TextManager textManager;
 };
 
 

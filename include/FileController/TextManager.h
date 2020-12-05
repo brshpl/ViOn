@@ -8,8 +8,16 @@
 #include <vector>
 #include "Parser.h"
 
+enum Command{
+    INSERT_SYMBOL,
+    DELETE_SYMBOL
+};
 struct Change{
-    //пустая структура для тестов
+    Command cmd;
+    size_t fileId;
+    size_t symbolId;
+    size_t stringId;
+    char symbol;
 };
 
 struct SymbolState{
@@ -21,12 +29,6 @@ struct SymbolState{
 struct StringState{
     std::vector<SymbolState> symbols;
     std::size_t id;
-};
-
-struct TextStorage{
-    std::vector<StringState> strings;
-    std::size_t file_id;
-    std::size_t password;
 };
 
 class IDGenerator{
@@ -43,11 +45,18 @@ private:
     ~IDGenerator();
 };
 
+struct FileStorage{
+    std::vector<StringState> strings;
+    std::size_t file_id;
+    std::size_t password;
+    size_t max_id;
+//    IDGenerator idGenerator;
+};
 
 class TextManager {
 public:
     static TextManager& Instance();
-    struct TextStorage text;
+    struct FileStorage text;
     IDGenerator idGen;
 private:
     TextManager();
@@ -61,6 +70,9 @@ private:
     ParserState parser;
     TextManagerClient();
     ~TextManagerClient();
+
+public:
+    void listen(Client client);
 };
 
 class TextManagerServer : public TextManager{

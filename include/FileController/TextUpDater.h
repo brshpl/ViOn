@@ -9,28 +9,31 @@
 
 class TextUpDater {
 public:
-    TextUpDater();
+    TextUpDater(FileStorage file, Change ch);
     ~TextUpDater();
     bool applyChanges();
     bool inputIdIntoChange();
     bool sendChange();
 
 protected:
-    Change ch;
-    IDGenerator idGen;
+    FileStorage m_file;
+    Change m_ch;
+//    IDGenerator idGen;
 };
 
 class InsertChar : public TextUpDater{
 public:
-    InsertChar();
+    explicit InsertChar(FileStorage file, Change ch);
     ~InsertChar();
-    char getSymbol();
+private:
+    Change add_new_id();
     void insertSymbol();
+    char getSymbol();
 };
 
 class InsertString : public TextUpDater{
 public:
-    InsertString();
+    explicit InsertString();
     ~InsertString();
     InsertChar symbol;
 private:
@@ -40,8 +43,9 @@ private:
 
 class DeleteChar : public TextUpDater{
 public:
-    DeleteChar();
+    explicit DeleteChar(FileStorage file, Change ch);
     ~DeleteChar();
+private:
     char getSymbol();
     void deleteSymbol();
 };
