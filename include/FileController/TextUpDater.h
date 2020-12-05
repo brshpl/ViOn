@@ -24,10 +24,19 @@ protected:
 class InsertChar : public TextUpDater{
 public:
     explicit InsertChar(FileStorage file, Change ch);
+    void insertSymbol();
     ~InsertChar();
 private:
     Change add_new_id();
-    void insertSymbol();
+    char getSymbol();
+};
+
+class DeleteChar : public TextUpDater{
+public:
+    explicit DeleteChar(FileStorage file, Change ch);
+    ~DeleteChar();
+    void deleteSymbol();
+private:
     char getSymbol();
 };
 
@@ -41,14 +50,6 @@ private:
     void insertString();
 };
 
-class DeleteChar : public TextUpDater{
-public:
-    explicit DeleteChar(FileStorage file, Change ch);
-    ~DeleteChar();
-private:
-    char getSymbol();
-    void deleteSymbol();
-};
 
 class DeleteString : public TextUpDater{
 public:

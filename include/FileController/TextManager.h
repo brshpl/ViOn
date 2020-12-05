@@ -17,6 +17,7 @@ struct Change{
     size_t fileId;
     size_t symbolId;
     size_t stringId;
+    size_t behind_symbol_id;
     char symbol;
 };
 
@@ -31,25 +32,26 @@ struct StringState{
     std::size_t id;
 };
 
-class IDGenerator{
-public:
-    std::size_t getIdForChar();
-    std::size_t getIdForString();
-    static IDGenerator& Instance();
-    static std::size_t charLastId;
-    static std::size_t stringLastId;
-private:
-    IDGenerator();
-    IDGenerator(IDGenerator const&) = delete;
-    IDGenerator& operator= (IDGenerator const&) = delete;
-    ~IDGenerator();
-};
+//class IDGenerator{
+//public:
+//    std::size_t getIdForChar();
+//    std::size_t getIdForString();
+//    static IDGenerator& Instance();
+//    static std::size_t charLastId;
+//    static std::size_t stringLastId;
+//private:
+//    IDGenerator();
+//    IDGenerator(IDGenerator const&) = delete;
+//    IDGenerator& operator= (IDGenerator const&) = delete;
+//    ~IDGenerator();
+//};
 
 struct FileStorage{
     std::vector<StringState> strings;
-    std::size_t file_id;
-    std::size_t password;
-    size_t max_id;
+    size_t file_id;
+    size_t password;
+    size_t symbols_length;
+    size_t strings_length;
 //    IDGenerator idGenerator;
 };
 
@@ -57,7 +59,7 @@ class TextManager {
 public:
     static TextManager& Instance();
     struct FileStorage text;
-    IDGenerator idGen;
+//    IDGenerator idGen;
 private:
     TextManager();
     TextManager(TextManager const&) = delete;
