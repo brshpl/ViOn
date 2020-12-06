@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 project(VION)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_C_FLAGS "-g -Wall -Werror -Wextra -O3 -fprofile-arcs -ftest-coverage")
 set(CMAKE_CXX_FLAGS "-g -Wall -Werror -O3 -fprofile-arcs -ftest-coverage")
@@ -14,11 +14,11 @@ include_directories(source)
 include_directories(includes)
 
 file(GLOB incs "includes/*.h")
-file(GLOB srcs "source/Parser.cpp")
+file(GLOB srcs "source/ChangeCreator.cpp")
 
 add_executable(tests.out tests/tests.cpp
-        includes/Parser.h
-        source/Parser.cpp)
+        includes/ChangeCreator.h
+        source/ChangeCreator.cpp)
 
 target_include_directories(tests.out PUBLIC includes)
 

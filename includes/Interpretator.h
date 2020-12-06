@@ -3,19 +3,18 @@
 #define INTERPRETATOR_H
 
 #include <string>
-#include <vector>
 #include "Message.h"
 #include "Mode.h"
 #include "Position.h"
-#include "Parser.h"
+#include "ChangeCreator.h"
 
 class Interpretator {
 public:
     Interpretator();
-    Change Interpret(const char &curChar, Mode mode,
+    Change Interpret(std::string &buffer, Mode mode,
                      Position &position);
-private :
-    Parser changeCreator;
+private:
+    ChangeCreator changeCreator;
     std::string buffer;
 };
 
