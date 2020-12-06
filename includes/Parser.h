@@ -1,29 +1,30 @@
-//
-// Created by yakovitskiy on 12.11.2020.
-//
+#ifndef PARSER_H
+#define PARSER_H
 
-#ifndef VION_PARSER_H
-#define VION_PARSER_H
-
-#include "message.h"
-#include "interpretator.h"
-#include <vector>
+#include "Message.h"
+#include "Mode.h"
+#include "Position.h"
 #include <string>
+#include <set>
+#include <vector>
 
 class Parser {
 public:
+    Parser() = default;
+    ~Parser() = default;
     Change virtual Parse(char &curChar, Mode &mode,
-                         Position &position, std::string &buffer);
+                          Position &position, std::string &buffer);
     bool virtual CanParse(char &curChar, Mode &mode,
                           Position &position, std::string &buffer);
-    void AddParser(Parser&);
+    void AddParser(Parser*);
 private:
-    std::vector<Parser> parsers;
+    std::vector<Parser*> parsers;
 };
 
-class ParseInsertSubString : virtual public Parser {
+class ParseInsertSubString : public Parser {
+public:
     Change Parse(char &curChar, Mode &mode,
-                 Position &position, std::string &buffer) override;
+                         Position &position, std::string &buffer) override;
     bool CanParse(char &curChar, Mode &mode,
                   Position &position, std::string &buffer) override;
 };
@@ -56,4 +57,4 @@ class ParserDeleteFile : virtual public Parser {
                   Position &position, std::string &buffer) override;
 };
 
-#endif //VION_PARSER_H
+#endif // PARSER_H
