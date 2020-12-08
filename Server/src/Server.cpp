@@ -1,10 +1,10 @@
-#include "../include/Server.h"
+#include "Server.h"
 #include "handler.h"
 
-Server(int _socket, struct sockaddr_int _address) {}
-~Server() {}
+Server::Server(int _socket, struct sockaddr_in _address) {}
+Server::~Server() {}
 
-void start() {}
-void stop() {}
+void Server::start() {}
+void Server::stop() {}
 
-int accept_connections() { return 0; }
+int Server::accept_connections() { return 0; }

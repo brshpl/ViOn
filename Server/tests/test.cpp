@@ -5,3 +5,7 @@ TEST(create_server, check_create) {
     Server server();
     ASSERT_TRUE(true);
 }
+
+TEST() {
+
+}

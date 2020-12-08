@@ -8,7 +8,7 @@
 
 class Server {
 public:
-    Server(int _socket, struct sockaddr_int _address);
+    Server(int _socket, struct sockaddr_in _address);
     ~Server();
 
     void start();

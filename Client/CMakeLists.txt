@@ -21,10 +21,16 @@ set(APP_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(APP_ROOT_SRC_DIR ${APP_ROOT_DIR}/src)
 set(INCLUDES ${APP_ROOT_DIR}/include)
 
-include_directories(${INCLUDES})
+#include_directories(${INCLUDES})
+#file(GLOB sources
+#        "${PROJECT_SOURCE_DIR}/include/*.h"
+#        "${PROJECT_SOURCE_DIR}/src/*.cpp")
+#add_executable(client ${sources})
+include_directories(${INCLUDES} ${APP_ROOT_DIR}/../Socket/*.h) #?
 file(GLOB sources
         "${PROJECT_SOURCE_DIR}/include/*.h"
-        "${PROJECT_SOURCE_DIR}/src/*.cpp")
+        "${PROJECT_SOURCE_DIR}/src/*.cpp"
+        "${APP_ROOT_DIR}/../Socket/*.cpp")
 add_executable(client ${sources})
 
 add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
