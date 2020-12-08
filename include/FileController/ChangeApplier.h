@@ -11,14 +11,14 @@ class ChangeApplier {
 public:
     ChangeApplier(Change ch, struct FileStorage file);
 //    ChangeApplier(Change ch, IDGenerator idGen, TextManager manager);
-    ~ChangeApplier();
+    ~ChangeApplier() = default;
     bool inputIdIntoChange();
     bool sendChange();
-    Change m_ch{};
+    FileStorage applyChange();
+
 private:
-    bool applyChange();
 //    Change remove_id(Change ch, const FileStorage& file);
-    char m_symbol{};
+    Change m_ch{};
     FileStorage m_file;
 //    TextUpDater upDater;
 //    TextManager textManager;

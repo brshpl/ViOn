@@ -6,7 +6,6 @@
 #define VION_TEXTMANAGER_H
 #include <iostream>
 #include <vector>
-#include "Parser.h"
 
 enum Command{
     INSERT_SYMBOL,
@@ -55,36 +54,36 @@ struct FileStorage{
 //    IDGenerator idGenerator;
 };
 
-class TextManager {
-public:
-    static TextManager& Instance();
-    struct FileStorage text;
-//    IDGenerator idGen;
-private:
-    TextManager();
-    TextManager(TextManager const&) = delete;
-    TextManager& operator= (TextManager const&) = delete;
-    ~TextManager();
-};
-
-class TextManagerClient : public TextManager{
-private:
-    ParserState parser;
-    TextManagerClient();
-    ~TextManagerClient();
-
-public:
-    void listen(Client client);
-};
-
-class TextManagerServer : public TextManager{
-public:
-    TextManagerServer();
-    ~TextManagerServer();
-    bool createFile();
-    bool deleteFile();
-    size_t createIdFile();
-    size_t createPassword();
-};
+//class TextManager {
+//public:
+//    static TextManager& Instance();
+//    struct FileStorage text;
+////    IDGenerator idGen;
+//private:
+//    TextManager();
+//    TextManager(TextManager const&) = delete;
+//    TextManager& operator= (TextManager const&) = delete;
+//    ~TextManager();
+//};
+//
+//class TextManagerClient : public TextManager{
+//private:
+//    ParserState parser;
+//    TextManagerClient();
+//    ~TextManagerClient();
+//
+//public:
+//    void listen();
+//};
+//
+//class TextManagerServer : public TextManager{
+//public:
+//    TextManagerServer();
+//    ~TextManagerServer();
+//    bool createFile();
+//    bool deleteFile();
+//    size_t createIdFile();
+//    size_t createPassword();
+//};
 
 #endif //VION_TEXTMANAGER_H

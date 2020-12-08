@@ -10,10 +10,12 @@
 class TextUpDater {
 public:
     TextUpDater(FileStorage file, Change ch);
-    ~TextUpDater();
-    bool applyChanges();
-    bool inputIdIntoChange();
-    bool sendChange();
+    ~TextUpDater(){};
+    Change getChange();
+    FileStorage getFile();
+//    bool applyChanges();
+//    bool inputIdIntoChange();
+//    bool sendChange();
 
 protected:
     FileStorage m_file;
@@ -23,9 +25,9 @@ protected:
 
 class InsertChar : public TextUpDater{
 public:
-    explicit InsertChar(FileStorage file, Change ch);
+    explicit InsertChar(FileStorage &file, Change &ch);
     void insertSymbol();
-    ~InsertChar();
+    ~InsertChar()= default;;
 private:
     Change add_new_id();
     char getSymbol();
@@ -34,7 +36,7 @@ private:
 class DeleteChar : public TextUpDater{
 public:
     explicit DeleteChar(FileStorage file, Change ch);
-    ~DeleteChar();
+    ~DeleteChar()= default;;
     void deleteSymbol();
 private:
     char getSymbol();
@@ -43,7 +45,7 @@ private:
 class InsertString : public TextUpDater{
 public:
     explicit InsertString();
-    ~InsertString();
+    ~InsertString(){};
     InsertChar symbol;
 private:
     std::string getString();

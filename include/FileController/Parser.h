@@ -5,19 +5,23 @@
 #ifndef VION_PARSER_H
 #define VION_PARSER_H
 
+#include "TextManager.h"
 
 class Parser{
 public:
-    Parser();
-    virtual ~Parser();
-    virtual void parse() = 0;
+    Parser(Change ch, FileStorage file);
+    virtual ~Parser(){};
+    virtual std::string parse() = 0;
+protected:
+    Change m_ch;
+    FileStorage m_file;
 };
 
-class ParserState : public Parser{
+class ParserFile : public Parser{
 public:
-    ParserState();
-    ~ParserState();
-    void parse() override;
+    ParserFile(Change ch, FileStorage file);
+    ~ParserFile() override{};
+    std::string parse() override;
 };
 
 #endif //VION_PARSER_H

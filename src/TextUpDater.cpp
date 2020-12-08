@@ -12,7 +12,15 @@ TextUpDater::TextUpDater(FileStorage file, Change ch) {
     m_ch = ch;
 }
 
-InsertChar::InsertChar(FileStorage file, Change ch) : TextUpDater(std::move(file), ch){};
+Change TextUpDater::getChange() {
+    return m_ch;
+}
+
+FileStorage TextUpDater::getFile() {
+    return m_file;
+}
+
+InsertChar::InsertChar(FileStorage &file, Change &ch) : TextUpDater(std::move(file), ch){};
 
 char InsertChar::getSymbol() {
     return m_ch.symbol;
@@ -33,8 +41,10 @@ void InsertChar::insertSymbol() {
     };
     for (auto iter = m_file.strings[m_ch.stringId].symbols.begin();
          iter != m_file.strings[m_ch.stringId].symbols.end(); ++iter){
-        if (iter->id == m_ch.behind_symbol_id)
+        if (iter->id == m_ch.behind_symbol_id){
             m_file.strings[m_ch.stringId].symbols.insert(iter, new_char);
+            return;
+        }
     }
 }
 
