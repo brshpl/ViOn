@@ -45,7 +45,6 @@ public:
 private:
     Change ch_;
     Subject &subject_;
-    static int static_number_;
     int number_;
 };
 #endif //VION_EVENTMANAGER_H

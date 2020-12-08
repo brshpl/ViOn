@@ -10,7 +10,7 @@ void Subject::Detach(IObserver *observer) {
     list_observer.remove(observer);
 }
 void Subject::Notify() {
-    std::list<IObserver *>::iterator iterator = list_observer.begin();
+    auto iterator = list_observer.begin();
     amount_of_observers();
     while (iterator != list_observer.end()) {
         (*iterator)->Update(ch);
@@ -22,7 +22,6 @@ int Subject::amount_of_observers() {
 }
 Observer::Observer(Subject &subject) :  subject_(subject){
     this->subject_.Attach(this);
-    this->number_ = Observer::static_number_;
 }
 Change Observer::Update(const Change &ch) {
     ch_ = ch;
@@ -30,4 +29,8 @@ Change Observer::Update(const Change &ch) {
 }
 void Observer::RemoveMeFromTheList() {
     subject_.Detach(this);
+}
+
+Change IObserver::Update(const Change &ch) {
+    return Change();
 }

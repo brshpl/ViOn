@@ -1,7 +1,6 @@
 //
 // Created by Dashik on 12.11.2020.
 //
-
 #include "ChangeApplier.h"
 #include "Parser.h"
 #include <utility>
@@ -31,9 +30,9 @@ FileStorage ChangeApplier::applyChange() {
         default:
             return m_file;
     }
-    ParserFile parser(m_ch, m_file);
+    ParserForEditor parser(m_ch, m_file);
     std::string str = parser.parse();
-    std::cout << str;
+    std::cout << str << std::endl;
     return m_file;
 }
 

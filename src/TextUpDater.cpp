@@ -28,7 +28,7 @@ char InsertChar::getSymbol() {
 
 Change InsertChar::add_new_id() {
     m_file.symbols_length++;
-    m_ch.symbolId = m_file.symbols_length;
+    m_ch.newSymbolId = m_file.symbols_length;
     return m_ch;
 }
 
@@ -37,12 +37,13 @@ void InsertChar::insertSymbol() {
     SymbolState new_char{
         m_ch.symbol,
         true,
-        m_ch.symbolId
+        m_ch.newSymbolId,
     };
-    for (auto iter = m_file.strings[m_ch.stringId].symbols.begin();
-         iter != m_file.strings[m_ch.stringId].symbols.end(); ++iter){
-        if (iter->id == m_ch.behind_symbol_id){
-            m_file.strings[m_ch.stringId].symbols.insert(iter, new_char);
+    std::vector<SymbolState> &curFile = m_file.symbols;
+    for (auto iter = curFile.begin();
+         iter != curFile.end(); ++iter){
+        if (iter->id == m_ch.position.symbolId){
+            curFile.insert(iter, new_char);
             return;
         }
     }
@@ -51,8 +52,8 @@ void InsertChar::insertSymbol() {
 DeleteChar::DeleteChar(FileStorage file, Change ch) : TextUpDater(std::move(file), ch){};
 
 void DeleteChar::deleteSymbol() {
-    for (auto & symbol : m_file.strings[m_ch.stringId].symbols){
-        if (symbol.id == m_ch.symbolId)
+    for (auto & symbol : m_file.symbols){
+        if (symbol.id == m_ch.position.symbolId)
             symbol.is_visible = false;
     }
 }

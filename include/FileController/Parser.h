@@ -6,22 +6,36 @@
 #define VION_PARSER_H
 
 #include "TextManager.h"
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 class Parser{
 public:
-    Parser(Change ch, FileStorage file);
+    Parser(Change ch);
     virtual ~Parser(){};
-    virtual std::string parse() = 0;
 protected:
     Change m_ch;
+};
+
+class ParserForEditor : public Parser{
+public:
+    ParserForEditor(Change ch, FileStorage file);
+    ~ParserForEditor() override{};
+    std::string parse();
+private:
     FileStorage m_file;
 };
 
-class ParserFile : public Parser{
-public:
-    ParserFile(Change ch, FileStorage file);
-    ~ParserFile() override{};
-    std::string parse() override;
+class ParserToJson : public Parser{
+    explicit ParserToJson(Change ch);
+    json parse();
 };
 
+class ParserFromJson : public Parser{
+    explicit ParserFromJson(Change ch, const json &j);
+    Change parse();
+private:
+    json m_j;
+};
 #endif //VION_PARSER_H
