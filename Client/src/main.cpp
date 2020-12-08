@@ -1,12 +1,10 @@
-#include "Client.h"
-
 #include <iostream>
 #include <thread>
 
-using namespace std;
+#include "Client.h"
 
 
-static inline bool is_connect(const string& change) {
+static inline bool is_connect(const std::string& change) {
     return change == "#";
 }
 
@@ -15,9 +13,9 @@ void listen_serv(Client& client) {
     while (true) {
         // Создаем объект change, передаем его слушающей функции
         // пока использую string
-        string change_str = client.recv_str();
+        std::string change_str = client.recv_changes();
 
-        cout << change_str << endl;
+        std::cout << change_str << std::endl;
 
         if (is_connect(change_str)) {
             break;
@@ -26,40 +24,40 @@ void listen_serv(Client& client) {
 }
 
 int main(int argc, char* argv[]) {
-    cout << SOURCE_DIR << endl;
-    Socket s;
-    s.createServerSocket(5000, 3);
     if (argc != 3) {
-        // бросить исключение
-        std::cout << "no three arguments!" << endl;
+        std::cout << "no three arguments!" << std::endl;
         return 1;
     }
+    std::string host(argv[1]);
+    int port = std::stoi(argv[2]);
 
-    Client client(argv[1], argv[2]);
-    if (client.connect_serv() != 0) {
-        // что делать есои коннект не случился по разным причинам
-        std::cout << "no connect!" << endl;
-        return 1;
-    }
+    Client client;
 
-    thread thread_listen(listen_serv, ref(client)); // пока передаем по ссылке
+    try {
+        client.connectToServer(host, port);
 
-    while (true) {
-        // Вызов функций формирования изменений
-        // пока использую string
-        string change_str;
-        cin >> change_str;
+        std::thread thread_listen(listen_serv, std::ref(client)); // пока передаем по ссылке
 
-        // client.send_changes(change);
-        client.send_str(change_str);
+        while (true) {
+            // Вызов функций формирования изменений
+            // пока использую string
+            std::string change_str;
+            std::cin >> change_str;
 
-        // Переделать проверку на структуру change
-        if (is_connect(change_str)) {
-            break;
+            // client.send_changes(change);
+            client.send_changes(change_str);
+
+            // Переделать проверку на структуру change
+            if (is_connect(change_str)) {
+                break;
+            }
         }
-    }
 
-    thread_listen.join();
+        thread_listen.join();
+    }
+    catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+    }
 
     return 0;
 }
