@@ -24,8 +24,9 @@ namespace {
 
     struct sockaddr_in resolve(const char* host, int port) {
         struct hostent* hp = gethostbyname(host);
-        if (hp == nullptr)
+        if (hp == nullptr) {
             throw std::runtime_error("resolve error: " + std::string(strerror(errno)));
+        }
 
         char** pAddr = hp->h_addr_list;
         while (*pAddr) {
@@ -57,6 +58,16 @@ Socket::Socket(int _sock) : sock(_sock) {}
 
 Socket::~Socket() {
     this->close();
+}
+
+void Socket::setSndTimeout(int sec, int microsec) noexcept(false) {
+    struct timeval tv{};
+    tv.tv_sec = sec;
+    tv.tv_usec = microsec;
+
+    if (setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)) != 0) {
+        throw std::runtime_error("set sndtimeout: " + std::string(strerror(errno)));
+    }
 }
 
 void Socket::setRcvTimeout(int sec, int microsec) noexcept(false) {

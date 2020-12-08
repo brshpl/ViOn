@@ -15,7 +15,8 @@ public:
     void connect(const std::string& host, int port) noexcept(false);
     void send(const std::string& s) noexcept(false);
     std::string recv_loop() noexcept(false);
-    void setRcvTimeout(int sec, int microsec) noexcept(false);
+    void setSndTimeout(int sec, int microsec = 0) noexcept(false);
+    void setRcvTimeout(int sec, int microsec = 0) noexcept(false);
     void setReuseAddr(int _sock) noexcept(false);
     void createServerSocket(uint32_t port,
                             uint32_t queue_size) noexcept(false);
