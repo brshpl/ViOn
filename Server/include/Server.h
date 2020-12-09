@@ -1,7 +1,7 @@
 #ifndef VION_SERVER_INCLUDE_SERVER_H_
 #define VION_SERVER_INCLUDE_SERVER_H_
 
-#include <functional>
+#include <set>
 //#include <thread>
 #include "../../Socket/Socket.h"
 
@@ -9,18 +9,19 @@
 class Server {
 public:
     Server() = delete;
-    explicit Server(void (*_handler_client)(std::shared_ptr<Socket>)) : handler_client(_handler_client) {}
+    Server(uint32_t port, uint32_t queue_size);
     ~Server() = default;
 
-    void start(uint32_t port, uint32_t queue_size);
-    void stop();
+    void start();
+//    void stop();
+
+    void send_changes(const std::string& buf);
+
+    void disconnect_client(std::shared_ptr<Socket> client);
 
 private:
     Socket server_sock;
-    std::vector<std::shared_ptr<Socket>> clients;
-
-    void (*handler_client)(std::shared_ptr<Socket>);
-//    typedef std::function<void(Socket)> handler_function_t;
+    std::set<std::shared_ptr<Socket>> clients;
 
 };
 

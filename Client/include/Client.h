@@ -3,7 +3,7 @@
 
 #include <string>
 
-//#include "change.h"
+#include "../../change.h"
 #include "../../Socket/Socket.h"
 
 
@@ -14,14 +14,14 @@ public:
     ~Client() = default;
     void connectToServer(const std::string& host, int port);
 
-    int create_new_file();
-    int connect_to_file(size_t id, const char* pin);
+    int createNewFile();
+    int connectToFile(size_t id, const char* pin);
 
-//    void send_changes(const change* buf);
-//    change* recv_changes();
+//    void sendChanges(const change& buf);
+//    change* recvChanges();
 
-    void send_changes(const std::string& buf);
-    std::string recv_changes();
+    void sendChanges(const std::string& buf);
+    std::string recvChanges();
 
 private:
     Socket client_sock;

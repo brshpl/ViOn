@@ -13,11 +13,13 @@ void listen_serv(Client& client) {
     while (true) {
         // Создаем объект change, передаем его слушающей функции
         // пока использую string
-        std::string change_str = client.recv_changes();
+        std::string change_str;
+
+        change_str = client.recvChanges();
 
         std::cout << change_str << std::endl;
 
-        if (is_connect(change_str)) {
+        if (change_str == "#") {
             break;
         }
     }
@@ -45,10 +47,9 @@ int main(int argc, char* argv[]) {
             std::cin >> change_str;
 
             // client.send_changes(change);
-            client.send_changes(change_str);
+            client.sendChanges(change_str);
 
-            // Переделать проверку на структуру change
-            if (is_connect(change_str)) {
+            if (change_str == "#") {
                 break;
             }
         }

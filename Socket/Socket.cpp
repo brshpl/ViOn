@@ -1,5 +1,4 @@
 #include <iostream>
-//#include <stdexcept>
 
 #include <cstring>
 #include <netdb.h>       // gethostbyname
@@ -136,7 +135,7 @@ std::string Socket::recv() const noexcept(false) {
     size_t r = 0;
     while (r != bytes) {
         ssize_t rc = ::recv(sock, buf + r, bytes - r, 0);
-        std::cerr << "recv_ex: " << rc << " bytes\n";
+//        std::cerr << "recv_ex: " << rc << " bytes\n";
 
         if (rc == -1 || rc == 0) {
             delete[] buf;
@@ -183,7 +182,7 @@ std::shared_ptr<Socket> Socket::accept() const noexcept(false) {
     std::cerr << "ready for accept new clients: " << std::endl;
 
     int client_sock = ::accept(sock, (struct sockaddr*)&client, &client_len);
-    if (-1 == client_sock) {
+    if (client_sock == -1) {
         return std::shared_ptr<Socket>();
     }
     std::cerr << "new client: " << client_sock
