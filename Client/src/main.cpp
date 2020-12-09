@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
     try {
         client.connectToServer(host, port);
 
-        std::thread thread_listen(listen_serv, std::ref(client)); // пока передаем по ссылке
+        std::thread thread_listen(listen_serv, std::ref(client));
 
         while (true) {
             // Вызов функций формирования изменений

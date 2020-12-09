@@ -1,25 +1,26 @@
 #ifndef VION_SERVER_INCLUDE_SERVER_H_
 #define VION_SERVER_INCLUDE_SERVER_H_
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <thread>
+#include <functional>
+//#include <thread>
+#include "../../Socket/Socket.h"
 
 
 class Server {
 public:
-    Server(int _socket, struct sockaddr_in _address);
-    ~Server();
+    Server() = delete;
+    explicit Server(void (*_handler_client)(std::shared_ptr<Socket>)) : handler_client(_handler_client) {}
+    ~Server() = default;
 
-    void start();
+    void start(uint32_t port, uint32_t queue_size);
     void stop();
 
 private:
-    int accept_connections();
+    Socket server_sock;
+    std::vector<std::shared_ptr<Socket>> clients;
 
-private:
-    int socket;
-    struct sockaddr_in address;
+    void (*handler_client)(std::shared_ptr<Socket>);
+//    typedef std::function<void(Socket)> handler_function_t;
 
 };
 
