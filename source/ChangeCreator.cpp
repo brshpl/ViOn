@@ -48,7 +48,6 @@ Change ChangeCreatorInsertSubString::CreateChange(Mode &mode,
                                                   Position &position, std::string &buffer) {
     Change chg;
     chg.cmd = INSERT_SUB_STRING;
-    chg.fileId = 0;
     chg.position = position;
     chg.symbol = buffer.back();
     return chg;
@@ -69,7 +68,6 @@ Change ChangeCreatorDeleteSymbol::CreateChange(Mode &mode,
                                                Position &position, std::string &buffer) {
     Change chg;
     chg.cmd = DELETE_SYMBOL;
-    chg.fileId = 0;
     chg.position = position;
     return chg;
 }
@@ -88,7 +86,6 @@ Change ChangeCreatorDeleteString::CreateChange(Mode &mode,
                                                Position &position, std::string &buffer) {
     Change chg;
     chg.cmd = DELETE_STRING;
-    chg.fileId = 0;
     chg.position = position;
     return chg;
 }
@@ -106,8 +103,6 @@ Change ChangeCreatorCreateFile::CreateChange(Mode &mode,
                                              Position &position, std::string &buffer) {
     Change chg;
     chg.cmd = CREATE_FILE;
-    chg.position = {0, 0};
-    chg.fileId = 0;
     return chg;
 }
 
@@ -124,7 +119,22 @@ Change ChangeCreatorDeleteFile::CreateChange(Mode &mode,
                                              Position &position, std::string &buffer) {
     Change chg;
     chg.cmd = DELETE_FILE;
-    chg.position = {0, 0};
-    chg.fileId = 0;
+    return chg;
+}
+
+bool ChangeCreatorChangeMode::CanCreate(Mode &mode,
+                                        Position &position, std::string &buffer) {
+    if ((mode == COMMAND_MODE && buffer == "I")
+    || (mode == INSERTATION_MODE && buffer.back() == 27)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+Change ChangeCreatorChangeMode::CreateChange(Mode &mode,
+                                             Position &position, std::string &buffer) {
+    Change chg;
+    chg.cmd = CHANGE_MODE;
     return chg;
 }

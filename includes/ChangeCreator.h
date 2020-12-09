@@ -60,4 +60,12 @@ public:
                    Position &position, std::string &buffer) override;
 };
 
+class ChangeCreatorChangeMode : virtual public ChangeCreator {
+public:
+    Change CreateChange(Mode &mode,
+                        Position &position, std::string &buffer) override;
+    bool CanCreate(Mode &mode,
+                   Position &position, std::string &buffer) override;
+};
+
 #endif // CHANGE_CREATOR_H

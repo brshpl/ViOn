@@ -176,6 +176,23 @@ TEST(ParserDeleteFile, CreateChange) {
                                                             testPosition, testBuffer);
 }
 
+TEST(ChangeCreatorChangeMode, CanCreate) {
+    std::string testBuffer = "I";
+    Mode testMode = COMMAND_MODE;
+    Command testCommand = CHANGE_MODE;
+    Position testPosition = {0, 0};
+    size_t testFileId = 0;
+    char expectedSymbol = 0;
+    Change expectedChange(testCommand, testFileId, testPosition, expectedSymbol);
+    ChangeCreatorChangeMode changeCreatorChangeMode;
+    Change gotChange = changeCreatorChangeMode.CreateChange(testMode, testPosition, testBuffer);
+    EXPECT_EQ(gotChange, expectedChange);
+    testMode = INSERTATION_MODE;
+    testBuffer.back() = 27;
+    gotChange = changeCreatorChangeMode.CreateChange(testMode, testPosition, testBuffer);
+    EXPECT_EQ(gotChange, expectedChange);
+}
+
 TEST(Interpretator, Interpret_Insertation_mode) {
     ChangeCreator changeCreator;
     ChangeCreatorInsertSubString changeCreatorInsertSubString;
