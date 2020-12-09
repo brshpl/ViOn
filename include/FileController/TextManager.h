@@ -19,7 +19,7 @@ struct Position {
 //    Position(size_t _stringId, size_t _symbolId):
 //            stringId(_stringId), symbolId(_symbolId) {}
     Position(): symbolId(0) {}
-    Position(size_t _stringId, size_t _symbolId):
+    Position(size_t _symbolId):
             symbolId(_symbolId) {}
     ~Position() = default;
 //    size_t  stringId;
@@ -27,10 +27,10 @@ struct Position {
 };
 
 struct Change{
-    Change(): cmd(ERROR), fileId(0), position({0,0}),
+    Change(): cmd(ERROR), fileId(0), position(0),
               newSymbolId(), symbol() {}
-    Change(Command& _cmd, size_t& _fileId,
-           Position& _position, size_t _newSymbolId, char& _symbol):
+    Change(Command _cmd, size_t _fileId,
+           Position& _position, size_t _newSymbolId, char _symbol):
             cmd(_cmd), fileId(_fileId), position(_position),
             newSymbolId(_newSymbolId), symbol(_symbol) {}
     ~Change() = default;

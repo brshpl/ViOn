@@ -2,7 +2,7 @@
 // Created by Dashik on 12.11.2020.
 //
 
-#include "Parser.h"
+#include "FileController/Parser.h"
 
 #include <utility>
 
@@ -14,13 +14,17 @@ ParserForEditor::ParserForEditor(Change ch, FileStorage file) : Parser(ch){
     m_file = std::move(file);
 };
 
-std::string ParserForEditor::parse() {
-    std::string text_file;
+std::vector<Text> ParserForEditor::parse() {
+    std::vector<Text> file;
+    Text text{};
     for (auto & symbol : m_file.symbols){
-        if (symbol.is_visible)
-            text_file += symbol.symbol;
+        if (symbol.is_visible){
+            text.symbol = symbol.symbol;
+            text.symbolId =symbol.id;
+            file.push_back(text);
+        }
     }
-    return text_file;
+    return file;
 }
 
 ParserToJson::ParserToJson(Change ch) : Parser(ch){}

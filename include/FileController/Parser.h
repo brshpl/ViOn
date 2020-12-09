@@ -10,6 +10,11 @@
 
 using json = nlohmann::json;
 
+struct Text{
+    char symbol;
+    size_t symbolId;
+};
+
 class Parser{
 public:
     Parser(Change ch);
@@ -22,7 +27,7 @@ class ParserForEditor : public Parser{
 public:
     ParserForEditor(Change ch, FileStorage file);
     ~ParserForEditor() override{};
-    std::string parse();
+    std::vector<Text> parse();
 private:
     FileStorage m_file;
 };

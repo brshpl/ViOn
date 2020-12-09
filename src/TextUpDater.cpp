@@ -2,47 +2,44 @@
 // Created by Dashik on 12.11.2020.
 //
 
-#include "TextUpDater.h"
+#include <FileController/TextUpDater.h>
 
 #include <utility>
 #include <memory>
 
 TextUpDater::TextUpDater(FileStorage file, Change ch) {
-    m_file = std::move(file);
-    m_ch = ch;
+    file_ = std::move(file);
+    ch_ = ch;
 }
 
 Change TextUpDater::getChange() {
-    return m_ch;
+    return ch_;
 }
 
 FileStorage TextUpDater::getFile() {
-    return m_file;
+    return file_;
 }
 
 InsertChar::InsertChar(FileStorage &file, Change &ch) : TextUpDater(std::move(file), ch){};
 
-char InsertChar::getSymbol() {
-    return m_ch.symbol;
-}
 
-Change InsertChar::add_new_id() {
-    m_file.symbols_length++;
-    m_ch.newSymbolId = m_file.symbols_length;
-    return m_ch;
+Change InsertChar::addNewId() {
+    file_.symbols_length++;
+    ch_.newSymbolId = file_.symbols_length;
+    return ch_;
 }
 
 void InsertChar::insertSymbol() {
-    m_ch = add_new_id();
+    ch_ = addNewId();
     SymbolState new_char{
-        m_ch.symbol,
+        ch_.symbol,
         true,
-        m_ch.newSymbolId,
+        ch_.newSymbolId,
     };
-    std::vector<SymbolState> &curFile = m_file.symbols;
+    std::vector<SymbolState> &curFile = file_.symbols;
     for (auto iter = curFile.begin();
          iter != curFile.end(); ++iter){
-        if (iter->id == m_ch.position.symbolId){
+        if (iter->id == ch_.position.symbolId){
             curFile.insert(iter, new_char);
             return;
         }
@@ -52,8 +49,8 @@ void InsertChar::insertSymbol() {
 DeleteChar::DeleteChar(FileStorage file, Change ch) : TextUpDater(std::move(file), ch){};
 
 void DeleteChar::deleteSymbol() {
-    for (auto & symbol : m_file.symbols){
-        if (symbol.id == m_ch.position.symbolId)
+    for (auto & symbol : file_.symbols){
+        if (symbol.id == ch_.position.symbolId)
             symbol.is_visible = false;
     }
 }
