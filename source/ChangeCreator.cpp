@@ -29,8 +29,7 @@ Change ChangeCreator::CreateChange(Mode &mode,
     catch (const char* msg) {
         std::cout << msg << std::endl;
         Change chg;
-        chg.cmd = ERROR;
-        chg.str = msg;
+        chg.cmd = NOTHING;
         return chg;
     }
 }
@@ -51,7 +50,7 @@ Change ChangeCreatorInsertSubString::CreateChange(Mode &mode,
     chg.cmd = INSERT_SUB_STRING;
     chg.fileId = 0;
     chg.position = position;
-    chg.str = buffer;
+    chg.symbol = buffer.back();
     return chg;
 }
 
@@ -72,7 +71,6 @@ Change ChangeCreatorDeleteSymbol::CreateChange(Mode &mode,
     chg.cmd = DELETE_SYMBOL;
     chg.fileId = 0;
     chg.position = position;
-    chg.str = "";
     return chg;
 }
 
@@ -92,7 +90,6 @@ Change ChangeCreatorDeleteString::CreateChange(Mode &mode,
     chg.cmd = DELETE_STRING;
     chg.fileId = 0;
     chg.position = position;
-    chg.str = "";
     return chg;
 }
 
@@ -111,7 +108,6 @@ Change ChangeCreatorCreateFile::CreateChange(Mode &mode,
     chg.cmd = CREATE_FILE;
     chg.position = {0, 0};
     chg.fileId = 0;
-    chg.str = "";
     return chg;
 }
 
@@ -130,6 +126,5 @@ Change ChangeCreatorDeleteFile::CreateChange(Mode &mode,
     chg.cmd = DELETE_FILE;
     chg.position = {0, 0};
     chg.fileId = 0;
-    chg.str = "";
     return chg;
 }

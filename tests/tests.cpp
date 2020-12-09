@@ -8,13 +8,13 @@
 bool operator==(const Change &lhs, const Change &rhs) {
     return std::tie(lhs.position.symbolId,
                     lhs.position.stringId,
-                    lhs.str,
+                    lhs.symbol,
                     lhs.fileId,
                     lhs.cmd) == std::tie(rhs.position.symbolId,
-                                     rhs.position.stringId,
-                                     rhs.str,
-                                     rhs.fileId,
-                                     rhs.cmd);
+                                         rhs.position.stringId,
+                                         rhs.symbol,
+                                         rhs.fileId,
+                                         rhs.cmd);
 }
 
 TEST(ChangeCreator, AddChangeCreator) {
@@ -44,11 +44,11 @@ TEST(ChangeCreator, CreateChange) {
     parser.AddChangeCreator(&parseInsertSubString);
     Mode testMode = INSERTATION_MODE;
     Position testPosition(1, 1);
-    std::string testBuffer = "123";
+    std::string testString = "1";
     size_t testFileId = 0;
     Command testCommand = INSERT_SUB_STRING;
-    Change expectedChange(testCommand, testFileId, testPosition, testBuffer);
-    Change gotChange = parser.CreateChange(testMode, testPosition, testBuffer);
+    Change expectedChange(testCommand, testFileId, testPosition, testString[0]);
+    Change gotChange = parser.CreateChange(testMode, testPosition, testString);
     EXPECT_EQ(expectedChange, gotChange);
 }
 
@@ -64,10 +64,10 @@ TEST(ChangeCreatorInsertSubString, CreateChange) {
     ChangeCreatorInsertSubString parseInsertSubString;
     Mode testMode = INSERTATION_MODE;
     Position testPosition(1, 1);
-    std::string testBuffer = "123";
+    std::string testBuffer = "1";
     size_t testFileId = 0;
     Command testCommand = INSERT_SUB_STRING;
-    Change expectedChange(testCommand, testFileId, testPosition, testBuffer);
+    Change expectedChange(testCommand, testFileId, testPosition, testBuffer.back());
     Change gotChange = parseInsertSubString.CreateChange(testMode, testPosition, testBuffer);
     EXPECT_EQ(expectedChange, gotChange);
 }
@@ -92,13 +92,13 @@ TEST(ParserDeleteSymbol, CreateChange) {
     Mode testMode = INSERTATION_MODE;
     Position testPosition(1, 1);
     char symbol = 127;
+    char expectedSymbol = 0;
     std::string testBuffer;
     testBuffer.resize(1);
     testBuffer.back() = symbol; // DELETE
     size_t testFileId = 0;
     Command testCommand = DELETE_SYMBOL;
-    std::string initBuffer;
-    Change expetedChange(testCommand, testFileId, testPosition, initBuffer);
+    Change expetedChange(testCommand, testFileId, testPosition, expectedSymbol);
     ChangeCreatorDeleteSymbol changeCreatorDeleteSymbol;
     Change gotChange = changeCreatorDeleteSymbol.CreateChange(testMode,
                                                               testPosition, testBuffer);
@@ -121,10 +121,10 @@ TEST(ParserDeleteString, CreateChange) {
     Mode testMode = COMMAND_MODE;
     Position testPosition(1, 1);
     std::string testBuffer = "dd";
+    char expectedSymbol = 0;
     size_t testFileId = 0;
     Command testCommand = DELETE_STRING;
-    std::string initBuffer;
-    Change expetedChange(testCommand, testFileId, testPosition, initBuffer);
+    Change expetedChange(testCommand, testFileId, testPosition, expectedSymbol);
     ChangeCreatorDeleteString changeCreatorDeleteString;
     Change gotChange = changeCreatorDeleteString.CreateChange(testMode,
                                                               testPosition, testBuffer);
@@ -143,14 +143,15 @@ TEST(ParserCreateFile, CanCreate) {
 TEST(ParserCreateFile, CreateChange) {
     ChangeCreatorCreateFile changeCreatorCreateFile;
     Mode testMode = COMMAND_MODE;
-    Position testPosition(1, 1);
+    Position testPosition(0, 0);
     std::string testBuffer = "CREATE_FILE";
     Command testCommand = CREATE_FILE;
     size_t testFileId = 0;
-    std::string initBuffer;
-    Change expectedChange(testCommand, testFileId, testPosition, initBuffer);
+    char expectedSymbol = 0;
+    Change expectedChange(testCommand, testFileId, testPosition, expectedSymbol);
     Change gotChange = changeCreatorCreateFile.CreateChange(testMode,
                                                             testPosition, testBuffer);
+    EXPECT_EQ(expectedChange, gotChange);
 }
 
 TEST(ParserDeleteFile, CanCreate) {
@@ -169,10 +170,42 @@ TEST(ParserDeleteFile, CreateChange) {
     std::string testBuffer = "DELETE_FILE";
     Command testCommand = DELETE_FILE;
     size_t testFileId = 0;
-    std::string initBuffer;
-    Change expectedChange(testCommand, testFileId, testPosition, initBuffer);
+    char expectedChar = 0;
+    Change expectedChange(testCommand, testFileId, testPosition, expectedChar);
     Change gotChange = changeCreatorDeleteFile.CreateChange(testMode,
                                                             testPosition, testBuffer);
+}
+
+TEST(Interpretator, Interpret_Insertation_mode) {
+    ChangeCreator changeCreator;
+    ChangeCreatorInsertSubString changeCreatorInsertSubString;
+    changeCreator.AddChangeCreator(&changeCreatorInsertSubString);
+    Interpretator interpretator(changeCreator);
+    size_t testFileId = 0;
+    Mode testMode = INSERTATION_MODE;
+    Position testPosition(0, 0);
+    Command testCommand = INSERT_SUB_STRING;
+    char testSymblol = '1';
+    Change expectedChange(testCommand, testFileId, testPosition, testSymblol);
+    Change gotChange = interpretator.Interpret(testSymblol, testMode, testPosition);
+    EXPECT_EQ(expectedChange, gotChange);
+}
+
+TEST(Interpretator, Interpret_command_mode) {
+    ChangeCreator changeCreator;
+    ChangeCreatorDeleteString changeCreatorDeleteString;
+    changeCreator.AddChangeCreator(&changeCreatorDeleteString);
+    Interpretator interpretator(changeCreator);
+    size_t testFileId = 0;
+    Mode testMode = COMMAND_MODE;
+    Position testPosition(0, 0);
+    Command testCommand = DELETE_STRING;
+    char testSymblol = 'd';
+    char gotSymbol = 0;
+    Change expectedChange(testCommand, testFileId, testPosition, gotSymbol);
+    interpretator.Interpret(testSymblol, testMode, testPosition);
+    Change gotChange = interpretator.Interpret(testSymblol, testMode, testPosition);
+    EXPECT_EQ(expectedChange, gotChange);
 }
 
 int main(int argc, char **argv) {

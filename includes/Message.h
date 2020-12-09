@@ -6,24 +6,25 @@
 #include <tuple>
 
 enum Command {
-    ERROR,
+    NOTHING,
     CREATE_FILE,
     DELETE_FILE,
     INSERT_SUB_STRING,
     DELETE_STRING,
-    DELETE_SYMBOL
+    DELETE_SYMBOL,
+    CHANGE_MODE
 };
 
 struct Change {
-    Change(): cmd(ERROR), fileId(0), position({0, 0}), str()  {}
+    Change(): cmd(NOTHING), fileId(0), position({0, 0}), symbol(0)  {}
     Change(Command& _cmd, size_t& _fileId,
-           Position& _position, std::string& _str):
-           cmd(_cmd), fileId(_fileId), position(_position), str(_str) {}
+           Position& _position, char &_symbol):
+           cmd(_cmd), fileId(_fileId), position(_position), symbol(_symbol) {}
     ~Change() = default;
     Command cmd;
     size_t fileId;
     Position position;
-    std::string str;
+    char symbol;
 };
 
 #endif // MESSAGE_H

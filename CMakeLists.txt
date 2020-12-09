@@ -3,8 +3,7 @@ project(VION)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_C_FLAGS "-g -Wall -Werror -Wextra -O3 -fprofile-arcs -ftest-coverage")
-set(CMAKE_CXX_FLAGS "-g -Wall -Werror -O3 -fprofile-arcs -ftest-coverage")
+set(CMAKE_CXX_FLAGS "-g -Wall -Werror -O0 -fprofile-arcs -ftest-coverage")
 
 find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
@@ -13,12 +12,9 @@ include_directories("${GTEST_INCLUDE_DIRS}")
 include_directories(source)
 include_directories(includes)
 
-file(GLOB incs "includes/*.h")
-file(GLOB srcs "source/ChangeCreator.cpp")
-
 add_executable(tests.out tests/tests.cpp
         includes/ChangeCreator.h
-        source/ChangeCreator.cpp)
+        source/ChangeCreator.cpp source/Interpretator.cpp)
 
 target_include_directories(tests.out PUBLIC includes)
 

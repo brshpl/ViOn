@@ -70,3 +70,6 @@ googletest/
 #test-files
 *.test
 Testing/
+
+#jsons
+*.json

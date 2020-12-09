@@ -10,8 +10,16 @@
 
 class Interpretator {
 public:
-    Interpretator();
-    Change Interpret(std::string &buffer, Mode mode,
+    Interpretator(): changeCreator(),
+    buffer()
+    {}
+
+    Interpretator(const ChangeCreator& _changeCreator):
+    changeCreator(_changeCreator),
+    buffer()
+    {}
+
+    Change Interpret(char &curChar, Mode &mode,
                      Position &position);
 private:
     ChangeCreator changeCreator;
