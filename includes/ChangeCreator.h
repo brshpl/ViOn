@@ -60,7 +60,7 @@ public:
                    Position &position, std::string &buffer) override;
 };
 
-class ChangeCreatorChangeMode : virtual public ChangeCreator {
+class ChangeCreatorMoveCursor : virtual public ChangeCreator {
 public:
     Change CreateChange(Mode &mode,
                         Position &position, std::string &buffer) override;

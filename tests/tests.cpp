@@ -72,7 +72,7 @@ TEST(ChangeCreatorInsertSubString, CreateChange) {
     EXPECT_EQ(expectedChange, gotChange);
 }
 
-TEST(ParserDeleteSymbol, CanCreate) {
+TEST(ChangeCreatorDeleteSymbol, CanCreate) {
     Mode testMode = INSERTATION_MODE;
     Position testPosition(1, 1);
     std::string testBuffer;
@@ -88,7 +88,7 @@ TEST(ParserDeleteSymbol, CanCreate) {
                                                     testPosition, testBuffer));
 }
 
-TEST(ParserDeleteSymbol, CreateChange) {
+TEST(ChangeCreatorDeleteSymbol, CreateChange) {
     Mode testMode = INSERTATION_MODE;
     Position testPosition(1, 1);
     char symbol = 127;
@@ -108,7 +108,7 @@ TEST(ParserDeleteSymbol, CreateChange) {
     EXPECT_EQ(gotChange, expetedChange);
 }
 
-TEST(ParserDeleteString, CanCreate) {
+TEST(ChangeCreatorDeleteString, CanCreate) {
     ChangeCreatorDeleteString changeCreatorDeleteString;
     Mode testMode = COMMAND_MODE;
     Position testPosition(1, 1);
@@ -117,7 +117,7 @@ TEST(ParserDeleteString, CanCreate) {
                                                     testPosition, testBuffer));
 }
 
-TEST(ParserDeleteString, CreateChange) {
+TEST(ChangeCreatorDeleteString, CreateChange) {
     Mode testMode = COMMAND_MODE;
     Position testPosition(1, 1);
     std::string testBuffer = "dd";
@@ -131,7 +131,7 @@ TEST(ParserDeleteString, CreateChange) {
     EXPECT_EQ(gotChange, expetedChange);
 }
 
-TEST(ParserCreateFile, CanCreate) {
+TEST(ChangeCreatorCreateFile, CanCreate) {
     ChangeCreatorCreateFile changeCreatorCreateFile;
     Mode testMode = COMMAND_MODE;
     Position testPosition(1, 1);
@@ -140,7 +140,7 @@ TEST(ParserCreateFile, CanCreate) {
                                                   testPosition, testBuffer));
 }
 
-TEST(ParserCreateFile, CreateChange) {
+TEST(ChangeCreatorCreateFile, CreateChange) {
     ChangeCreatorCreateFile changeCreatorCreateFile;
     Mode testMode = COMMAND_MODE;
     Position testPosition(0, 0);
@@ -154,7 +154,7 @@ TEST(ParserCreateFile, CreateChange) {
     EXPECT_EQ(expectedChange, gotChange);
 }
 
-TEST(ParserDeleteFile, CanCreate) {
+TEST(ChangeCreatorDeleteFile, CanCreate) {
     ChangeCreatorDeleteFile changeCreatorDeleteFile;
     Mode testMode = COMMAND_MODE;
     Position testPosition(1, 1);
@@ -163,7 +163,7 @@ TEST(ParserDeleteFile, CanCreate) {
                                                   testPosition, testBuffer));
 }
 
-TEST(ParserDeleteFile, CreateChange) {
+TEST(ChangeCreatorDeleteFile, CreateChange) {
     ChangeCreatorDeleteFile changeCreatorDeleteFile;
     Mode testMode = COMMAND_MODE;
     Position testPosition(1, 1);
@@ -175,32 +175,46 @@ TEST(ParserDeleteFile, CreateChange) {
     Change gotChange = changeCreatorDeleteFile.CreateChange(testMode,
                                                             testPosition, testBuffer);
 }
-TEST(ChangeCreatorChangeMode, CanCreate) {
-    std::string testBuffer = "I";
+
+TEST(ChangeCreatorMoveCursor, CanCreate) {
+    std::string arrow = {27, '[', 'A'};  // Вверх
+    Command testCommand = MOVE_UP;
+    Change expectedChange;
+    expectedChange.cmd = testCommand;
+    ChangeCreatorMoveCursor changeCreatorMoveCursor;
     Mode testMode = COMMAND_MODE;
     Position testPosition = {0, 0};
-    ChangeCreatorChangeMode changeCreatorChangeMode;
-    EXPECT_TRUE(changeCreatorChangeMode.CanCreate(testMode, testPosition, testBuffer));
-    testMode = INSERTATION_MODE;
-    testBuffer.back() = 27;
-    EXPECT_TRUE(changeCreatorChangeMode.CanCreate(testMode, testPosition, testBuffer));
+    EXPECT_TRUE(changeCreatorMoveCursor.CanCreate(testMode, testPosition, arrow));
+    arrow[2] = 'B'; // Вниз
+    EXPECT_TRUE(changeCreatorMoveCursor.CanCreate(testMode, testPosition, arrow));
+    arrow[2] = 'C'; // Вправо
+    EXPECT_TRUE(changeCreatorMoveCursor.CanCreate(testMode, testPosition, arrow));
+    arrow[2] = 'D'; // Влево
+    EXPECT_TRUE(changeCreatorMoveCursor.CanCreate(testMode, testPosition, arrow));
 }
 
-TEST(ChangeCreatorChangeMode, CreateChange) {
-    std::string testBuffer = "I";
+TEST(ChangeCreatorMoveCursor, CreateChange) {
+    std::string arrow = {27, '[', 'A'};  // Вверх
+    Command testCommand = MOVE_UP;
+    Change expectedChange;
+    expectedChange.cmd = testCommand;
+    ChangeCreatorMoveCursor changeCreatorMoveCursor;
     Mode testMode = COMMAND_MODE;
-    Command testCommand = CHANGE_MODE;
     Position testPosition = {0, 0};
-    size_t testFileId = 0;
-    char expectedSymbol = 0;
-    Change expectedChange(testCommand, testFileId, testPosition, expectedSymbol);
-    ChangeCreatorChangeMode changeCreatorChangeMode;
-    Change gotChange = changeCreatorChangeMode.CreateChange(testMode, testPosition, testBuffer);
-    EXPECT_EQ(gotChange, expectedChange);
-    testMode = INSERTATION_MODE;
-    testBuffer.back() = 27;
-    gotChange = changeCreatorChangeMode.CreateChange(testMode, testPosition, testBuffer);
-    EXPECT_EQ(gotChange, expectedChange);
+    Change gotChange = changeCreatorMoveCursor.CreateChange(testMode, testPosition, arrow);
+    EXPECT_EQ(expectedChange, gotChange);
+    arrow[2] = 'B'; // Вниз
+    expectedChange.cmd = MOVE_DOWN;
+    gotChange = changeCreatorMoveCursor.CreateChange(testMode, testPosition, arrow);
+    EXPECT_EQ(expectedChange, gotChange);
+    arrow[2] = 'C'; // Вправо
+    expectedChange.cmd = MOVE_RIGHT;
+    gotChange = changeCreatorMoveCursor.CreateChange(testMode, testPosition, arrow);
+    EXPECT_EQ(expectedChange, gotChange);
+    arrow[2] = 'D'; // Влево
+    expectedChange.cmd = MOVE_LEFT;
+    gotChange = changeCreatorMoveCursor.CreateChange(testMode, testPosition, arrow);
+    EXPECT_EQ(expectedChange, gotChange);
 }
 
 TEST(Interpretator, Interpret_Insertation_mode) {
@@ -239,3 +253,4 @@ int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
+

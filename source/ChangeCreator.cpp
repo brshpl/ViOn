@@ -48,6 +48,7 @@ Change ChangeCreatorInsertSubString::CreateChange(Mode &mode,
                                                   Position &position, std::string &buffer) {
     Change chg;
     chg.cmd = INSERT_SUB_STRING;
+    chg.fileId = 0;
     chg.position = position;
     chg.symbol = buffer.back();
     return chg;
@@ -68,6 +69,7 @@ Change ChangeCreatorDeleteSymbol::CreateChange(Mode &mode,
                                                Position &position, std::string &buffer) {
     Change chg;
     chg.cmd = DELETE_SYMBOL;
+    chg.fileId = 0;
     chg.position = position;
     return chg;
 }
@@ -86,6 +88,7 @@ Change ChangeCreatorDeleteString::CreateChange(Mode &mode,
                                                Position &position, std::string &buffer) {
     Change chg;
     chg.cmd = DELETE_STRING;
+    chg.fileId = 0;
     chg.position = position;
     return chg;
 }
@@ -103,6 +106,8 @@ Change ChangeCreatorCreateFile::CreateChange(Mode &mode,
                                              Position &position, std::string &buffer) {
     Change chg;
     chg.cmd = CREATE_FILE;
+    chg.position = {0, 0};
+    chg.fileId = 0;
     return chg;
 }
 
@@ -119,22 +124,37 @@ Change ChangeCreatorDeleteFile::CreateChange(Mode &mode,
                                              Position &position, std::string &buffer) {
     Change chg;
     chg.cmd = DELETE_FILE;
+    chg.position = {0, 0};
+    chg.fileId = 0;
     return chg;
 }
 
-bool ChangeCreatorChangeMode::CanCreate(Mode &mode,
-                                        Position &position, std::string &buffer) {
-    if ((mode == COMMAND_MODE && buffer == "I")
-    || (mode == INSERTATION_MODE && buffer.back() == 27)) {
+bool ChangeCreatorMoveCursor::CanCreate(Mode &mode, Position &position, std::string &buffer) {
+    if (buffer[buffer.size() - 3] == 27
+    && buffer[buffer.size() - 2] == 91
+    && (buffer.back() >= 65 && buffer.back() <= 68)) {
         return true;
-    } else {
-        return false;
     }
+    return false;
 }
 
-Change ChangeCreatorChangeMode::CreateChange(Mode &mode,
-                                             Position &position, std::string &buffer) {
+Change ChangeCreatorMoveCursor::CreateChange(Mode &mode, Position &position, std::string &buffer) {
     Change chg;
-    chg.cmd = CHANGE_MODE;
+    chg.position = position;
+    switch (buffer.back()) {
+        case 'A':
+            chg.cmd = MOVE_UP;
+            break;
+        case 'B':
+            chg.cmd = MOVE_DOWN;
+            break;
+        case 'C':
+            chg.cmd = MOVE_RIGHT;
+            break;
+        case 'D':
+            chg.cmd = MOVE_LEFT;
+            break;
+    }
     return chg;
 }
+
