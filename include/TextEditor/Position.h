@@ -6,8 +6,11 @@
 #define VIONTEXTEDITOR_POSITION_H
 
 
-struct Position {
+#include <cstdlib>
 
+struct Position {
+    size_t char_id;
+    size_t delta;
 };
 
 

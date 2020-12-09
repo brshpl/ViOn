@@ -1,25 +1,22 @@
 #ifndef VIONTEXTEDITOR_TEXTEDITOR_H
 #define VIONTEXTEDITOR_TEXTEDITOR_H
 
-#include "Listener.h"
+#include "Text.h"
+#include "LoginStruct.h"
 #include "View.h"
-#include "TextStorage.h"
 
 enum Mode { INSERT, COMMAND };
 
 class TextEditor {
 public:
-    TextEditor() = default;
-    void run();
-    void update();
-    Mode getMode();
-    void changeMode(Mode newMode);
+    void notify(char symbol, size_t next_symbol_id);
+    void update(const Text& text);
+//    void set_id_pass(LoginStruct aStruct);
+
 private:
-    void editText();
-    Mode mode;
-    Listener listener{};
-    View view{};
-    TextStorage text;
+    View view_;
+    Mode mode_;
+    void changeMode(Mode newMode);
 };
 
 

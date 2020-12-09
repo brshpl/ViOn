@@ -6,8 +6,12 @@
 #define VIONTEXTEDITOR_INTERPRETATOR_H
 
 
-class Interpretator {
+#include "Change.h"
+#include "TextEditor.h"
 
+class Interpretator {
+public:
+    Change interpret(char symbol, size_t id, Mode mode);
 };
 
 
