@@ -106,10 +106,15 @@ void Socket::connect(const std::string& host, int port) noexcept(false) {
     sock = _sock;
 }
 
-void Socket::send(const std::string& str) noexcept(false) {
+void Socket::send(const std::string& str) const noexcept(false) {
     size_t left = str.size();
     ssize_t sent = 0;
     int flags = 0;
+
+    if (::send(sock, (char*)&left, sizeof(size_t), flags) == -1) {
+        throw std::runtime_error("write bytes failed: " + std::string(strerror(errno)));
+    }
+
     while (left > 0) {
         sent = ::send(sock, str.data() + sent, str.size() - sent, flags);
         if (sent == -1) {
@@ -120,27 +125,13 @@ void Socket::send(const std::string& str) noexcept(false) {
     }
 }
 
-void Socket::send_size(size_t bytes) noexcept(false) {
-    if (::send(sock, (char*)&bytes, sizeof(size_t), 0) == -1) {
-        throw std::runtime_error("write failed: " + std::string(strerror(errno)));
-    }
-}
-
-size_t Socket::recv_size() noexcept(false) {
+std::string Socket::recv() const noexcept(false) {
     size_t bytes;
     int n = ::recv(sock, (char*)&bytes, sizeof(size_t), 0);
-
-    std::cout << bytes << std::endl;
-
     if (n == -1 || n == 0) {
         throw std::runtime_error("read size failed: " + std::string(strerror(errno)));
     }
 
-    return bytes;
-}
-
-
-std::string Socket::recv(size_t bytes) noexcept(false) {
     char* buf = new char[bytes];
     size_t r = 0;
     while (r != bytes) {
@@ -156,30 +147,6 @@ std::string Socket::recv(size_t bytes) noexcept(false) {
 
     std::string ret(buf, buf + bytes);
     delete[] buf;
-    return ret;
-}
-
-std::string Socket::recv_loop() noexcept(false) {
-    char buf[256];
-    std::string ret;
-    while (true) {
-        int n = ::recv(sock, buf, sizeof(buf), MSG_NOSIGNAL);
-        if (n == -1 && errno != EAGAIN) {
-            throw std::runtime_error("read failed: " + std::string(strerror(errno)));
-        }
-        if (n == 0 || n == -1) {
-            std::cout << "timeout on rcv n = " << n << std::endl;
-            break;
-        }
-
-        ret.append(buf, n);
-        while (ret.back() == '\r' || ret.back() == '\n') {
-            ret.pop_back();
-            std::cout << " --- !Встретили конец строки! --- смоти recv_loop()" << std::endl;
-        }
-    }
-
-    std::cout << "Size buf_rcv = " << ret.size() << std::endl;
     return ret;
 }
 
@@ -209,7 +176,7 @@ void Socket::createServerSocket(
     sock = _sock;
 }
 
-std::shared_ptr<Socket> Socket::accept() noexcept(false) {
+std::shared_ptr<Socket> Socket::accept() const noexcept(false) {
     struct sockaddr_in client{};
     memset(&client, 0, sizeof(client));
     socklen_t client_len = sizeof(client);
