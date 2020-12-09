@@ -112,12 +112,51 @@ void Socket::send(const std::string& str) noexcept(false) {
     int flags = 0;
     while (left > 0) {
         sent = ::send(sock, str.data() + sent, str.size() - sent, flags);
-        if (-1 == sent) {
+        if (sent == -1) {
             throw std::runtime_error("write failed: " + std::string(strerror(errno)));
         }
 
         left -= sent;
     }
+}
+
+void Socket::send_size(size_t bytes) noexcept(false) {
+    if (::send(sock, (char*)&bytes, sizeof(size_t), 0) == -1) {
+        throw std::runtime_error("write failed: " + std::string(strerror(errno)));
+    }
+}
+
+size_t Socket::recv_size() noexcept(false) {
+    size_t bytes;
+    int n = ::recv(sock, (char*)&bytes, sizeof(size_t), 0);
+
+    std::cout << bytes << std::endl;
+
+    if (n == -1 || n == 0) {
+        throw std::runtime_error("read size failed: " + std::string(strerror(errno)));
+    }
+
+    return bytes;
+}
+
+
+std::string Socket::recv(size_t bytes) noexcept(false) {
+    char* buf = new char[bytes];
+    size_t r = 0;
+    while (r != bytes) {
+        ssize_t rc = ::recv(sock, buf + r, bytes - r, 0);
+        std::cerr << "recv_ex: " << rc << " bytes\n";
+
+        if (rc == -1 || rc == 0) {
+            delete[] buf;
+            throw std::runtime_error("read failed: " + std::string(strerror(errno)));
+        }
+        r += rc;
+    }
+
+    std::string ret(buf, buf + bytes);
+    delete[] buf;
+    return ret;
 }
 
 std::string Socket::recv_loop() noexcept(false) {
@@ -129,6 +168,7 @@ std::string Socket::recv_loop() noexcept(false) {
             throw std::runtime_error("read failed: " + std::string(strerror(errno)));
         }
         if (n == 0 || n == -1) {
+            std::cout << "timeout on rcv n = " << n << std::endl;
             break;
         }
 
@@ -139,6 +179,7 @@ std::string Socket::recv_loop() noexcept(false) {
         }
     }
 
+    std::cout << "Size buf_rcv = " << ret.size() << std::endl;
     return ret;
 }
 

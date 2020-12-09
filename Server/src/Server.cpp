@@ -9,7 +9,7 @@ void Server::start(uint32_t port, uint32_t queue_size) {
     while (true) {
         std::shared_ptr<Socket> client = server_sock.accept();
 
-        client->setRcvTimeout(3);
+//        client->setRcvTimeout(3);
 
         std::thread th_client(handler_client, client);  // Переделать: handler_client -  функция член класса
         th_client.detach();
