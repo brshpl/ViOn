@@ -12,7 +12,7 @@ using json = nlohmann::json;
 
 struct Text{
     char symbol;
-    size_t symbolId;
+    size_t symbol_id;
 };
 
 class Parser{
@@ -20,7 +20,7 @@ public:
     Parser(Change ch);
     virtual ~Parser(){};
 protected:
-    Change m_ch;
+    Change ch_;
 };
 
 class ParserForEditor : public Parser{
@@ -29,18 +29,20 @@ public:
     ~ParserForEditor() override{};
     std::vector<Text> parse();
 private:
-    FileStorage m_file;
+    FileStorage file_;
 };
 
 class ParserToJson : public Parser{
+public:
     explicit ParserToJson(Change ch);
     json parse();
 };
 
-class ParserFromJson : public Parser{
-    explicit ParserFromJson(Change ch, const json &j);
+class ParserFromJson{
+public:
+    explicit ParserFromJson(const json &j);
     Change parse();
 private:
-    json m_j;
+    json j_;
 };
 #endif //VION_PARSER_H

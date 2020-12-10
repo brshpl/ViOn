@@ -29,28 +29,32 @@ Change InsertChar::addNewId() {
     return ch_;
 }
 
-void InsertChar::insertSymbol() {
-    ch_ = addNewId();
-    SymbolState new_char{
-        ch_.symbol,
-        true,
-        ch_.newSymbolId,
-    };
+bool InsertChar::insertSymbol() {
     std::vector<SymbolState> &curFile = file_.symbols;
     for (auto iter = curFile.begin();
          iter != curFile.end(); ++iter){
         if (iter->id == ch_.position.symbolId){
+            ch_ = addNewId();
+            SymbolState new_char{
+                    ch_.symbol,
+                    true,
+                    ch_.newSymbolId,
+            };
             curFile.insert(iter, new_char);
-            return;
+            return true;
         }
     }
+    return false;
 }
 
 DeleteChar::DeleteChar(FileStorage file, Change ch) : TextUpDater(std::move(file), ch){};
 
-void DeleteChar::deleteSymbol() {
+bool DeleteChar::deleteSymbol() {
     for (auto & symbol : file_.symbols){
-        if (symbol.id == ch_.position.symbolId)
+        if (symbol.id == ch_.position.symbolId){
             symbol.is_visible = false;
+            return true;
+        }
     }
+    return false;
 }

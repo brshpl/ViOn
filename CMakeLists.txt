@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.17)
 project(ViOn)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 ##
 ### Test definitions ###
@@ -36,7 +37,7 @@ endif()
 ### Source definitions ###
 ##
 
-set(INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/FileController)
+set(INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 include_directories(${INC_DIR})

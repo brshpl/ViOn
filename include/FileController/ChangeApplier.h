@@ -6,18 +6,19 @@
 #define VION_CHANGEAPPLIER_H
 #include "TextManager.h"
 #include "TextUpDater.h"
+#include <memory>
 
 class ChangeApplier {
 public:
-    ChangeApplier(Change ch, struct FileStorage file);
+    ChangeApplier(Change ch, std::shared_ptr<FileStorage> file);
     ~ChangeApplier() = default;
     bool applyChange();
     Change getChange();
     FileStorage getFile();
 
 private:
-    Change m_ch{};
-    FileStorage m_file;
+    Change ch_{};
+    std::shared_ptr<FileStorage> file_;
 
 };
 

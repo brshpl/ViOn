@@ -1,4 +1,3 @@
-//
 // Created by Dashik on 12.11.2020.
 //
 
@@ -7,20 +6,20 @@
 #include <utility>
 
 Parser::Parser(Change ch) {
-    m_ch = ch;
+    ch_ = ch;
 };
 
 ParserForEditor::ParserForEditor(Change ch, FileStorage file) : Parser(ch){
-    m_file = std::move(file);
+    file_ = std::move(file);
 };
 
 std::vector<Text> ParserForEditor::parse() {
     std::vector<Text> file;
     Text text{};
-    for (auto & symbol : m_file.symbols){
+    for (auto & symbol : file_.symbols){
         if (symbol.is_visible){
             text.symbol = symbol.symbol;
-            text.symbolId =symbol.id;
+            text.symbol_id =symbol.id;
             file.push_back(text);
         }
     }
@@ -30,27 +29,29 @@ std::vector<Text> ParserForEditor::parse() {
 ParserToJson::ParserToJson(Change ch) : Parser(ch){}
 
 json ParserToJson::parse() {
-    json j =  {{"cmd", m_ch.cmd},
-              {"fileId", m_ch.fileId},
-              {"position",
-                      {"symbolId", m_ch.position.symbolId}
-              },
-              {"newSymbolId", m_ch.newSymbolId},
-              {"symbol"}, m_ch.symbol};
+    json j =  {{"cmd", ch_.cmd},
+               {"fileId", ch_.fileId},
+               {"position",{
+                               {"symbolId", ch_.position.symbolId}}
+               },
+               {"newSymbolId", ch_.newSymbolId},
+               {"symbol", ch_.symbol}};
     return j;
 }
 
-ParserFromJson::ParserFromJson(Change ch, const json &j) : Parser(ch) {
-    m_j = j;
+ParserFromJson::ParserFromJson(const json &j) {
+    j_ = j;
 }
 
 Change ParserFromJson::parse() {
-    m_ch.cmd = m_j["cmd"].get<Command>();
-    m_ch.fileId = m_j["fileId"].get<size_t>();
-    m_ch.position.symbolId = m_j["position"]["symbolId"].get<size_t>();
-    m_ch.newSymbolId = m_j["newSymbolId"].get<size_t>();
-    m_ch.symbol = m_j["symbol"].get<char>();
+    Change m_ch {};
+    m_ch.cmd = j_["cmd"].get<Command>();
+    m_ch.fileId = j_["fileId"].get<size_t>();
+    m_ch.position = Position{j_["position"]["symbolId"].get<size_t>()};
+    m_ch.newSymbolId = j_["newSymbolId"].get<size_t>();
+    m_ch.symbol = j_["symbol"].get<char>();
     return m_ch;
 }
+
 
 

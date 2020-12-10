@@ -12,8 +12,8 @@ bool operator==(const Change &lhs, const Change &rhs){
 }
 
 bool operator==(const FileStorage &lhs, const FileStorage &rhs){
-    return std::tie(lhs.file_id, lhs.symbols, lhs.symbols_length, lhs.password) ==
-    std::tie(rhs.file_id, rhs.symbols, rhs.symbols_length, rhs.password);
+    return std::tie(lhs.file_id, lhs.symbols, lhs.symbols_length) ==
+    std::tie(rhs.file_id, rhs.symbols, rhs.symbols_length);
 }
 
 bool operator==(const SymbolState &lhs, const SymbolState &rhs){
@@ -24,25 +24,19 @@ bool operator==(const SymbolState &lhs, const SymbolState &rhs){
 class TestTextUpDater : public ::testing::Test{
 protected:
     virtual void SetUp(){
-        vector.push_back(symbolState1);
-        file  = {vector, 1, 123, 1};
         upDater = std::make_unique<TextUpDater>(file, ch);
     }
     virtual void TearDown(){
     }
-    Position pos = {1};
+    Position pos = {0};
     Change ch = Change(INSERT_SYMBOL, 1, pos, 0, 'q');
-    FileStorage file;
-    SymbolState symbolState1 {'q', true, 1};
-    std::vector<SymbolState> vector;
+    FileStorage file = FileStorage(1);
     std::unique_ptr<TextUpDater> upDater;
 };
 
 class TestInsertSymbol : public TestTextUpDater{
 protected:
     virtual void SetUp(){
-        vector.push_back(symbolState1);
-        file  = {vector, 1, 123, 1};
         insertChar = std::make_unique<InsertChar>(file, ch);
         insertChar->insertSymbol();
     }
@@ -54,10 +48,13 @@ protected:
 class TestDeleteChar : public TestTextUpDater{
 protected:
     virtual void SetUp(){
-        ch = Change(DELETE_SYMBOL, 1, pos, 0, 'q');
-        vector.push_back(symbolState1);
-        file  = {vector, 1, 123, 1};
-        deleteChar = std::make_unique<DeleteChar>(file, ch);
+        Position pos = {1};
+        SymbolState symbol = {'q', true, 1};
+        auto iter = file.symbols.begin();
+        file.symbols.insert(iter, symbol);
+        file.symbols_length++;
+        Change ch1 = Change(DELETE_SYMBOL, 1, pos, 0, 'q');
+        deleteChar = std::make_unique<DeleteChar>(file, ch1);
         deleteChar->deleteSymbol();
     }
     std::unique_ptr<DeleteChar> deleteChar;

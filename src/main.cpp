@@ -1,6 +1,7 @@
-#include "ChangeApplier.h"
-#include "Parser.h"
+#include <iostream>
 
-int main() {
-    return 0;
+
+
+int main(int argc, char* argv[]) {
+
 }

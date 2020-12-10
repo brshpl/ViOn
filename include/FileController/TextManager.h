@@ -11,7 +11,10 @@
 enum Command{
     ERROR,
     INSERT_SYMBOL,
-    DELETE_SYMBOL
+    DELETE_SYMBOL,
+    CREATE_FILE,
+    CLOSE_CONNECT,
+    CONNECT_TO_FILE
 };
 
 struct Position {
@@ -55,11 +58,13 @@ struct SymbolState{
 //};
 
 struct FileStorage{
+    FileStorage(): symbols(0), symbols_length(0), file_id(0) {}
+    explicit FileStorage(size_t file_id);
     std::vector<SymbolState> symbols;
-    size_t file_id;
-    size_t password;
     size_t symbols_length;
+    size_t file_id;
 //    size_t strings_length;
 };
+
 
 #endif //VION_TEXTMANAGER_H
