@@ -17,8 +17,10 @@ void View::deleteChar(char ch) {}
 void View::show(const std::string &text) {}
 
 std::shared_ptr<std::string> View::getStringFromText() {
-    std::shared_ptr<std::string> str;
-    auto it = text_.begin();
-    for_each(it, text_.end(), str->insert(str->length(), reinterpret_cast<const char *>(it->symbol)));
-    return str;
+    auto *str = new std::string;
+    std::shared_ptr<std::string> strPtr(str);
+    for(auto elem : text_) {
+        strPtr->insert(strPtr->length(), 1, elem.symbol);
+    }
+    return strPtr;
 }

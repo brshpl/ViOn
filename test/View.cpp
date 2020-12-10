@@ -12,5 +12,7 @@ TEST(settingText, setText) {
             Symbol{'\0', 5},
     };
     view.setText(text);
-
+    std::string eqlStr = "Hello";
+    eqlStr.insert(eqlStr.length(), 1, '\0');
+    EXPECT_EQ(*(view.getStringFromText()), eqlStr);
 }
