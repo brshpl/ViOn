@@ -51,9 +51,9 @@ namespace {
 
 }  // namespace
 
-Socket::Socket() : sock(-1) {}
+Socket::Socket() : sock_(-1) {}
 
-Socket::Socket(int _sock) : sock(_sock) {}
+Socket::Socket(int _sock) : sock_(_sock) {}
 
 Socket::~Socket() {
     this->close();
@@ -64,7 +64,7 @@ void Socket::setSndTimeout(int sec, int microsec) noexcept(false) {
     tv.tv_sec = sec;
     tv.tv_usec = microsec;
 
-    if (setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)) != 0) {
+    if (setsockopt(sock_, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)) != 0) {
         throw std::runtime_error("set sndtimeout: " + std::string(strerror(errno)));
     }
 }
@@ -74,7 +74,7 @@ void Socket::setRcvTimeout(int sec, int microsec) noexcept(false) {
     tv.tv_sec = sec;
     tv.tv_usec = microsec;
 
-    if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) != 0) {
+    if (setsockopt(sock_, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) != 0) {
         throw std::runtime_error("set rcvtimeout: " + std::string(strerror(errno)));
     }
 }
@@ -90,19 +90,19 @@ void Socket::setReuseAddr(int _sock) noexcept(false) {
 void Socket::connect(const std::string& host, int port) noexcept(false) {
     struct sockaddr_in addr = resolve(host.data(), port);
 
-    int _sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (_sock <= 0) {
+    int sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (sock <= 0) {
         throw std::runtime_error("error to create socket: " +
                                  std::string(strerror(errno)));
     }
 
-    int connected = ::connect(_sock, (struct sockaddr*)&addr, sizeof(addr));
+    int connected = ::connect(sock, (struct sockaddr*)&addr, sizeof(addr));
     if (connected == -1) {
-        ::close(_sock);
+        ::close(sock);
         throw std::runtime_error("connect error: " + std::string(strerror(errno)));
     }
 
-    sock = _sock;
+    sock_ = sock;
 }
 
 void Socket::send(const std::string& str) const noexcept(false) {
@@ -110,12 +110,12 @@ void Socket::send(const std::string& str) const noexcept(false) {
     ssize_t sent = 0;
     int flags = 0;
 
-    if (::send(sock, (char*)&left, sizeof(size_t), flags) == -1) {
+    if (::send(sock_, (char*)&left, sizeof(size_t), flags) == -1) {
         throw std::runtime_error("write bytes failed: " + std::string(strerror(errno)));
     }
 
     while (left > 0) {
-        sent = ::send(sock, str.data() + sent, str.size() - sent, flags);
+        sent = ::send(sock_, str.data() + sent, str.size() - sent, flags);
         if (sent == -1) {
             throw std::runtime_error("write failed: " + std::string(strerror(errno)));
         }
@@ -126,7 +126,7 @@ void Socket::send(const std::string& str) const noexcept(false) {
 
 std::string Socket::recv() const noexcept(false) {
     size_t bytes;
-    int n = ::recv(sock, (char*)&bytes, sizeof(size_t), 0);
+    int n = ::recv(sock_, (char*)&bytes, sizeof(size_t), 0);
     if (n == -1 || n == 0) {
         throw std::runtime_error("read size failed: " + std::string(strerror(errno)));
     }
@@ -134,8 +134,7 @@ std::string Socket::recv() const noexcept(false) {
     char* buf = new char[bytes];
     size_t r = 0;
     while (r != bytes) {
-        ssize_t rc = ::recv(sock, buf + r, bytes - r, 0);
-//        std::cerr << "recv_ex: " << rc << " bytes\n";
+        ssize_t rc = ::recv(sock_, buf + r, bytes - r, 0);
 
         if (rc == -1 || rc == 0) {
             delete[] buf;
@@ -152,12 +151,12 @@ std::string Socket::recv() const noexcept(false) {
 void Socket::createServerSocket(
         uint32_t port,
         uint32_t listen_queue_size) noexcept(false) {
-    int _sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (_sock <= 0) {
+    int sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (sock <= 0) {
         throw std::runtime_error("socket: " + std::string(strerror(errno)));
     }
 
-    setReuseAddr(_sock);
+    setReuseAddr(sock);
 
     struct sockaddr_in serv_addr{};
     memset(&serv_addr, 0, sizeof(serv_addr));
@@ -166,13 +165,13 @@ void Socket::createServerSocket(
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     serv_addr.sin_port = htons(port);
 
-    if (::bind(_sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
-        ::close(_sock);
+    if (::bind(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
+        ::close(sock);
         throw std::runtime_error("bind: " + std::string(strerror(errno)));
     }
 
-    ::listen(_sock, listen_queue_size);
-    sock = _sock;
+    ::listen(sock, listen_queue_size);
+    sock_ = sock;
 }
 
 std::shared_ptr<Socket> Socket::accept() const noexcept(false) {
@@ -181,7 +180,7 @@ std::shared_ptr<Socket> Socket::accept() const noexcept(false) {
     socklen_t client_len = sizeof(client);
     std::cerr << "ready for accept new clients: " << std::endl;
 
-    int client_sock = ::accept(sock, (struct sockaddr*)&client, &client_len);
+    int client_sock = ::accept(sock_, (struct sockaddr*)&client, &client_len);
     if (client_sock == -1) {
         return std::shared_ptr<Socket>();
     }
@@ -192,6 +191,10 @@ std::shared_ptr<Socket> Socket::accept() const noexcept(false) {
 }
 
 void Socket::close() const {
-    if (sock > 0)
-        ::close(sock);
+    if (sock_ > 0)
+        ::close(sock_);
+}
+
+int Socket::getSocket() const noexcept {
+    return sock_;
 }

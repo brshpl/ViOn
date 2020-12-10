@@ -4,12 +4,7 @@
 #include "Client.h"
 
 
-static inline bool is_connect(const std::string& change) {
-    return change == "#";
-}
-
-
-void listen_serv(Client& client) {
+void listenServ(Client& client) {
     while (true) {
         // Создаем объект change, передаем его слушающей функции
         // пока использую string
@@ -38,7 +33,7 @@ int main(int argc, char* argv[]) {
     try {
         client.connectToServer(host, port);
 
-        std::thread thread_listen(listen_serv, std::ref(client));
+        std::thread thread_listen(listenServ, std::ref(client));
 
         while (true) {
             // Вызов функций формирования изменений
@@ -46,7 +41,7 @@ int main(int argc, char* argv[]) {
             std::string change_str;
             std::cin >> change_str;
 
-            // client.send_changes(change);
+            // client.sendChanges(Change);
             client.sendChanges(change_str);
 
             if (change_str == "#") {

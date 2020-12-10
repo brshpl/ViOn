@@ -1,43 +1,30 @@
 #include <iostream>
 
 #include <cstdlib>
-//#include <nlohmann/json.hpp>
 
 #include "Client.h"
 
 
 void Client::connectToServer(const std::string& host, int port) {
-    client_sock.connect(host, port);
+    client_sock_.connect(host, port);
 
-    client_sock.setSndTimeout(3); // нужно?
+    client_sock_.setSndTimeout(3);
 }
 
-int Client::createNewFile() { return 0; }
-int Client::connectToFile(size_t id, const char* pin) { return 0; }
+void Client::createNewFile() {}
 
-/*void Client::sendChanges(const change& buf) {
-    // buf - структура, превращаем в json
-    client_sock.send(buf);
-}
-std::string Client::recvChanges() {
-    std::string buf;
-
-    buf = client_sock.recv();
-
-    // парсим json, получаем структуру изменений
-    return buf;
-}*/
-
+void Client::connectToFile(size_t id, const std::string& pin) {}
 
 void Client::sendChanges(const std::string& buf) {
-    // buf - структура, превращаем в json
-    client_sock.send(buf);
+    // buf - структура, превращаем в json, отправляем на сервер
+    client_sock_.send(buf);
 }
+
 std::string Client::recvChanges() {
     std::string buf;
 
-    buf = client_sock.recv();
+    buf = client_sock_.recv();
 
-    // парсим json, получаем структуру изменений
+    // парсим json, получаем структуру изменений, возвращаем ее
     return buf;
 }

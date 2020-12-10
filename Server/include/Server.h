@@ -2,7 +2,7 @@
 #define VION_SERVER_INCLUDE_SERVER_H_
 
 #include <set>
-//#include <thread>
+
 #include "../../Socket/Socket.h"
 
 
@@ -13,15 +13,14 @@ public:
     ~Server() = default;
 
     void start();
-//    void stop();
 
-    void send_changes(const std::string& buf);
+    void sendChanges(const std::string& buf);
 
-    void disconnect_client(std::shared_ptr<Socket> client);
+    void disconnectClient(std::shared_ptr<Socket> client);
 
 private:
-    Socket server_sock;
-    std::set<std::shared_ptr<Socket>> clients;
+    Socket server_sock_;
+    std::set<std::shared_ptr<Socket>> clients_;
 
 };
 
