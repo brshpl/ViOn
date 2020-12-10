@@ -15,6 +15,10 @@ void TextEditor::update(std::vector<Symbol> &text) {
     view_.setText(text);
 }
 
+void TextEditor::sendChange(const Change &change) {
+    client_.sendChanges(change);
+}
+
 void TextEditor::applyChange(const Change &change) {
     switch (change.cmd) {
         case NOTHING:
@@ -37,15 +41,15 @@ void TextEditor::applyChange(const Change &change) {
             break;
         }
         case CREATE_FILE:
-            client.createNewFile();
+            client_.createNewFile();
             break;
         case INSERT_SYMBOL:
             view_.insertChar(change.symbol);
-            client.sendChanges(change);
+            sendChange(change);
             break;
         case DELETE_SYMBOL:
             view_.deleteChar(change.symbol);
-            client.sendChanges(change);
+            sendChange(change);
             break;
         default:
             break;

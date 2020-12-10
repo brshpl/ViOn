@@ -1,3 +1,4 @@
+#include <memory>
 #include <string>
 #include <vector>
 #include "Direction.h"
@@ -10,6 +11,7 @@ public:
     void insertChar(char ch);
     void deleteChar(char ch);
     void setText(std::vector<Symbol> &text);
+    std::shared_ptr<std::string> getStringFromText();
 private:
 
     std::vector<Symbol> text_;

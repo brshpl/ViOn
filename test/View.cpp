@@ -1,6 +1,16 @@
 #include "gtest/gtest.h"
-#include "TextEditor/View.h"
+#include "View.h"
 
-TEST(create_student_list, check_create) {
+TEST(settingText, setText) {
+    View view;
+    std::vector<Symbol> text = {
+            Symbol{'H', 0},
+            Symbol{'e', 1},
+            Symbol{'l', 2},
+            Symbol{'l', 3},
+            Symbol{'o', 4},
+            Symbol{'\0', 5},
+    };
+    view.setText(text);
 
 }
