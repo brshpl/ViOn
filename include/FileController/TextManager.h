@@ -11,15 +11,19 @@
 
 
 class TextManager{
-    TextManager()= default;;
+public:
+    TextManager()= default;
+    ~TextManager()= default;;
 };
 
 class TextManagerClient : public TextManager{
 public:
-//    TextManagerClient(TextEditor &editor);
+    TextManagerClient(TextEditor &editor): editor_(editor), file_(0){};
     void setChange(Change ch);
     void setFile(FileStorage file);
-    std::vector<Symbol> upDate();
-//    TextEditor editor_;
+    void upDate();
+    TextEditor editor_;
+    FileStorage file_;
+    Change ch_;
 };
 #endif //VION_TEXTMANAGER_H
