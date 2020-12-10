@@ -1,9 +1,8 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include <string>
+#include <cstdlib>
 #include "Position.h"
-#include <tuple>
 
 enum Command {
     NOTHING,
