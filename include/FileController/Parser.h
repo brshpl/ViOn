@@ -5,15 +5,8 @@
 #ifndef VION_PARSER_H
 #define VION_PARSER_H
 
-#include "TextManager.h"
-#include <nlohmann/json.hpp>
+#include "FileStorage.h"
 
-using json = nlohmann::json;
-
-struct Text{
-    char symbol;
-    size_t symbol_id;
-};
 
 class Parser{
 public:
@@ -27,22 +20,23 @@ class ParserForEditor : public Parser{
 public:
     ParserForEditor(Change ch, FileStorage file);
     ~ParserForEditor() override{};
-    std::vector<Text> parse();
+    std::vector<Symbol> parse();
 private:
     FileStorage file_;
 };
 
-class ParserToJson : public Parser{
-public:
-    explicit ParserToJson(Change ch);
-    json parse();
-};
-
-class ParserFromJson{
-public:
-    explicit ParserFromJson(const json &j);
-    Change parse();
-private:
-    json j_;
-};
+//вынести из библиотеки
+//class ParserToJson : public Parser{
+//public:
+//    explicit ParserToJson(Change ch);
+//    json parse();
+//};
+//
+//class ParserFromJson{
+//public:
+//    explicit ParserFromJson(const json &j);
+//    Change parse();
+//private:
+//    json j_;
+//};
 #endif //VION_PARSER_H

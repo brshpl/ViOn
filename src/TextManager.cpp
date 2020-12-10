@@ -9,3 +9,7 @@ FileStorage::FileStorage(size_t file_id) {
     symbols_length = 0;
     file_id = file_id;
 }
+
+std::vector<Symbol> TextManagerClient::upDate() {
+    ParserForEditor(ch_, file_);
+}
