@@ -5,7 +5,7 @@
 #include "FileController/Parser.h"
 #include <utility>
 
-ChangeApplier::ChangeApplier(Change ch, std::shared_ptr<FileStorage> file) {
+ChangeApplier::ChangeApplier(Change ch, std::unique_ptr<FileStorage> file) {
     ch_ = ch;
     file_ = std::move(file);
 }

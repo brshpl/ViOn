@@ -69,11 +69,11 @@ TEST_F(TestTextUpDater, getFile){
 }
 
 TEST_F(TestInsertSymbol, insertSymbol){
-    EXPECT_EQ(insertChar->getFile().symbols[0].id, insertChar->getChange().newSymbolId);
+    EXPECT_EQ(insertChar->getFile().symbols.begin()->id, insertChar->getChange().newSymbolId);
 }
 
 TEST_F(TestDeleteChar, deleteSymbol){
-    EXPECT_EQ(deleteChar->getFile().symbols[0].is_visible, false);
+    EXPECT_EQ(deleteChar->getFile().symbols.begin()->is_visible, false);
 }
 
 

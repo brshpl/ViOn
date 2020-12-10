@@ -5,7 +5,7 @@
 #ifndef VION_TEXTMANAGER_H
 #define VION_TEXTMANAGER_H
 #include <iostream>
-#include <vector>
+#include <list>
 
 //Структура для передачи данных (потом удалить)
 enum Command{
@@ -60,7 +60,7 @@ struct SymbolState{
 struct FileStorage{
     FileStorage(): symbols(0), symbols_length(0), file_id(0) {}
     explicit FileStorage(size_t file_id);
-    std::vector<SymbolState> symbols;
+    std::list<SymbolState> symbols;
     size_t symbols_length;
     size_t file_id;
 //    size_t strings_length;
