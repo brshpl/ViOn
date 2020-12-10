@@ -1,17 +1,12 @@
-//
-// Created by brshpl on 12.11.2020.
-//
-
-#ifndef VIONTEXTEDITOR_POSITION_H
-#define VIONTEXTEDITOR_POSITION_H
-
-
-#include <cstdlib>
-
+#ifndef POSITION_H
+#define POSITION_H
 struct Position {
-    size_t char_id;
-    size_t delta;
+    Position(): stringId(0), symbolId(0) {}
+    Position(size_t _stringId, size_t _symbolId):
+            stringId(_stringId), symbolId(_symbolId) {}
+    ~Position() = default;
+    size_t  stringId;
+    size_t symbolId;
 };
 
-
-#endif //VIONTEXTEDITOR_POSITION_H
+#endif

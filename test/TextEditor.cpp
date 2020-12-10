@@ -1,8 +1,10 @@
 #include "gtest/gtest.h"
-#include "TextEditor/TextEditor.h"
+#include "TextEditor.h"
 
 TEST(changeMode, checkChange) {
     TextEditor editor;
-    editor.changeMode(COMMAND);
-    EXPECT_EQ(COMMAND, editor.getMode());
+    editor.changeMode(COMMAND_MODE);
+    EXPECT_EQ(COMMAND_MODE, editor.getMode());
+    editor.changeMode(INSERTATION_MODE);
+    EXPECT_EQ(INSERTATION_MODE, editor.getMode());
 }

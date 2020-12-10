@@ -1,22 +1,26 @@
 #ifndef VIONTEXTEDITOR_TEXTEDITOR_H
 #define VIONTEXTEDITOR_TEXTEDITOR_H
-
-#include "Text.h"
-#include "LoginStruct.h"
+#include <vector>
+#include "Message.h"
+#include "Client.h"
+#include "Mode.h"
+#include "Position.h"
+#include "Symbol.h"
 #include "View.h"
-
-enum Mode { INSERT, COMMAND };
 
 class TextEditor {
 public:
-    void notify(char symbol, size_t next_symbol_id);
-    void update(const Text& text);
-//    void set_id_pass(LoginStruct aStruct);
+    void notify(char symbol, Position next_symbol);
+    void update(std::vector<Symbol>& text);
+    void applyChange(const Change& change);
+    void changeMode(Mode newMode);
+    Mode getMode();
 
 private:
+    // You must define functions of View, e.g. using ncurses
     View view_;
-    Mode mode_;
-    void changeMode(Mode newMode);
+    Mode mode_ = COMMAND_MODE;
+    Client client;
 };
 
 

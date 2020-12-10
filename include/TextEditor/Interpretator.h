@@ -1,18 +1,27 @@
-//
-// Created by brshpl on 12.11.2020.
-//
 
-#ifndef VIONTEXTEDITOR_INTERPRETATOR_H
-#define VIONTEXTEDITOR_INTERPRETATOR_H
+#ifndef INTERPRETATOR_H
+#define INTERPRETATOR_H
 
-
-#include "Change.h"
-#include "TextEditor.h"
+#include <string>
+#include "Message.h"
+#include "Mode.h"
+#include "Position.h"
+#include "ChangeCreator.h"
 
 class Interpretator {
 public:
-    Change interpret(char symbol, size_t id, Mode mode);
+    Interpretator(): changeCreator()
+    {}
+
+    explicit Interpretator(const ChangeCreator& _changeCreator):
+            changeCreator(_changeCreator)
+    {}
+
+    Change Interpret(char &curChar, Mode &mode,
+                     Position &position);
+private:
+    ChangeCreator changeCreator;
+    static std::string buffer;
 };
 
-
-#endif //VIONTEXTEDITOR_INTERPRETATOR_H
+#endif //  INTERPRETATOR_H 
