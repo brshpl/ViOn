@@ -2,8 +2,35 @@ cmake_minimum_required(VERSION 3.17)
 project(Client)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -ggdb3 -pthread")
 
+
+# Создаем статическую библиотеку Socket
+set(SOCKET_PATH ../Socket)
+set(SOCKET_LIB
+        ${SOCKET_PATH}/Socket.h
+        ${SOCKET_PATH}/Socket.cpp)
+add_library(socket_lib STATIC ${SOCKET_LIB})
+target_include_directories(socket_lib PUBLIC ${SOCKET_PATH})
+
+
+set(APP_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(APP_ROOT_SRC_DIR ${APP_ROOT_DIR}/src)
+set(INCLUDES ${APP_ROOT_DIR}/include)
+
+include_directories(${INCLUDES})
+file(GLOB sources
+        "${APP_ROOT_SRC_DIR}/*.cpp")
+
+add_executable(client ${sources})
+
+# Линкуем библиотеку Socket
+target_link_libraries(client PRIVATE socket_lib)
+
+
+add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+
+# googletest
 configure_file(CMakeLists.txt.in
         googletest-download/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
@@ -16,21 +43,3 @@ add_subdirectory(${CMAKE_BINARY_DIR}/googletest-src
 
 enable_testing()
 add_subdirectory(tests)
-
-set(APP_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-set(APP_ROOT_SRC_DIR ${APP_ROOT_DIR}/src)
-set(INCLUDES ${APP_ROOT_DIR}/include)
-
-#include_directories(${INCLUDES})
-#file(GLOB sources
-#        "${PROJECT_SOURCE_DIR}/include/*.h"
-#        "${PROJECT_SOURCE_DIR}/src/*.cpp")
-#add_executable(client ${sources})
-include_directories(${INCLUDES} ${APP_ROOT_DIR}/../Socket/*.h) #?
-file(GLOB sources
-        "${PROJECT_SOURCE_DIR}/include/*.h"
-        "${PROJECT_SOURCE_DIR}/src/*.cpp"
-        "${APP_ROOT_DIR}/../Socket/*.cpp")
-add_executable(client ${sources})
-
-add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
