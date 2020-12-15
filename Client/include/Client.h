@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "../../Socket/Socket.h"
+#include "Socket.h"
 
 
 class Client {
