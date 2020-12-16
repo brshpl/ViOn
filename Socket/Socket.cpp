@@ -1,9 +1,9 @@
 #include <iostream>
 
 #include <cstring>
-#include <netdb.h>       // gethostbyname
-#include <netinet/in.h>  // struct sockaddr_in
-#include <sys/socket.h>  // socket(), AF_INET/PF_INET
+#include <netdb.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
 #include <unistd.h>
 
 #include "Socket.h"
@@ -30,13 +30,12 @@ namespace {
         char** pAddr = hp->h_addr_list;
         while (*pAddr) {
             auto* ipf = reinterpret_cast<unsigned char*>(*pAddr);
-            uint32_t cur_interface_ip = 0;
-            auto* rimap_local_ip_ptr = reinterpret_cast<uint8_t*>(&cur_interface_ip);
-            rimap_local_ip_ptr[0] = ipf[0];
-            rimap_local_ip_ptr[1] = ipf[1];
-            rimap_local_ip_ptr[2] = ipf[2];
-            rimap_local_ip_ptr[3] = ipf[3];
-            std::cerr << "resolved: " << int2ipv4(cur_interface_ip) << std::endl;
+
+            std::cerr << "resolved: ";
+            for (int i = 0; i < 4; ++i) {
+                std::cerr << (int)ipf[i] << ((i == 3) ? '\n' : '.');
+            }
+
             ++pAddr;
         }
 
