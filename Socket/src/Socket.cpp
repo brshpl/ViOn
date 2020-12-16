@@ -6,51 +6,52 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+#include "Exceptions.h"
 #include "Socket.h"
 
 
-std::string int2ipv4(uint32_t ip) {
-    char buf[128];
-    snprintf(buf, sizeof(buf), "%u.%u.%u.%u",
-             (ip & 0xFF),
-             (ip & 0xFF00) >> 8,
-             (ip & 0xFF0000) >> 16,
-             (ip & 0xFF000000) >> 24);
-    return buf;
-}
-
-namespace {
-
-    struct sockaddr_in resolve(const char *host, int port) {
-        struct hostent *hp = gethostbyname(host);
-        if (hp == nullptr) {
-            throw std::runtime_error("resolve error: " + std::string(strerror(errno)));
-        }
-
-        char **pAddr = hp->h_addr_list;
-        while (*pAddr) {
-            auto *ipf = reinterpret_cast<unsigned char *>(*pAddr);
-
-            std::cerr << "resolved: ";
-            for (int i = 0; i < 4; ++i) {
-                std::cerr << (int) ipf[i] << ((i == 3) ? '\n' : '.');
-            }
-
-            ++pAddr;
-        }
-
-        struct sockaddr_in addr{};
-        memset(&addr, 0, sizeof(addr));
-        addr.sin_family = AF_INET;
-        addr.sin_port = htons(port);
-        memcpy(&addr.sin_addr, hp->h_addr, hp->h_length);
-
-        return addr;
+namespace utils {
+    std::string int2ipv4(uint32_t ip) {
+        char buf[128];
+        snprintf(buf, sizeof(buf), "%u.%u.%u.%u",
+                 (ip & 0xFF),
+                 (ip & 0xFF00) >> 8,
+                 (ip & 0xFF0000) >> 16,
+                 (ip & 0xFF000000) >> 24);
+        return buf;
     }
 
-}  // namespace
+    namespace {
 
-namespace utils {
+        struct sockaddr_in resolve(const char *host, int port) {
+            struct hostent *hp = gethostbyname(host);
+            if (hp == nullptr) {
+                throw HostentNotReceived();
+            }
+
+            char **pAddr = hp->h_addr_list;
+            while (*pAddr) {
+                auto *ipf = reinterpret_cast<unsigned char *>(*pAddr);
+
+                std::cerr << "resolved: ";
+                for (int i = 0; i < 4; ++i) {
+                    std::cerr << (int) ipf[i] << ((i == 3) ? '\n' : '.');
+                }
+
+                ++pAddr;
+            }
+
+            struct sockaddr_in addr{};
+            memset(&addr, 0, sizeof(addr));
+            addr.sin_family = AF_INET;
+            addr.sin_port = htons(port);
+            memcpy(&addr.sin_addr, hp->h_addr, hp->h_length);
+
+            return addr;
+        }
+
+    }  // namespace
+
     Socket::Socket() : sock_(-1) {}
 
     Socket::Socket(int _sock) : sock_(_sock) {}
@@ -65,7 +66,7 @@ namespace utils {
         tv.tv_usec = microsec;
 
         if (setsockopt(sock_, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)) != 0) {
-            throw std::runtime_error("set sndtimeout: " + std::string(strerror(errno)));
+            throw FailedSetOpt("set sndtimeout: ");
         }
     }
 
@@ -75,7 +76,7 @@ namespace utils {
         tv.tv_usec = microsec;
 
         if (setsockopt(sock_, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) != 0) {
-            throw std::runtime_error("set rcvtimeout: " + std::string(strerror(errno)));
+            throw FailedSetOpt("set rcvtimeout: ");
         }
     }
 
@@ -83,7 +84,7 @@ namespace utils {
         int yes = 1;
         if (setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
             ::close(_sock);
-            throw std::runtime_error("setopt: " + std::string(strerror(errno)));
+            throw FailedSetOpt("set reuse addr: ");
         }
     }
 
@@ -92,14 +93,13 @@ namespace utils {
 
         int sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
         if (sock <= 0) {
-            throw std::runtime_error("error to create socket: " +
-                                     std::string(strerror(errno)));
+            throw SocketNotCreated("connect: ");
         }
 
         int connected = ::connect(sock, (struct sockaddr *) &addr, sizeof(addr));
         if (connected == -1) {
             ::close(sock);
-            throw std::runtime_error("connect error: " + std::string(strerror(errno)));
+            throw NotConnected("connect: ");
         }
 
         sock_ = sock;
@@ -111,13 +111,13 @@ namespace utils {
         int flags = 0;
 
         if (::send(sock_, (char *) &left, sizeof(size_t), flags) == -1) {
-            throw std::runtime_error("write bytes failed: " + std::string(strerror(errno)));
+            throw SndError("write bytes failed: ");
         }
 
         while (left > 0) {
             sent = ::send(sock_, str.data() + sent, str.size() - sent, flags);
             if (sent == -1) {
-                throw std::runtime_error("write failed: " + std::string(strerror(errno)));
+                throw SndError("write failed: ");
             }
 
             left -= sent;
@@ -128,7 +128,7 @@ namespace utils {
         size_t bytes;
         int n = ::recv(sock_, (char *) &bytes, sizeof(size_t), 0);
         if (n == -1 || n == 0) {
-            throw std::runtime_error("read size failed: " + std::string(strerror(errno)));
+            throw RcvError("read size failed: ");
         }
 
         char *buf = new char[bytes];
@@ -138,7 +138,7 @@ namespace utils {
 
             if (rc == -1 || rc == 0) {
                 delete[] buf;
-                throw std::runtime_error("read failed: " + std::string(strerror(errno)));
+                throw RcvError("read failed: ");
             }
             r += rc;
         }
@@ -153,7 +153,7 @@ namespace utils {
             uint32_t listen_queue_size) noexcept(false) {
         int sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
         if (sock <= 0) {
-            throw std::runtime_error("socket: " + std::string(strerror(errno)));
+            throw SocketNotCreated("create server: ");
         }
 
         setReuseAddr(sock);
@@ -167,7 +167,7 @@ namespace utils {
 
         if (::bind(sock, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
             ::close(sock);
-            throw std::runtime_error("bind: " + std::string(strerror(errno)));
+            throw BindError("create server: ");
         }
 
         ::listen(sock, listen_queue_size);
