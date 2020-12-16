@@ -4,14 +4,14 @@
 #include "ServerImpl.h"
 
 
-void sendChanges(const std::string &buf, std::set<std::shared_ptr<Socket>> &clients) {
+void sendChanges(const std::string &buf, std::set<std::shared_ptr<utils::Socket>> &clients) {
     for (const auto& client : clients) {
         client->send(buf);
     }
 }
 
-void handlerClient(std::shared_ptr<Socket> client,
-                   std::set<std::shared_ptr<Socket>> &clients) {
+void handlerClient(std::shared_ptr<utils::Socket> client,
+                   std::set<std::shared_ptr<utils::Socket>> &clients) {
     while (true) {
         std::string change_str;
 
@@ -41,7 +41,7 @@ Server::ServerImpl::ServerImpl(uint32_t port, uint32_t queue_size) {
 
 void Server::ServerImpl::startImpl() {
     while (true) {
-        std::shared_ptr<Socket> client = server_sock_.accept();
+        std::shared_ptr<utils::Socket> client = server_sock_.accept();
 
         client->setRcvTimeout(600);
 

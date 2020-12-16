@@ -16,8 +16,8 @@ public:
     void startImpl();
 
 private:
-    Socket server_sock_;
-    std::set<std::shared_ptr<Socket>> clients_;
+    utils::Socket server_sock_;
+    std::set<std::shared_ptr<utils::Socket>> clients_;
 };
 
 

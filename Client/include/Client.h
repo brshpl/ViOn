@@ -19,7 +19,7 @@ public:
     std::string recvChanges();
 
 private:
-    Socket client_sock_;
+    utils::Socket client_sock_;
 
 };
 
