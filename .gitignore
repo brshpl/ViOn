@@ -1,0 +1,13 @@
+# CMake files
+project/build/
+CMakeFiles/
+CMakeCache.txt
+cmake-build-debug/
+*.cmake
+
+# Google test files
+googletest/
+
+.idea
+
+travis.yml
