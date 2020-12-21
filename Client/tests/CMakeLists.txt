@@ -1,7 +1,7 @@
-include_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories("../../FileController/include")
 
-file(GLOB sources "${PROJECT_SOURCE_DIR}/src/*.cpp")
-list(REMOVE_ITEM sources "${PROJECT_SOURCE_DIR}/src/main.cpp")
+file(GLOB sources "../../FileController/src/*.cpp")
+list(REMOVE_ITEM sources "../../FileController/src/main.cpp")
 
 file(GLOB tests "${PROJECT_SOURCE_DIR}/tests/*.cpp")
 list(REMOVE_ITEM tests "${PROJECT_SOURCE_DIR}/tests/main.cpp")

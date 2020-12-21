@@ -3,6 +3,8 @@
 
 #include <set>
 
+#include "EventManager.h"
+#include "FileController/FileStorage.h"
 #include "Server.h"
 #include "Socket.h"
 
@@ -17,7 +19,8 @@ public:
 
 private:
     utils::Socket server_sock_;
-    std::set<std::shared_ptr<utils::Socket>> clients_;
+//    std::set<Observer> clients_;
+    std::vector<Subject> subject_;
 };
 
 

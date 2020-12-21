@@ -13,7 +13,7 @@ FileStorage::FileStorage(size_t file_id) {
 void TextManagerClient::upDate() {
     ParserForEditor parser(ch_, file_);
     std::vector<Symbol> text = parser.parse();
-    TextEditor.upDate(text);
+//    TextEditor.upDate(text);
 }
 
 void TextManagerClient::setChange(Change ch) {

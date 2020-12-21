@@ -1,18 +1,18 @@
-//
-// Created by Dashik on 05.12.2020.
-//
+#ifndef VION_EVENTMANAGER_H
+#define VION_EVENTMANAGER_H
+
 #include <iostream>
 #include <list>
 #include <string>
 #include <memory>
-#include "TextManager.h"
-#ifndef VION_EVENTMANAGER_H
-#define VION_EVENTMANAGER_H
+
+#include "FileController/TextManager.h"
+#include "Socket.h"
 
 class IObserver{
 public:
     virtual ~IObserver()= default;
-    virtual Change Update(const Change &ch) = 0;
+    virtual void Update(const std::string& ch) = 0;
 };
 
 class ISubject{
@@ -20,7 +20,7 @@ public:
     virtual ~ISubject(){};
     virtual void Attach(std::shared_ptr<IObserver> observer) = 0;
     virtual void Detach(std::shared_ptr<IObserver> observer) = 0;
-    virtual void Notify() = 0;
+    virtual void Notify(const std::string& ch) = 0;
 };
 
 class Subject: public ISubject{
@@ -28,24 +28,24 @@ public:
     virtual ~Subject(){}
     void Attach(std::shared_ptr<IObserver> observer) override;
     void Detach(std::shared_ptr<IObserver> observer) override;
-    void Notify() override;
+    void Notify(const std::string& ch) override;
     int amount_of_observers();
+    FileStorage& getFile();
 private:
-    std::list<std::shared_ptr<IObserver>>list_observer;
-    Change ch;
+    std::list<std::shared_ptr<IObserver>> list_observer_;
+    FileStorage file_;
 };
 
 class Observer: public IObserver{
 public:
-    Observer(Subject &subject);
+    Observer(Subject &subject, std::shared_ptr<utils::Socket> client);
     ~Observer() override {}
 
-    Change Update(const Change &ch);
+    void Update(const std::string& ch);
     void RemoveMeFromTheList();
 
 private:
-    Change ch_;
     Subject &subject_;
-    int number_;
+    utils::Socket client_;
 };
 #endif //VION_EVENTMANAGER_H
