@@ -3,31 +3,25 @@
 //
 
 #include "FileController/EventManager.h"
-void Subject::Attach(std::shared_ptr<IObserver> observer) {
+#include <algorithm>
+void Subject::attach(std::shared_ptr<IObserver> observer) {
     list_observer.push_back(observer);
 }
-void Subject::Detach(std::shared_ptr<IObserver> observer) {
+void Subject::detach(std::shared_ptr<IObserver> observer) {
     list_observer.remove(observer);
 }
-void Subject::Notify() {
+void Subject::notify() {
     auto iterator = list_observer.begin();
-    amount_of_observers();
-    while (iterator != list_observer.end()) {
-        (*iterator)->Update(ch);
-        ++iterator;
-    }
+    std::for_each(list_observer.begin(), list_observer.end(), [ch = ch](const std::shared_ptr<IObserver>& observer){observer->upDate(ch);});
 }
-int Subject::amount_of_observers() {
-    return list_observer.size();
-}
+
 Observer::Observer(Subject &subject) :  subject_(subject){
-    this->subject_.Attach(std::shared_ptr<IObserver>(this));
+    subject_.attach(std::shared_ptr<IObserver>(this));
 }
-Change Observer::Update(const Change &ch) {
-    ch_ = ch;
+Change Observer::upDate(const Change &ch) {
     return ch;
 }
-void Observer::RemoveMeFromTheList() {
-    subject_.Detach(std::shared_ptr<IObserver>(this));
-}
+//void Observer::RemoveMeFromTheList() {
+//    subject_.detach(std::shared_ptr<IObserver>(this));
+//}
 

@@ -10,7 +10,7 @@
 
 class ChangeApplier {
 public:
-    ChangeApplier(Change ch, std::unique_ptr<FileStorage> file);
+    ChangeApplier(const Change &ch, std::unique_ptr<FileStorage> file);
     ~ChangeApplier() = default;
     bool applyChange();
     Change getChange();

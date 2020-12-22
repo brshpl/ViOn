@@ -15,6 +15,7 @@ ParserForEditor::ParserForEditor(Change ch, FileStorage file) : Parser(ch){
 
 std::vector<Symbol> ParserForEditor::parse() {
     std::vector<Symbol> file;
+    file.reserve(file_.symbols.size());
     Symbol text{};
     for (auto & symbol : file_.symbols){
         if (symbol.is_visible){

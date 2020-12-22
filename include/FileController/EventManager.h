@@ -12,24 +12,23 @@
 class IObserver{
 public:
     virtual ~IObserver()= default;
-    virtual Change Update(const Change &ch) = 0;
+    virtual Change upDate(const Change &ch) = 0;
 };
 
 class ISubject{
 public:
     virtual ~ISubject(){};
-    virtual void Attach(std::shared_ptr<IObserver> observer) = 0;
-    virtual void Detach(std::shared_ptr<IObserver> observer) = 0;
-    virtual void Notify() = 0;
+    virtual void attach(std::shared_ptr<IObserver> observer) = 0;
+    virtual void detach(std::shared_ptr<IObserver> observer) = 0;
+    virtual void notify() = 0;
 };
 
 class Subject: public ISubject{
 public:
     virtual ~Subject(){}
-    void Attach(std::shared_ptr<IObserver> observer) override;
-    void Detach(std::shared_ptr<IObserver> observer) override;
-    void Notify() override;
-    int amount_of_observers();
+    void attach(std::shared_ptr<IObserver> observer) override;
+    void detach(std::shared_ptr<IObserver> observer) override;
+    void notify() override;
 private:
     std::list<std::shared_ptr<IObserver>>list_observer;
     Change ch;
@@ -40,12 +39,9 @@ public:
     Observer(Subject &subject);
     ~Observer() override {}
 
-    Change Update(const Change &ch);
-    void RemoveMeFromTheList();
+    Change upDate(const Change &ch);
 
 private:
-    Change ch_;
     Subject &subject_;
-    int number_;
 };
 #endif //VION_EVENTMANAGER_H
