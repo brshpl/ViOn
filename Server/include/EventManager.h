@@ -1,7 +1,7 @@
 #ifndef VION_EVENTMANAGER_H
 #define VION_EVENTMANAGER_H
 
-#include <iostream>
+
 #include <list>
 #include <string>
 #include <memory>
@@ -9,43 +9,40 @@
 #include "FileController/TextManager.h"
 #include "Socket.h"
 
-class IObserver{
+
+class IObserver {
 public:
-    virtual ~IObserver()= default;
+    virtual ~IObserver() = default;
     virtual void Update(const std::string& ch) = 0;
 };
 
-class ISubject{
-public:
-    virtual ~ISubject(){};
-    virtual void Attach(std::shared_ptr<IObserver> observer) = 0;
-    virtual void Detach(std::shared_ptr<IObserver> observer) = 0;
-    virtual void Notify(const std::string& ch) = 0;
-};
 
-class Subject: public ISubject{
+class Subject {
 public:
-    virtual ~Subject(){}
-    void Attach(std::shared_ptr<IObserver> observer) override;
-    void Detach(std::shared_ptr<IObserver> observer) override;
-    void Notify(const std::string& ch) override;
-    int amount_of_observers();
-    FileStorage& getFile();
+    void Attach(std::shared_ptr<IObserver> observer);
+    void Detach(std::shared_ptr<IObserver> observer);
+    void Notify(const std::string& change);
+    void setChange(const Change& change);
+    int amountOfObservers();
+
 private:
-    std::list<std::shared_ptr<IObserver>> list_observer_;
+    std::list<std::shared_ptr<IObserver>> observers_;
     FileStorage file_;
 };
 
 class Observer: public IObserver{
 public:
-    Observer(Subject &subject, std::shared_ptr<utils::Socket> client);
-    ~Observer() override {}
+    Observer(Subject& subject, std::shared_ptr<utils::Socket> sock);
+    ~Observer() override;
 
-    void Update(const std::string& ch);
+    void Update(const std::string& ch) override;
     void RemoveMeFromTheList();
 
+    void editFile();
+
 private:
-    Subject &subject_;
-    std::shared_ptr<utils::Socket> client_;
+    Subject& subject_;
+    std::shared_ptr<utils::Socket> sock_;
 };
-#endif //VION_EVENTMANAGER_H
+
+#endif  // VION_EVENTMANAGER_H

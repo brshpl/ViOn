@@ -1,67 +1,51 @@
 #include <iostream>
 #include <thread>
 
-#include "FileController/ChangeApplier.h"
 #include "Parser.h"
 #include "ServerImpl.h"
 
 
-size_t linkClientToFile(std::shared_ptr<utils::Socket> client, std::vector<Subject>& subject) {
-    std::string change;
-    change = client->recv();
-    std::cout << change << std::endl;
-    Change ch = ParserFromJson(change);
+static size_t numberOfFilesCreated = 0;
 
-    if (ch.cmd == CREATE_FILE) {
-        Subject sb;
-        std::cout << "Создали Subject" << std::endl;
-        sb.Attach(std::make_shared<Observer>(sb, client));
-        std::cout << "Присоединили клиента к Subject" << std::endl;
-        subject.push_back(sb);
+void handlerClient(std::shared_ptr<utils::Socket> client, std::map<size_t, Subject>& subjects) {
+    Subject subject;
+    std::shared_ptr<Observer> observer = std::make_shared<Observer>(subject, client);
 
-        ch.fileId = subject.size() - 1;
-        change = ParserToJson(ch);
-        std::cout << change << std::endl;
-        client->send(change);
-    }
-    if (ch.cmd == CONNECT_TO_FILE) {
-        Subject sb = subject[ch.fileId];
-        sb.Attach(std::make_shared<Observer>(sb, client));
-    }
-    std::cout << change << std::endl;
+    std::string request_str;
+    request_str = client->recv();
+    Change request = ParserFromJson(request_str);
 
-    return ch.fileId;
-}
+    // Заморозка
+    size_t file_id = numberOfFilesCreated;
 
-void handlerClient(std::shared_ptr<utils::Socket> client,
-                   std::vector<Subject> &subject) {
-    size_t file_id = linkClientToFile(client, subject);
-
-    while (true) {
-        std::string change;
-
-        change = client->recv();
-        std::cout << change << std::endl;
-
-        Change chstrc = ParserFromJson(change);
-
-        ChangeApplier change_applier(chstrc, std::make_unique<FileStorage>(subject[file_id].getFile()));
-        change_applier.applyChange();
-        chstrc = change_applier.getChange();
-
-        change = ParserToJson(chstrc);
-        //
-        std::cout << change << std::endl;
-
-        if (chstrc.symbol == '#') {
-            client->send(change);
-            client->close();
-
-            std::cerr << "Client " << client->getSocket() << " disconnected." << std::endl;
+    switch (request.cmd) {
+        case CREATE_FILE: {
+            subjects.insert(std::pair<size_t, Subject>(numberOfFilesCreated++, subject));
             break;
         }
+        case CONNECT_TO_FILE: {
+            file_id = request.fileId;   // logic fileId
+            subject = subjects[file_id];
+            observer.reset();
+            observer = std::make_shared<Observer>(subject, client);
+            break;
+        }
+        case CLOSE_CONNECT:
+            //
+            return;
+            break;
+        default:
+            //
+            return;
+    }
+    // Заморозка
+    client->send(std::to_string(file_id));
 
-        subject[file_id].Notify(change);
+    observer->editFile();
+    subject.Detach(observer);
+
+    if (subject.amountOfObservers() == 0) {
+        subjects.erase(file_id);
     }
 }
 
@@ -72,16 +56,12 @@ Server::ServerImpl::ServerImpl(uint32_t port, uint32_t queue_size) {
 void Server::ServerImpl::startImpl() {
     while (true) {
         std::shared_ptr<utils::Socket> client = server_sock_.accept();
-
         client->setRcvTimeout(600);
 
-        std::thread th_client(handlerClient,
-                              client, std::ref(subject_));
+        std::thread th_client(handlerClient, client, std::ref(subjects_));
         th_client.detach();
 
-//        clients_.insert(client);
-
-        if (subject_.size() == 100) {
+        if (subjects_.size() == 100) {
             break;
         }
     }

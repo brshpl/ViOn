@@ -1,7 +1,7 @@
 #ifndef VION_SERVER_INCLUDE_SERVERIMPL_H_
 #define VION_SERVER_INCLUDE_SERVERIMPL_H_
 
-#include <set>
+#include <map>
 
 #include "EventManager.h"
 #include "FileController/FileStorage.h"
@@ -19,8 +19,7 @@ public:
 
 private:
     utils::Socket server_sock_;
-//    std::set<Observer> clients_;
-    std::vector<Subject> subject_;
+    std::map<size_t, Subject> subjects_;
 };
 
 
