@@ -11,19 +11,19 @@
 class TextUpDater {
 public:
     TextUpDater()= default;
-    TextUpDater(const std::shared_ptr<FileStorage>& file, Change ch);
+    TextUpDater(FileStorage* file_, Change ch);
     ~TextUpDater()= default;
     Change getChange();
     FileStorage getFile();
 
 protected:
-    std::shared_ptr<FileStorage> file_;
+    FileStorage* file_;
     Change ch_;
 };
 
 class InsertChar : public TextUpDater{
 public:
-    explicit InsertChar(const std::shared_ptr<FileStorage>& file, Change &ch);
+    explicit InsertChar(FileStorage* file, Change &ch);
     bool insertSymbol();
     ~InsertChar()= default;;
 private:
@@ -32,7 +32,7 @@ private:
 
 class DeleteChar : public TextUpDater{
 public:
-    explicit DeleteChar(const std::shared_ptr<FileStorage>& file, Change ch);
+    explicit DeleteChar(FileStorage* file, Change ch);
     ~DeleteChar()= default;;
     bool deleteSymbol();
 };

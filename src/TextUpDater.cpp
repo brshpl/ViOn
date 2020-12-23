@@ -4,11 +4,10 @@
 
 #include <FileController/TextUpDater.h>
 
-#include <utility>
 #include <memory>
 #include <algorithm>
 
-TextUpDater::TextUpDater(const std::shared_ptr<FileStorage>& file, Change ch) {
+TextUpDater::TextUpDater(FileStorage* file, Change ch) {
     file_ = file;
     ch_ = ch;
 }
@@ -18,11 +17,11 @@ Change TextUpDater::getChange() {
 }
 
 FileStorage TextUpDater::getFile() {
-    FileStorage* file = file_.get();
+    FileStorage* file = file_;
     return *file;
 }
 
-InsertChar::InsertChar(const std::shared_ptr<FileStorage>& file, Change &ch) : TextUpDater(file, ch){};
+InsertChar::InsertChar(FileStorage* file, Change &ch) : TextUpDater(file, ch){};
 
 
 Change InsertChar::addNewId() {
@@ -46,7 +45,7 @@ bool InsertChar::insertSymbol() {
     return true;
 }
 
-DeleteChar::DeleteChar(const std::shared_ptr<FileStorage>& file, Change ch) : TextUpDater(file, ch){};
+DeleteChar::DeleteChar(FileStorage* file, Change ch) : TextUpDater(file, ch){};
 
 bool DeleteChar::deleteSymbol() {
     auto result = std::find_if(file_->symbols.begin(), file_->symbols.end(), [foo = ch_.position.symbolId](SymbolState s){return s.id == foo;});

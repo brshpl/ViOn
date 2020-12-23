@@ -3,36 +3,16 @@
 //
 #include "FileController/ChangeApplier.h"
 #include "FileController/Parser.h"
+#include "FileController/Handler.h"
 #include <utility>
 
-ChangeApplier::ChangeApplier(const Change &ch, std::unique_ptr<FileStorage> file) : ch_(ch), file_(std::move(file)){}
+ChangeApplier::ChangeApplier(const Change &ch, std::shared_ptr<FileStorage> file) : ch_(ch), file_(std::move(file)){}
 
 bool ChangeApplier::applyChange() {
-    switch (ch_.cmd) {
-        case INSERT_SYMBOL:
-        {
-            InsertChar insertChar((*file_), ch_);
-            if (insertChar.insertSymbol()){
-                ch_ = insertChar.getChange();
-                *file_ = insertChar.getFile();
-                return true;
-            }
-            else
-                return false;
-        }
-        case DELETE_SYMBOL:{
-            DeleteChar deleteChar((*file_), ch_);
-            if (deleteChar.deleteSymbol()){
-                ch_ = deleteChar.getChange();
-                *file_ = deleteChar.getFile();
-                return true;
-            }
-            else
-                return false;
-        }
-        default:
-            return false;
-    }
+    InsertSymbol *insertChar = new InsertSymbol(ch_, file_.get());
+    auto *deleteChar = new DeleteSymbol(ch_, file_.get());
+    insertChar->SetNext(deleteChar);
+    return selector(*insertChar, ch_);
 }
 
 Change ChangeApplier::getChange() {
