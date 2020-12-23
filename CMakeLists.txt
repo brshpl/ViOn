@@ -14,7 +14,7 @@ include_directories(includes)
 
 add_executable(tests.out tests/tests.cpp
         includes/ChangeCreator.h
-        source/ChangeCreator.cpp source/Interpretator.cpp)
+        source/ChangeCreator.cpp source/Interpretator.cpp includes/Buffer.h)
 
 target_include_directories(tests.out PUBLIC includes)
 

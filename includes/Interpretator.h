@@ -19,8 +19,8 @@ public:
     buffer()
     {}
 
-    Change Interpret(char &curChar, Mode &mode,
-                     Position &position);
+    Change Interpret(char &curChar, const Mode &mode,
+                     const Position &position);
 private:
     ChangeCreator changeCreator;
     std::string buffer;
