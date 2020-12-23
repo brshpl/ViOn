@@ -6,7 +6,7 @@
 #include "ServerImpl.h"
 
 
-size_t linkClientToFile(std::shared_ptr<utils::Socket> client, std::vector<Subject> subject) {
+size_t linkClientToFile(std::shared_ptr<utils::Socket> client, std::vector<Subject>& subject) {
     std::string change;
     change = client->recv();
     std::cout << change << std::endl;
@@ -14,17 +14,23 @@ size_t linkClientToFile(std::shared_ptr<utils::Socket> client, std::vector<Subje
 
     if (ch.cmd == CREATE_FILE) {
         Subject sb;
-        sb.Attach(std::make_shared<Observer>(Observer(sb, client)));
+        std::cout << "Создали Subject" << std::endl;
+        sb.Attach(std::make_shared<Observer>(sb, client));
+        std::cout << "Присоединили клиента к Subject" << std::endl;
         subject.push_back(sb);
-        return subject.size() - 1;
+
+        ch.fileId = subject.size() - 1;
+        change = ParserToJson(ch);
+        std::cout << change << std::endl;
+        client->send(change);
     }
     if (ch.cmd == CONNECT_TO_FILE) {
         Subject sb = subject[ch.fileId];
-        sb.Attach(std::make_shared<Observer>(Observer(sb, client)));
-        return ch.fileId;
+        sb.Attach(std::make_shared<Observer>(sb, client));
     }
+    std::cout << change << std::endl;
 
-    return 0;
+    return ch.fileId;
 }
 
 void handlerClient(std::shared_ptr<utils::Socket> client,
@@ -47,7 +53,7 @@ void handlerClient(std::shared_ptr<utils::Socket> client,
         //
         std::cout << change << std::endl;
 
-        if (change == "#") {
+        if (chstrc.symbol == '#') {
             client->send(change);
             client->close();
 

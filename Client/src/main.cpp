@@ -6,15 +6,13 @@
 
 void listenServ(Client& client) {
     while (true) {
-        // Создаем объект change, передаем его слушающей функции
-        // пока использую string
-        std::string change_str;
+        Change ch;
 
-        change_str = client.recvChanges();
+        ch = client.recvChanges();
 
-        std::cout << change_str << std::endl;
+        std::cout << ParserToJson(ch) << std::endl;
 
-        if (change_str == "#") {
+        if (ch.symbol == '#') {
             break;
         }
     }
@@ -34,17 +32,31 @@ int main(int argc, char* argv[]) {
         client.connectToServer(host, port);
 
         std::thread thread_listen(listenServ, std::ref(client));
+        size_t file_id;
 
+        std::string command;
+        std::cin >> command;
+        if (command == "create") {
+            file_id = client.createNewFile();
+        }
+        if (command == "connect") {
+            std::cin >> file_id;
+            client.connectToFile(file_id);
+        }
+
+        Position pos = {0};
         while (true) {
-            // Вызов функций формирования изменений
-            // пока использую string
-            std::string change_str;
-            std::cin >> change_str;
+            char change;
+            std::cin >> change;
 
-            // client.sendChanges(Change);
-            client.sendChanges(change_str);
+            Change ch = Change(INSERT_SYMBOL, file_id, pos, 0, change);
 
-            if (change_str == "#") {
+            // client.send_changes(change);
+            client.sendChanges(ch);
+
+            pos.symbolId++;
+
+            if (change == '#') {
                 break;
             }
         }

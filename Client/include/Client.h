@@ -3,6 +3,8 @@
 
 #include <string>
 
+//#include "FileController/FileStorage.h"
+#include "Parser.h"
 #include "Socket.h"
 
 
@@ -10,13 +12,13 @@ class Client {
 public:
     void connectToServer(const std::string& host, int port);
 
-    void createNewFile();
-    void connectToFile(size_t id, const std::string& pin);
+    size_t createNewFile();
+    void connectToFile(size_t id);
 
-//    void sendChanges(const Change& buf);
-//    Change recvChanges();
-    void sendChanges(const std::string& buf);
-    std::string recvChanges();
+    void sendChanges(const Change& ch);
+    Change recvChanges();
+//    void sendChanges(const std::string& buf);
+//    std::string recvChanges();
 
 private:
     utils::Socket client_sock_;

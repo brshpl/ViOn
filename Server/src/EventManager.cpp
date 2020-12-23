@@ -1,5 +1,7 @@
 #include "EventManager.h"
 
+#include <utility>
+
 
 void Subject::Attach(std::shared_ptr<IObserver> observer) {
     list_observer_.push_back(observer);
@@ -23,11 +25,11 @@ FileStorage &Subject::getFile() {
     return file_;
 }
 
-Observer::Observer(Subject &subject, std::shared_ptr<utils::Socket> client) : subject_(subject){
+Observer::Observer(Subject &subject, std::shared_ptr<utils::Socket> client) : subject_(subject), client_(std::move(client)) {
     this->subject_.Attach(std::shared_ptr<IObserver>(this));
 }
 void Observer::Update(const std::string& ch) {
-    client_.send(ch);
+    client_->send(ch);
 }
 void Observer::RemoveMeFromTheList() {
     subject_.Detach(std::shared_ptr<IObserver>(this));

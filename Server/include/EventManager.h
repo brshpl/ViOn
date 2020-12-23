@@ -46,6 +46,6 @@ public:
 
 private:
     Subject &subject_;
-    utils::Socket client_;
+    std::shared_ptr<utils::Socket> client_;
 };
 #endif //VION_EVENTMANAGER_H
