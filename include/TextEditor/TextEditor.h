@@ -1,20 +1,19 @@
 #ifndef VIONTEXTEDITOR_TEXTEDITOR_H
 #define VIONTEXTEDITOR_TEXTEDITOR_H
-#include <vector>
 #include "Message.h"
 #include "Client.h"
 #include "Mode.h"
 #include "Position.h"
 #include "Symbol.h"
+#include "Text.h"
 #include "View.h"
 
 class TextEditor {
 public:
-    explicit TextEditor(View& view) {
-        client_ = Client();
-    }
+    explicit TextEditor(View& view) :
+    view_ {view} {}
     void notify(char symbol, Position next_symbol);
-    void update(std::vector<Symbol>& text);
+    void update(const Text& text);
     void applyChange(const Change& change);
     void sendChange(const Change& change);
     void changeMode(Mode newMode);

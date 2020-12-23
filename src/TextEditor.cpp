@@ -11,10 +11,6 @@ void TextEditor::changeMode(Mode newMode) {
     mode_ = newMode;
 }
 
-void TextEditor::update(std::vector<Symbol> &text) {
-    view_.setText(text);
-}
-
 void TextEditor::sendChange(const Change &change) {
     client_.sendChanges(change);
 }
@@ -58,4 +54,8 @@ void TextEditor::applyChange(const Change &change) {
 
 Mode TextEditor::getMode() {
     return mode_;
+}
+
+void TextEditor::update(const Text& text) {
+    view_.setText(text);
 }
