@@ -30,10 +30,10 @@ bool InsertSymbol::Handle(Command request) {
             *file_ = insertChar.getFile();
             return true;
         }
-        else{
-            return AbstractHandler::Handle(request);
+        return false;
         }
-    }
+    else
+        return AbstractHandler::Handle(request);
 }
 
 bool DeleteSymbol::Handle(Command request) {
@@ -44,9 +44,10 @@ bool DeleteSymbol::Handle(Command request) {
             *file_ = deleteChar.getFile();
             return true;
         }
-        else
-            return AbstractHandler::Handle(request);
+        return false;
     }
+    else
+        return AbstractHandler::Handle(request);
 }
 
 bool selector(Handler &handler, Change ch) {

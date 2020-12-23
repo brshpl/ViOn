@@ -42,13 +42,14 @@ bool InsertChar::insertSymbol() {
         ch_.newSymbolId,
         };
     curFile.insert(result, new_char);
+    file_->symbols = curFile;
     return true;
 }
 
 DeleteChar::DeleteChar(FileStorage* file, Change ch) : TextUpDater(file, ch){};
 
 bool DeleteChar::deleteSymbol() {
-    auto result = std::find_if(file_->symbols.begin(), file_->symbols.end(), [foo = ch_.position.symbolId](SymbolState s){return s.id == foo;});
+    auto result = std::find_if(file_->symbols.begin(), file_->symbols.end(), [foo = ch_.newSymbolId](SymbolState s){return s.id == foo;});
     if (result == file_->symbols.end())
         return false;
     else{
