@@ -6,8 +6,8 @@ void ChangeCreator::AddChangeCreator(ChangeCreator* _changeCreator) {
     changeCreators.push_back(_changeCreator);
 }
 
-bool ChangeCreator::CanCreate(Mode &mode,
-                              Position &position, std::string &buffer) {
+bool ChangeCreator::CanCreate(const Mode &mode,
+                              const Position &position, const std::string_view &buffer) {
     for (auto creator: changeCreators) {
         if (creator->CanCreate(mode, position, buffer)) {
             return true;
@@ -16,8 +16,8 @@ bool ChangeCreator::CanCreate(Mode &mode,
     return false;
 }
 
-Change ChangeCreator::CreateChange(Mode &mode,
-                                   Position &position, std::string &buffer) {
+Change ChangeCreator::CreateChange(const Mode &mode,
+                                   const Position &position, const std::string_view &buffer) {
     try {
         for (auto creator: changeCreators) {
             if (creator->CanCreate(mode, position, buffer)) {
@@ -34,8 +34,8 @@ Change ChangeCreator::CreateChange(Mode &mode,
     }
 }
 
-bool ChangeCreatorInsertSubString::CanCreate(Mode &mode,
-                                             Position &position, std::string &buffer) {
+bool ChangeCreatorInsertSubString::CanCreate(const Mode &mode,
+                                             const Position &position, const std::string_view &buffer) {
     char curChar  = buffer.back();
     if (mode == INSERTATION_MODE && !(curChar == 127 || curChar == 8)) {
         return true;
@@ -44,8 +44,8 @@ bool ChangeCreatorInsertSubString::CanCreate(Mode &mode,
     }
 }
 
-Change ChangeCreatorInsertSubString::CreateChange(Mode &mode,
-                                                  Position &position, std::string &buffer) {
+Change ChangeCreatorInsertSubString::CreateChange(const Mode &mode,
+                                                  const Position &position, const std::string_view &buffer) {
     Change chg;
     chg.cmd = INSERT_SUB_STRING;
     chg.fileId = 0;
@@ -54,8 +54,8 @@ Change ChangeCreatorInsertSubString::CreateChange(Mode &mode,
     return chg;
 }
 
-bool ChangeCreatorDeleteSymbol::CanCreate(Mode &mode,
-                                          Position &position, std::string &buffer) {
+bool ChangeCreatorDeleteSymbol::CanCreate(const Mode &mode,
+                                          const Position &position, const std::string_view &buffer) {
     char curChar  = buffer.back();
     if (mode == INSERTATION_MODE && (curChar == 127 || curChar == 8)) {
         return true;
@@ -65,8 +65,8 @@ bool ChangeCreatorDeleteSymbol::CanCreate(Mode &mode,
     }
 }
 
-Change ChangeCreatorDeleteSymbol::CreateChange(Mode &mode,
-                                               Position &position, std::string &buffer) {
+Change ChangeCreatorDeleteSymbol::CreateChange(const Mode &mode,
+                                               const Position &position, const std::string_view &buffer) {
     Change chg;
     chg.cmd = DELETE_SYMBOL;
     chg.fileId = 0;
@@ -74,8 +74,8 @@ Change ChangeCreatorDeleteSymbol::CreateChange(Mode &mode,
     return chg;
 }
 
-bool ChangeCreatorDeleteString::CanCreate(Mode &mode,
-                                          Position &position, std::string &buffer) {
+bool ChangeCreatorDeleteString::CanCreate(const Mode &mode,
+                                          const Position &position, const std::string_view &buffer) {
     if (mode == COMMAND_MODE && buffer == "dd") {
         return true;
     }
@@ -84,8 +84,8 @@ bool ChangeCreatorDeleteString::CanCreate(Mode &mode,
     }
 }
 
-Change ChangeCreatorDeleteString::CreateChange(Mode &mode,
-                                               Position &position, std::string &buffer) {
+Change ChangeCreatorDeleteString::CreateChange(const Mode &mode,
+                                               const Position &position, const std::string_view &buffer) {
     Change chg;
     chg.cmd = DELETE_STRING;
     chg.fileId = 0;
@@ -93,8 +93,8 @@ Change ChangeCreatorDeleteString::CreateChange(Mode &mode,
     return chg;
 }
 
-bool ChangeCreatorCreateFile::CanCreate(Mode &mode,
-                                        Position &position, std::string &buffer) {
+bool ChangeCreatorCreateFile::CanCreate(const Mode &mode,
+                                        const Position &position, const std::string_view &buffer) {
     if (mode == COMMAND_MODE && buffer == "CREATE_FILE") {
         return true;
     } else {
@@ -102,8 +102,8 @@ bool ChangeCreatorCreateFile::CanCreate(Mode &mode,
     }
 }
 
-Change ChangeCreatorCreateFile::CreateChange(Mode &mode,
-                                             Position &position, std::string &buffer) {
+Change ChangeCreatorCreateFile::CreateChange(const Mode &mode,
+                                             const Position &position, const std::string_view &buffer) {
     Change chg;
     chg.cmd = CREATE_FILE;
     chg.position = {0, 0};
@@ -111,8 +111,8 @@ Change ChangeCreatorCreateFile::CreateChange(Mode &mode,
     return chg;
 }
 
-bool ChangeCreatorDeleteFile::CanCreate(Mode &mode,
-                                        Position &position, std::string &buffer) {
+bool ChangeCreatorDeleteFile::CanCreate(const Mode &mode,
+                                        const Position &position, const std::string_view &buffer) {
     if (mode == COMMAND_MODE && buffer == "DELETE_FILE") {
         return true;
     } else {
@@ -120,8 +120,8 @@ bool ChangeCreatorDeleteFile::CanCreate(Mode &mode,
     }
 }
 
-Change ChangeCreatorDeleteFile::CreateChange(Mode &mode,
-                                             Position &position, std::string &buffer) {
+Change ChangeCreatorDeleteFile::CreateChange(const Mode &mode,
+                                             const Position &position, const std::string_view &buffer) {
     Change chg;
     chg.cmd = DELETE_FILE;
     chg.position = {0, 0};
@@ -129,7 +129,8 @@ Change ChangeCreatorDeleteFile::CreateChange(Mode &mode,
     return chg;
 }
 
-bool ChangeCreatorMoveCursor::CanCreate(Mode &mode, Position &position, std::string &buffer) {
+bool ChangeCreatorMoveCursor::CanCreate(const Mode &mode,
+                                        const Position &position, const std::string_view &buffer) {
     if (buffer[buffer.size() - 3] == 27
     && buffer[buffer.size() - 2] == 91
     && (buffer.back() >= 65 && buffer.back() <= 68)) {
@@ -138,7 +139,8 @@ bool ChangeCreatorMoveCursor::CanCreate(Mode &mode, Position &position, std::str
     return false;
 }
 
-Change ChangeCreatorMoveCursor::CreateChange(Mode &mode, Position &position, std::string &buffer) {
+Change ChangeCreatorMoveCursor::CreateChange(const Mode &mode,
+                                             const Position &position, const std::string_view &buffer) {
     Change chg;
     chg.position = position;
     switch (buffer.back()) {
