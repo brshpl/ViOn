@@ -9,7 +9,8 @@ void listenServ(Client& client) {
     Change change;
     do {
         change = client.recvChanges();
-        std::cout << ParserToJson(change) << std::endl;
+//        std::cout << ParserToJson(change) << std::endl;
+        std::cout << change.symbol << std::endl;
     } while (change.cmd != CLOSE_CONNECT);
 }
 

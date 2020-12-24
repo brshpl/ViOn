@@ -9,7 +9,7 @@ static size_t numberOfFilesCreated = 0;
 
 void handlerClient(std::shared_ptr<utils::Socket> client, std::map<size_t, Subject>& subjects) {
     Subject subject;
-    Observer* observer = new Observer(subject, client);
+    Observer* observer;
 
     std::string request_str;
     request_str = client->recv();
@@ -21,6 +21,7 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::map<size_t, Subje
     switch (request.cmd) {
         case CREATE_FILE: {
             subjects.insert(std::pair<size_t, Subject>(numberOfFilesCreated++, subject));
+            observer = new Observer(subjects[file_id], client);
             break;
         }
         case CONNECT_TO_FILE: {
