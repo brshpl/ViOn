@@ -22,9 +22,12 @@ void Subject::setChange(const Change& change) {
     std::string ret_change_s = ParserToJson(ret_change);
 
     notify(ret_change_s);
-    for (SymbolState s : file_->symbols)
-        if (s.is_visible)
-            std::cout << s.symbol << std::endl;
+    for (SymbolState s : file_->symbols) {
+        if (s.is_visible) {
+            std::cout << s.symbol;
+        }
+    }
+    std::cout << std::endl;
 }
 int Subject::amountOfObservers() {
     return observers_.size();
