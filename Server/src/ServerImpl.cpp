@@ -9,7 +9,7 @@ static size_t numberOfFilesCreated = 0;
 
 void handlerClient(std::shared_ptr<utils::Socket> client, std::map<size_t, Subject>& subjects) {
     Subject subject;
-    std::shared_ptr<Observer> observer = std::make_shared<Observer>(subject, client);
+    Observer* observer = new Observer(subject, client);
 
     std::string request_str;
     request_str = client->recv();
@@ -25,31 +25,31 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::map<size_t, Subje
         }
         case CONNECT_TO_FILE: {
             file_id = request.fileId;   // logic fileId
-            std::cout << "file_id = " << file_id << std::endl;
-            std::cout << "subjects[file_id] = " << subjects[file_id].amountOfObservers() << std::endl;
-            subject = subjects[file_id];
-            observer.reset();
-            observer = std::make_shared<Observer>(subject, client);
+            observer = new Observer(subjects[file_id], client);
             break;
         }
-        case CLOSE_CONNECT:
+        case CLOSE_CONNECT: {
             //
             return;
             break;
-        default:
+        }
+        default: {
             //
             return;
+        }
     }
     // Заморозка
+
     request.fileId = file_id;
     client->send(ParserToJson(request));
 
     observer->editFile();
-    subject.Detach(observer);
 
-    if (subject.amountOfObservers() == 0) {
+    if (subjects[file_id].amountOfObservers() == 0) {
         subjects.erase(file_id);
     }
+
+    delete observer;
 }
 
 Server::ServerImpl::ServerImpl(uint32_t port, uint32_t queue_size) {
