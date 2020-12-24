@@ -25,6 +25,8 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::map<size_t, Subje
         }
         case CONNECT_TO_FILE: {
             file_id = request.fileId;   // logic fileId
+            std::cout << "file_id = " << file_id << std::endl;
+            std::cout << "subjects[file_id] = " << subjects[file_id].amountOfObservers() << std::endl;
             subject = subjects[file_id];
             observer.reset();
             observer = std::make_shared<Observer>(subject, client);
@@ -39,7 +41,8 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::map<size_t, Subje
             return;
     }
     // Заморозка
-    client->send(std::to_string(file_id));
+    request.fileId = file_id;
+    client->send(ParserToJson(request));
 
     observer->editFile();
     subject.Detach(observer);
