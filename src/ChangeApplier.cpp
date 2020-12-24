@@ -4,18 +4,19 @@
 #include "FileController/ChangeApplier.h"
 #include "FileController/Parser.h"
 #include "FileController/Handler.h"
+#include <memory>
 #include <utility>
 
 ChangeApplier::ChangeApplier(const Change &ch, std::shared_ptr<FileStorage> file) : ch_(ch), file_(std::move(file)){}
 
 bool ChangeApplier::applyChange() {
-    InsertSymbol *insertChar = new InsertSymbol(ch_, file_.get());
-    auto *deleteChar = new DeleteSymbol(ch_, file_.get());
+    auto insertChar = std::make_shared<InsertSymbol>(ch_, file_.get());
+    auto deleteChar = std::make_shared<DeleteSymbol>(ch_, file_.get());
     insertChar->SetNext(deleteChar);
     return selector(*insertChar, ch_);
 }
 
-Change ChangeApplier::getChange() {
+Change ChangeApplier::getChange() const {
     return ch_;
 }
 

@@ -4,7 +4,6 @@
 
 #include <FileController/TextUpDater.h>
 
-#include <memory>
 #include <algorithm>
 
 TextUpDater::TextUpDater(FileStorage* file, Change ch) {

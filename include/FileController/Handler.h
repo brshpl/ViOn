@@ -11,18 +11,18 @@
 #include <memory>
 class Handler {
 public:
-    virtual Handler *SetNext(Handler *handler) = 0;
+    virtual std::shared_ptr<Handler> SetNext(std::shared_ptr<Handler> handler) = 0;
     virtual bool Handle(Command request) = 0;
     virtual ~Handler(){};
 };
 
 class AbstractHandler : public Handler {
 private:
-    Handler *next_handler_;
+    std::shared_ptr<Handler> next_handler_;
 
 public:
     AbstractHandler(Change ch, FileStorage *file);
-    Handler *SetNext(Handler *handler) override;
+    std::shared_ptr<Handler> SetNext(std::shared_ptr<Handler> handler) override;
     bool Handle(Command request) override;
     ~AbstractHandler(){};
 

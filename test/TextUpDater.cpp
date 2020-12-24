@@ -24,56 +24,52 @@ bool operator==(const SymbolState &lhs, const SymbolState &rhs){
 class TestTextUpDater : public ::testing::Test{
 protected:
     virtual void SetUp(){
-        upDater = std::make_unique<TextUpDater>(file, ch);
+        upDater = TextUpDater(file_ptr, ch);
     }
     virtual void TearDown(){
     }
     Position pos = {0};
     Change ch = Change(INSERT_SYMBOL, 1, pos, 0, 'q');
     FileStorage file = FileStorage(1);
-    std::unique_ptr<TextUpDater> upDater;
+    TextUpDater upDater;
+    FileStorage *file_ptr = &file;
 };
 
 class TestInsertSymbol : public TestTextUpDater{
 protected:
     virtual void SetUp(){
-        insertChar = std::make_unique<InsertChar>(file, ch);
-        insertChar->insertSymbol();
+        insertChar = InsertChar(file_ptr, ch);
+        insertChar.insertSymbol();
     }
     virtual void TearDown(){
     }
-    std::unique_ptr<InsertChar> insertChar;
+    InsertChar insertChar;
 };
 
 class TestDeleteChar : public TestTextUpDater{
 protected:
     virtual void SetUp(){
-        Position pos = {1};
-        SymbolState symbol = {'q', true, 1};
-        auto iter = file.symbols.begin();
-        file.symbols.insert(iter, symbol);
-        file.symbols_length++;
         Change ch1 = Change(DELETE_SYMBOL, 1, pos, 0, 'q');
-        deleteChar = std::make_unique<DeleteChar>(file, ch1);
-        deleteChar->deleteSymbol();
+        deleteChar = DeleteChar(file_ptr, ch1);
+        deleteChar.deleteSymbol();
     }
-    std::unique_ptr<DeleteChar> deleteChar;
+    DeleteChar deleteChar;
 };
 
 TEST_F(TestTextUpDater, getChange){
-    EXPECT_EQ(upDater->getChange(), ch);
+    EXPECT_EQ(upDater.getChange(), ch);
 }
 
 TEST_F(TestTextUpDater, getFile){
-    EXPECT_EQ(upDater->getFile(), file);
+    EXPECT_EQ(upDater.getFile(), file);
 }
 
 TEST_F(TestInsertSymbol, insertSymbol){
-    EXPECT_EQ(insertChar->getFile().symbols.begin()->id, insertChar->getChange().newSymbolId);
+    EXPECT_EQ(insertChar.getFile().symbols.begin()->id, insertChar.getChange().newSymbolId);
 }
 
 TEST_F(TestDeleteChar, deleteSymbol){
-    EXPECT_EQ(deleteChar->getFile().symbols.begin()->is_visible, false);
+    EXPECT_EQ(deleteChar.getFile().symbols.begin()->is_visible, false);
 }
 
 

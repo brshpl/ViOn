@@ -23,6 +23,7 @@ protected:
 
 class InsertChar : public TextUpDater{
 public:
+    InsertChar() = default;
     explicit InsertChar(FileStorage* file, Change &ch);
     bool insertSymbol();
     ~InsertChar()= default;;
@@ -33,6 +34,7 @@ private:
 class DeleteChar : public TextUpDater{
 public:
     explicit DeleteChar(FileStorage* file, Change ch);
+    DeleteChar() = default;
     ~DeleteChar()= default;;
     bool deleteSymbol();
 };
