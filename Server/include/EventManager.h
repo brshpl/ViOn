@@ -13,15 +13,15 @@
 class IObserver {
 public:
     virtual ~IObserver() = default;
-    virtual void Update(const std::string& ch) = 0;
+    virtual void update(const std::string& ch) = 0;
 };
 
 
 class Subject {
 public:
-    void Attach(std::shared_ptr<IObserver> observer);
-    void Detach(std::shared_ptr<IObserver> observer);
-    void Notify(const std::string& change);
+    void attach(std::shared_ptr<IObserver> observer);
+    void detach(std::shared_ptr<IObserver> observer);
+    void notify(const std::string& change);
     void setChange(const Change& change);
     int amountOfObservers();
 
@@ -35,8 +35,8 @@ public:
     Observer(Subject& subject, std::shared_ptr<utils::Socket> sock);
     ~Observer() override;
 
-    void Update(const std::string& ch) override;
-    void RemoveMeFromTheList();
+    void update(const std::string& ch) override;
+    void removeMeFromTheList();
 
     void editFile();
 

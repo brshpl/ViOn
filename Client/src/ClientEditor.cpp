@@ -53,7 +53,9 @@ void ClientEditor::edit() {
         char change_c;
         std::cin >> change_c;
 
-        change = Change(INSERT_SYMBOL, 0, pos, 0, change_c);
+        Command cmd = (change_c == '#') ? CLOSE_CONNECT : INSERT_SYMBOL;
+
+        change = Change(cmd, 0, pos, 0, change_c);
 
         client_.sendChanges(change);
 
