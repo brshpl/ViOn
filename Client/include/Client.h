@@ -3,25 +3,25 @@
 
 #include <string>
 
+#include "Parser.h"
 #include "Socket.h"
 
 
 class Client {
 public:
+    ~Client();
+
     void connectToServer(const std::string& host, int port);
+    void closeConnect();
 
-    void createNewFile();
-    void connectToFile(size_t id, const std::string& pin);
+    size_t createNewFile();
+    size_t connectToFile(size_t id);
 
-//    void sendChanges(const Change& buf);
-//    Change recvChanges();
-    void sendChanges(const std::string& buf);
-    std::string recvChanges();
+    void sendChanges(const Change& ch);
+    Change recvChanges();
 
 private:
     utils::Socket client_sock_;
-
 };
-
 
 #endif  // VION_CLIENT_INCLUDE_CLIENT_H_

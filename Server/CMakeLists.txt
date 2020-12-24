@@ -13,6 +13,26 @@ set(SOCKET_LIB
 add_library(socket_lib STATIC ${SOCKET_LIB})
 target_include_directories(socket_lib PUBLIC ${SOCKET_PATH}/include)
 
+# Создаем статическую библиотеку
+set(FILECONTROLLER_PATH ../FileController)
+file(GLOB sources1
+        "../FileController/include/FileController/*.h"
+        "../FileController/src/*.cpp")
+#set(FILECONTROLLER_LIB
+#        "${FILECONTROLLER_PATH}/include/FileController/.h"
+#        "${FILECONTROLLER_PATH}/src/*.cpp")
+add_library(file_controller_lib STATIC ${sources1})
+target_include_directories(file_controller_lib PUBLIC ${FILECONTROLLER_PATH}/include)
+
+# Создаем статическую библиотеку Socket
+#set(PARSER_PATH ../Parser)
+#set(PARSER_LIB
+#        ${PARSER_PATH}/include/Parser.h
+#        ${PARSER_PATH}/src/Parser.cpp)
+#add_library(parser_lib STATIC ${PARSER_LIB})
+##add_subdirectory(../Parser)
+#target_include_directories(parser_lib PUBLIC ${PARSER_PATH}/include)
+
 include(FetchContent)
 
 FetchContent_Declare(json
@@ -38,6 +58,8 @@ add_executable(server ${sources})
 
 # Линкуем библиотеку Socket
 target_link_libraries(server PRIVATE socket_lib)
+target_link_libraries(server PRIVATE file_controller_lib)
+#target_link_libraries(server PRIVATE parser_lib)
 
 target_link_libraries(server PRIVATE nlohmann_json::nlohmann_json)
 

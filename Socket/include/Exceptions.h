@@ -63,6 +63,4 @@ namespace utils {
         explicit RcvError(const std::string& msg)
                 : SocketError(msg) {}
     };
-
-
 }  // namespace utils

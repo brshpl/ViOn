@@ -1,37 +1,54 @@
 #include <iostream>
 #include <thread>
 
+#include "Parser.h"
 #include "ServerImpl.h"
 
 
-void sendChanges(const std::string &buf, std::set<std::shared_ptr<utils::Socket>> &clients) {
-    for (const auto& client : clients) {
-        client->send(buf);
-    }
-}
+static size_t numberOfFilesCreated = 0;
 
-void handlerClient(std::shared_ptr<utils::Socket> client,
-                   std::set<std::shared_ptr<utils::Socket>> &clients) {
-    while (true) {
-        std::string change_str;
+void handlerClient(std::shared_ptr<utils::Socket> client, std::map<size_t, Subject>& subjects) {
+    Subject subject;
+    std::shared_ptr<Observer> observer = std::make_shared<Observer>(subject, client);
 
-        change_str = client->recv();
+    std::string request_str;
+    request_str = client->recv();
+    Change request = ParserFromJson(request_str);
 
-        //
-        std::cout << change_str << std::endl;
+    // Заморозка
+    size_t file_id = numberOfFilesCreated;
 
-        // Применение изменений к файлу на сервере
-
-        if (change_str == "#") {
-            client->send(change_str);
-            clients.erase(client);
-            client->close();
-
-            std::cerr << "Client " << client->getSocket() << " disconnected." << std::endl;
+    switch (request.cmd) {
+        case CREATE_FILE: {
+            subjects.insert(std::pair<size_t, Subject>(numberOfFilesCreated++, subject));
             break;
         }
+        case CONNECT_TO_FILE: {
+            file_id = request.fileId;   // logic fileId
+            std::cout << "file_id = " << file_id << std::endl;
+            std::cout << "subjects[file_id] = " << subjects[file_id].amountOfObservers() << std::endl;
+            subject = subjects[file_id];
+            observer.reset();
+            observer = std::make_shared<Observer>(subject, client);
+            break;
+        }
+        case CLOSE_CONNECT:
+            //
+            return;
+            break;
+        default:
+            //
+            return;
+    }
+    // Заморозка
+    request.fileId = file_id;
+    client->send(ParserToJson(request));
 
-        sendChanges(change_str, clients);
+    observer->editFile();
+    subject.Detach(observer);
+
+    if (subject.amountOfObservers() == 0) {
+        subjects.erase(file_id);
     }
 }
 
@@ -42,16 +59,12 @@ Server::ServerImpl::ServerImpl(uint32_t port, uint32_t queue_size) {
 void Server::ServerImpl::startImpl() {
     while (true) {
         std::shared_ptr<utils::Socket> client = server_sock_.accept();
-
         client->setRcvTimeout(600);
 
-        std::thread th_client(handlerClient,
-                              client, std::ref(clients_));
+        std::thread th_client(handlerClient, client, std::ref(subjects_));
         th_client.detach();
 
-        clients_.insert(client);
-
-        if (clients_.size() == 100) {
+        if (subjects_.size() == 100) {
             break;
         }
     }
