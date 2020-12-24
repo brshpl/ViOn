@@ -10,18 +10,20 @@
 
 class Interpretator {
 public:
-    Interpretator(): changeCreator()
+    Interpretator(): changeCreator(),
+    buffer()
     {}
 
-    explicit Interpretator(const ChangeCreator& _changeCreator):
-            changeCreator(_changeCreator)
+    Interpretator(const ChangeCreator& _changeCreator):
+    changeCreator(_changeCreator),
+    buffer()
     {}
 
-    Change Interpret(char &curChar, Mode &mode,
-                     Position &position);
+    Change Interpret(char &curChar, const Mode &mode,
+                     const Position &position);
 private:
     ChangeCreator changeCreator;
-    static std::string buffer;
+    std::string buffer;
 };
 
-#endif //  INTERPRETATOR_H 
+#endif //  INTERPRETATOR_H

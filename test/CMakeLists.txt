@@ -1,9 +1,9 @@
 include_directories("${PROJECT_SOURCE_DIR}/include/TextEditor")
 
-file(GLOB sources "${PROJECT_SOURCE_DIR}/src/*.cpp")
+file(GLOB sources "${PROJECT_SOURCE_DIR}/src/.cpp")
 list(REMOVE_ITEM sources "${PROJECT_SOURCE_DIR}/src/main.cpp")
 
-file(GLOB tests "${PROJECT_SOURCE_DIR}/test/*.cpp")
+file(GLOB tests "${PROJECT_SOURCE_DIR}/test/.cpp")
 list(REMOVE_ITEM tests "${PROJECT_SOURCE_DIR}/test/main.cpp")
 
 foreach(file ${tests})
@@ -16,3 +16,12 @@ foreach(file ${tests})
     target_link_libraries("${name}_tests" gtest_main)
     add_test(NAME ${name} COMMAND "${name}_tests")
 endforeach()
+
+file(GLOB testingFiles
+        "${PROJECT_SOURCE_DIR}/include/TextEditor/.h"
+        "${PROJECT_SOURCE_DIR}/src/.cpp"
+        "${PROJECT_SOURCE_DIR}/test/*.cpp")
+list(REMOVE_ITEM sources "${PROJECT_SOURCE_DIR}/src/main.cpp")
+add_executable(AllGTests ${testingFiles})
+target_link_libraries(AllGTests gtest_main)
+add_test(NAME AllGTests COMMAND AllGTests)

@@ -56,6 +56,6 @@ Mode TextEditor::getMode() {
     return mode_;
 }
 
-void TextEditor::update(const Text& text) {
+void TextEditor::update(Text& text) {
     view_.setText(text);
 }

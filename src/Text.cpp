@@ -3,3 +3,7 @@
 //
 
 #include "Text.h"
+
+std::vector<Symbol> Text::getText() {
+    return text_;
+}

@@ -12,13 +12,14 @@ void View::deleteChar(char ch) {}
 
 void View::show(const std::string &text) {}
 
-std::string_view View::getStringFromText() {
-    auto *str = new std::string;
-    std::shared_ptr<std::string> strPtr(str);
-    for(auto elem : text_) {
-        strPtr->insert(strPtr->length(), 1, elem.symbol);
+std::string_view& View::getStringFromText() {
+    std::string str;
+    std::vector<Symbol> text = text_.getText();
+    for(auto elem : text) {
+        str += elem.symbol;
     }
-    return strPtr;
+    static std::string_view result(str);
+    return result;
 }
 
 void View::setText(Text &text) {

@@ -11,8 +11,10 @@
 
 class Text {
 public:
+    Text() = default;
     explicit Text(std::vector<Symbol> text)
     : text_ {std::move(text)} {}
+    std::vector<Symbol> getText();
 
 private:
     std::vector<Symbol> text_;

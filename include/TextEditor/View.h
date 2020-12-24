@@ -12,9 +12,9 @@ public:
     void insertChar(char ch);
     void deleteChar(char ch);
     void setText(Text &text);
-    std::string_view getStringFromText();
+    std::string_view& getStringFromText();
 private:
 
-    std::vector<Symbol> text_;
+    Text text_;
     void show(const std::string& text);
 };

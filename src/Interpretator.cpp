@@ -1,6 +1,10 @@
-// Class must be implemented by Stas Yakovitskiy
 #include "Interpretator.h"
 
-Change Interpretator::Interpret(char &curChar, Mode &mode, Position &position) {
-    return Change();
+Change Interpretator::Interpret(char &curChar, const Mode &mode, const Position &position) {
+    buffer += curChar;
+    Change change = changeCreator.CreateChange(mode, position, buffer);
+    if (change.cmd != NOTHING) {
+        buffer.clear();
+    }
+    return change;
 }

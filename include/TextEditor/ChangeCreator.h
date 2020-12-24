@@ -11,10 +11,10 @@ class ChangeCreator {
 public:
     ChangeCreator() = default;
     ~ChangeCreator() = default;
-    Change virtual CreateChange(Mode &mode,
-                                Position &position, std::string &buffer);
-    bool virtual CanCreate(Mode &mode,
-                           Position &position, std::string &buffer);
+    Change virtual CreateChange(const Mode &mode,
+                                const Position &position, const std::string_view &buffer);
+    bool virtual CanCreate(const Mode &mode,
+                           const Position &position, const std::string_view &buffer);
     void AddChangeCreator(ChangeCreator*);
 private:
     std::vector<ChangeCreator*> changeCreators;
@@ -22,50 +22,50 @@ private:
 
 class ChangeCreatorInsertSubString : public ChangeCreator {
 public:
-    Change CreateChange(Mode &mode,
-                        Position &position, std::string &buffer) override;
-    bool CanCreate(Mode &mode,
-                   Position &position, std::string &buffer) override;
+    Change CreateChange(const Mode &mode,
+                        const Position &position, const std::string_view &buffer) override;
+    bool CanCreate(const Mode &mode,
+                   const Position &position, const std::string_view &buffer) override;
 };
 
-class ChangeCreatorDeleteSymbol : virtual public ChangeCreator {
+class ChangeCreatorDeleteSymbol : public ChangeCreator {
 public:
-    Change CreateChange(Mode &mode,
-                        Position &position, std::string &buffer) override;
-    bool CanCreate(Mode &mode,
-                   Position &position, std::string &buffer) override;
+    Change CreateChange(const Mode &mode,
+                        const Position &position, const std::string_view &buffer) override;
+    bool CanCreate(const Mode &mode,
+                   const Position &position, const std::string_view &buffer) override;
 };
 
-class ChangeCreatorDeleteString : virtual public ChangeCreator {
+class ChangeCreatorDeleteString : public ChangeCreator {
 public:
-    Change CreateChange(Mode &mode,
-                        Position &position, std::string &buffer) override;
-    bool CanCreate(Mode &mode,
-                   Position &position, std::string &buffer) override;
+    Change CreateChange(const Mode &mode,
+                        const Position &position, const std::string_view &buffer) override;
+    bool CanCreate(const Mode &mode,
+                   const Position &position, const std::string_view &buffer) override;
 };
 
-class ChangeCreatorCreateFile : virtual public ChangeCreator {
+class ChangeCreatorCreateFile : public ChangeCreator {
 public:
-    Change CreateChange(Mode &mode,
-                        Position &position, std::string &buffer) override;
-    bool CanCreate(Mode &mode,
-                   Position &position, std::string &buffer) override;
+    Change CreateChange(const Mode &mode,
+                        const Position &position, const std::string_view &buffer) override;
+    bool CanCreate(const Mode &mode,
+                   const Position &position, const std::string_view &buffer) override;
 };
 
-class ChangeCreatorDeleteFile : virtual public ChangeCreator {
+class ChangeCreatorDeleteFile : public ChangeCreator {
 public:
-    Change CreateChange(Mode &mode,
-                        Position &position, std::string &buffer) override;
-    bool CanCreate(Mode &mode,
-                   Position &position, std::string &buffer) override;
+    Change CreateChange(const Mode &mode,
+                        const Position &position, const std::string_view &buffer) override;
+    bool CanCreate(const Mode &mode,
+                   const Position &position, const std::string_view &buffer) override;
 };
 
-class ChangeCreatorMoveCursor : virtual public ChangeCreator {
+class ChangeCreatorMoveCursor : public ChangeCreator {
 public:
-    Change CreateChange(Mode &mode,
-                        Position &position, std::string &buffer) override;
-    bool CanCreate(Mode &mode,
-                   Position &position, std::string &buffer) override;
+    Change CreateChange(const Mode &mode,
+                        const Position &position, const std::string_view &buffer) override;
+    bool CanCreate(const Mode &mode,
+                   const Position &position, const std::string_view &buffer) override;
 };
 
 #endif // CHANGE_CREATOR_H
