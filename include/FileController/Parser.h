@@ -20,23 +20,9 @@ class ParserForEditor : public Parser{
 public:
     ParserForEditor(Change ch, FileStorage file);
     ~ParserForEditor() override{};
-    std::vector<Symbol> parse();
+    std::vector<std::vector<Symbol>> parse();
 private:
     FileStorage file_;
 };
 
-//вынести из библиотеки
-//class ParserToJson : public Parser{
-//public:
-//    explicit ParserToJson(Change ch);
-//    json parse();
-//};
-//
-//class ParserFromJson{
-//public:
-//    explicit ParserFromJson(const json &j);
-//    Change parse();
-//private:
-//    json j_;
-//};
 #endif //VION_PARSER_H

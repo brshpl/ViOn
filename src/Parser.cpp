@@ -13,46 +13,21 @@ ParserForEditor::ParserForEditor(Change ch, FileStorage file) : Parser(ch){
     file_ = std::move(file);
 };
 
-std::vector<Symbol> ParserForEditor::parse() {
-    std::vector<Symbol> file;
+std::vector<std::vector<Symbol>> ParserForEditor::parse() {
+    std::vector<std::vector<Symbol>> file;
     file.reserve(file_.symbols.size());
     Symbol text{};
+    std::vector<Symbol> string;
     for (auto & symbol : file_.symbols){
         if (symbol.is_visible){
             text.symbol = symbol.symbol;
             text.symbol_id =symbol.id;
-            file.push_back(text);
+            string.push_back(text);
+        }
+        if (symbol.symbol == '\n'){
+            file.push_back(string);
+            string.clear();
         }
     }
     return file;
 }
-//Не должно быть в своей библиотеке
-//ParserToJson::ParserToJson(Change ch) : Parser(ch){}
-//
-//json ParserToJson::parse() {
-//    json j =  {{"cmd", ch_.cmd},
-//               {"fileId", ch_.fileId},
-//               {"position",{
-//                               {"symbolId", ch_.position.symbolId}}
-//               },
-//               {"newSymbolId", ch_.newSymbolId},
-//               {"symbol", ch_.symbol}};
-//    return j;
-//}
-//
-//ParserFromJson::ParserFromJson(const json &j) {
-//    j_ = j;
-//}
-//
-//Change ParserFromJson::parse() {
-//    Change m_ch {};
-//    m_ch.cmd = j_["cmd"].get<Command>();
-//    m_ch.fileId = j_["fileId"].get<size_t>();
-//    m_ch.position = Position{j_["position"]["symbolId"].get<size_t>()};
-//    m_ch.newSymbolId = j_["newSymbolId"].get<size_t>();
-//    m_ch.symbol = j_["symbol"].get<char>();
-//    return m_ch;
-//}
-//
-
-

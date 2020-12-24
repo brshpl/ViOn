@@ -17,7 +17,7 @@ public:
     FileStorage getFile();
 
 protected:
-    FileStorage* file_;
+    FileStorage* file_{};
     Change ch_;
 };
 
@@ -39,26 +39,6 @@ public:
     bool deleteSymbol();
 };
 
-class InsertString : public TextUpDater{
-public:
-    explicit InsertString();
-    ~InsertString(){};
-    InsertChar symbol;
-private:
-    std::string getString();
-    void insertString();
-};
-
-
-class DeleteString : public TextUpDater{
-public:
-    DeleteString();
-    ~DeleteString();
-    DeleteChar symbol;
-private:
-    std::string getString();
-    void deleteString();
-};
 
 
 #endif //VION_TEXTUPDATER_H
