@@ -15,6 +15,7 @@ private:
     int port_;
     std::string host_;
     Client client_;
+    std::shared_ptr<FileStorage> file_;
 };
 
 #endif //CLIENT_CLIENTEDITOR_H

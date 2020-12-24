@@ -42,13 +42,14 @@ struct Change{
 
 //Структуры для хранения файла
 struct SymbolState{
+    SymbolState(char symbol, bool is_visible, size_t id) : symbol(symbol), is_visible(is_visible), id(id) {}
     char symbol;
     bool is_visible;
     size_t id;
 };
 
 struct FileStorage{
-    FileStorage(): symbols(0), symbols_length(0), file_id(0) {}
+    FileStorage(): symbols_length(0), file_id(0) { symbols.push_back(SymbolState('\0', true, 0)); }
     explicit FileStorage(size_t file_id);
     std::list<SymbolState> symbols;
     size_t symbols_length;
