@@ -26,3 +26,17 @@ Change ParserFromJson(const std::string& change) {
     m_ch.symbol = j["symbol"].get<char>();
     return m_ch;
 }
+
+std::string ParserToJson(const FileWorker& worker) {
+    json j = {{"cmd", worker.cmd},
+              {"fileId", worker.fileId}};
+    return j.dump();
+}
+
+FileWorker ParserFromJsonWorkers(const std::string& worker){
+    json j = json::parse(worker);
+    FileWorker w {};
+    w.cmd = j["cmd"].get<Command>();
+    w.fileId = j["fileId"].get<size_t>();
+    return w;
+}
