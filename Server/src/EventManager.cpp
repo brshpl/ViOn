@@ -43,9 +43,9 @@ void Observer::editFile() {
         std::string change_str;
         change_str = sock_->recv();
         change = ParserFromJson(change_str);
-        subject_.setChange(change);
+        if (change.cmd != CLOSE_CONNECT) { subject_.setChange(change); }
+        else { sock_->send(change_str); }
     } while (change.cmd != CLOSE_CONNECT);
 }
 Observer::~Observer() {
-    removeMeFromTheList();
 }

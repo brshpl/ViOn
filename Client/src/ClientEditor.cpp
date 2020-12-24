@@ -1,6 +1,8 @@
 #include <thread>
 #include <utility>
 
+#include <ncurses.h>
+
 #include "ClientEditor.h"
 
 
@@ -52,6 +54,8 @@ void ClientEditor::edit() {
     Position pos = {0};
     do {
         char change_c;
+
+//        change_c = getch();
         std::cin >> change_c;
 
         Command cmd = (change_c == '#') ? CLOSE_CONNECT : INSERT_SYMBOL;

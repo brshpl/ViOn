@@ -18,14 +18,10 @@ enum Command{
 };
 
 struct Position {
-//    Position(): stringId(0), symbolId(0) {}
-//    Position(size_t _stringId, size_t _symbolId):
-//            stringId(_stringId), symbolId(_symbolId) {}
     Position(): symbolId(0) {}
     Position(size_t _symbolId):
             symbolId(_symbolId) {}
     ~Position() = default;
-//    size_t  stringId;
     size_t symbolId;
 };
 
@@ -51,23 +47,25 @@ struct SymbolState{
     size_t id;
 };
 
-//Для дальнейшего развития системы
-//struct StringState{
-//    std::vector<SymbolState> symbols;
-//    std::size_t id;
-//};
-
 struct FileStorage{
     FileStorage(): symbols(0), symbols_length(0), file_id(0) {}
     explicit FileStorage(size_t file_id);
     std::list<SymbolState> symbols;
     size_t symbols_length;
     size_t file_id;
-//    size_t strings_length;
 };
 
 struct Symbol{
     char symbol;
     size_t symbol_id;
 };
+
+struct FileWorker{
+    FileWorker(): cmd(ERROR), fileId(0){}
+    FileWorker(Command cmd_, size_t fileId_) : cmd(cmd_), fileId(fileId_) {}
+    ~FileWorker() = default;
+    Command cmd;
+    size_t fileId;
+};
+
 #endif //VION_FILESTORAGE_H
