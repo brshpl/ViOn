@@ -39,17 +39,12 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::map<size_t, Subje
     }
     mtx.unlock();
 
-//    auto* observer = new Observer(subjects[file_id], client);
     std::shared_ptr<Observer> observer = std::make_shared<Observer>(subjects[file_id], client);
 
     request.fileId = file_id;
     client->send(ParserToJson(request));
 
-    std::cout << "client->send " << &subjects[file_id] << std::endl;
-
     observer->editFile();
-//    observer->removeMeFromTheList(); Ошибка = при отключении клиента он не удаляется из подписок
-//    delete observer;
 
     if (subjects[file_id].amountOfObservers() == 0) {
         subjects.erase(file_id);
