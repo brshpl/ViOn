@@ -31,7 +31,7 @@ struct Change {
 
     Change(const char& _symbol, const Position& _position):
     cmd(INSERT_SYMBOL), fileId(0), position(_position), symbol(_symbol) {}
-
+ // 123312132313
     ~Change() = default;
     Command cmd;
     size_t fileId;
