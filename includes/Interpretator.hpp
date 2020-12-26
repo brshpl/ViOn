@@ -3,10 +3,10 @@
 #define INTERPRETATOR_H
 
 #include <string>
-#include "Message.h"
-#include "Mode.h"
-#include "Position.h"
-#include "ChangeCreator.h"
+#include "Message.hpp"
+#include "Mode.hpp"
+#include "Position.hpp"
+#include "ChangeCreator.hpp"
 
 class Interpretator {
 public:

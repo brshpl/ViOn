@@ -1,4 +1,4 @@
-#include "Interpretator.h"
+#include "Interpretator.hpp"
 
 Change Interpretator::Interpret(char &curChar, const Mode &mode, const Position &position) {
     buffer += curChar;

@@ -1,9 +1,9 @@
-#include "Interpretator.h"
-#include "Message.h"
-#include "Mode.h"
-#include "Position.h"
+#include "Interpretator.hpp"
+#include "Message.hpp"
+#include "Mode.hpp"
+#include "Position.hpp"
 #include <gtest/gtest.h>
-#include "ChangeCreator.h"
+#include "ChangeCreator.hpp"
 
 bool operator==(const Change &lhs, const Change &rhs) {
     return std::tie(lhs.position.symbolId,
@@ -253,4 +253,3 @@ int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
-

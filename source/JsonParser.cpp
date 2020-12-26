@@ -1,10 +1,10 @@
-#include "JsonParser.h"
+#include "JsonParser.hpp"
 #include "json.hpp"
 
 // for convenience
 using json = nlohmann::json;
 
-std::string_view JsonParser::ParseToJson(const Change& ch) {
+std::string JsonParser::ParseToJson(const Change& ch) {
     json j =  {{"cmd", ch.cmd},
                {"fileId", ch.fileId},
                {"position",{

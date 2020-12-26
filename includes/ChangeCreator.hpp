@@ -1,9 +1,9 @@
 #ifndef CHANGE_CREATOR_H
 #define CHANGE_CREATOR_H
 
-#include "Message.h"
-#include "Mode.h"
-#include "Position.h"
+#include "Message.hpp"
+#include "Mode.hpp"
+#include "Position.hpp"
 #include <string>
 #include <vector>
 

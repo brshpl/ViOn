@@ -2,7 +2,7 @@
 #define MESSAGE_H
 
 #include <cstdlib>
-#include "Position.h"
+#include "Position.hpp"
 
 enum Command {
     NOTHING,
