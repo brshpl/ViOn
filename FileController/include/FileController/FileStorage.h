@@ -1,13 +1,11 @@
-//
-// Created by Dashik on 10.12.2020.
-//
-
 #ifndef VION_FILESTORAGE_H
 #define VION_FILESTORAGE_H
+
 #include <iostream>
 #include <list>
 #include <vector>
-//Структура для передачи данных (потом удалить)
+
+///--------
 enum Command{
     ERROR,
     INSERT_SYMBOL,
@@ -40,8 +38,9 @@ struct Change{
     size_t newSymbolId;
     char symbol;
 };
+///--------
 
-//Структуры для хранения файла
+
 struct SymbolState{
     SymbolState(char symbol, bool is_visible, size_t id) : symbol(symbol), is_visible(is_visible), id(id) {}
     char symbol;
@@ -61,12 +60,4 @@ struct Symbol{
     size_t symbol_id;
 };
 
-struct FileWorker{
-    FileWorker(): cmd(ERROR), fileId(0){}
-    FileWorker(Command cmd_, size_t fileId_) : cmd(cmd_), fileId(fileId_) {}
-    ~FileWorker() = default;
-    Command cmd;
-    size_t fileId;
-};
-
-#endif //VION_FILESTORAGE_H
+#endif  // VION_FILESTORAGE_H

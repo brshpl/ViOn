@@ -1,14 +1,7 @@
-//
-// Created by Dashik on 23.12.2020.
-//
-
 #include "FileController/Handler.h"
 
 std::shared_ptr<Handler> AbstractHandler::SetNext(std::shared_ptr<Handler> handler) {
     this->next_handler_ = handler;
-    // Возврат обработчика отсюда позволит связать обработчики простым способом,
-    // вот так:
-    // $monkey->setNext($squirrel)->setNext($dog);
     return handler;
 }
 

@@ -1,44 +1,38 @@
-//
-// Created by Dashik on 12.11.2020.
-//
-
 #ifndef VION_TEXTUPDATER_H
 #define VION_TEXTUPDATER_H
-#include <iostream>
-#include <memory>
-#include "TextManager.h"
+
+#include "FileController/FileStorage.h"
+
 
 class TextUpDater {
 public:
-    TextUpDater()= default;
+    TextUpDater() = default;
     TextUpDater(FileStorage* file_, Change ch);
-    ~TextUpDater()= default;
+    ~TextUpDater() = default;
     Change getChange();
     FileStorage getFile();
 
 protected:
-    FileStorage* file_{};
+    FileStorage* file_ {};
     Change ch_;
 };
 
-class InsertChar : public TextUpDater{
+class InsertChar : public TextUpDater {
 public:
     InsertChar() = default;
     explicit InsertChar(FileStorage* file, Change &ch);
     bool insertSymbol();
-    ~InsertChar()= default;;
+    ~InsertChar() = default;;
 private:
     Change addNewId();
 };
 
-class DeleteChar : public TextUpDater{
+class DeleteChar : public TextUpDater {
 public:
     explicit DeleteChar(FileStorage* file, Change ch);
     DeleteChar() = default;
-    ~DeleteChar()= default;;
+    ~DeleteChar() = default;;
     bool deleteSymbol();
 };
 
-
-
-#endif //VION_TEXTUPDATER_H
+#endif  // VION_TEXTUPDATER_H

@@ -1,19 +1,17 @@
-//
-// Created by Dashik on 12.11.2020.
-//
-
 #ifndef VION_TEXTMANAGER_H
 #define VION_TEXTMANAGER_H
-#include "FileController/FileStorage.h"
-#include "FileController/Parser.h"
+
 #include <iostream>
 #include <vector>
+
+#include "FileController/FileStorage.h"
+#include "FileController/Parser.h"
 
 
 class TextManager{
 public:
-    TextManager()= default;
-    ~TextManager()= default;;
+    TextManager() = default;
+    ~TextManager() = default;;
 };
 
 class TextManagerClient : public TextManager{
@@ -26,4 +24,5 @@ public:
 //    FileStorage file_;
 //    Change ch_;
 };
-#endif //VION_TEXTMANAGER_H
+
+#endif  // VION_TEXTMANAGER_H
