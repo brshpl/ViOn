@@ -18,20 +18,13 @@ bool ChangeCreator::CanCreate(const Mode &mode,
 
 Change ChangeCreator::CreateChange(const Mode &mode,
                                    const Position &position, const std::string_view &buffer) {
-    try {
-        for (auto creator: changeCreators) {
-            if (creator->CanCreate(mode, position, buffer)) {
-                return creator->CreateChange(mode, position, buffer);
-            }
+    for (auto creator: changeCreators) {
+        if (creator->CanCreate(mode, position, buffer)) {
+            return creator->CreateChange(mode, position, buffer);
         }
-        throw "Can't parse this data\n";
     }
-    catch (const char* msg) {
-        std::cout << msg << std::endl;
-        Change chg;
-        chg.cmd = NOTHING;
-        return chg;
-    }
+    Change chg;
+    return chg;
 }
 
 bool ChangeCreatorInsertSubString::CanCreate(const Mode &mode,
