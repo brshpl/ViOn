@@ -11,12 +11,17 @@ find_package(Threads REQUIRED)
 include_directories("${GTEST_INCLUDE_DIRS}")
 include_directories(source)
 include_directories(includes)
+include_directories(nlohmann)
 
-add_executable(tests.out tests/tests.cpp
-        includes/ChangeCreator.h
-        source/ChangeCreator.cpp source/Interpretator.cpp includes/Buffer.h)
+add_executable(tests.out
+        nlohmann/json.hpp
+        source/JsonParser.cpp
+        tests/tests.cpp
+        source/ChangeCreator.cpp 
+        source/Interpretator.cpp)
 
 target_include_directories(tests.out PUBLIC includes)
+target_include_directories(tests.out PUBLIC nlohmann)
 
 target_link_libraries(tests.out
         ${GTEST_LIBRARIES}

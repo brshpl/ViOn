@@ -12,7 +12,7 @@ enum Command {
     MOVE_LEFT,
     CREATE_FILE,
     DELETE_FILE,
-    INSERT_SUB_STRING,
+    INSERT_SYMBOL,
     DELETE_STRING,
     DELETE_SYMBOL,
     CHANGE_MODE
@@ -20,9 +20,14 @@ enum Command {
 
 struct Change {
     Change(): cmd(NOTHING), fileId(0), position({0, 0}), symbol(0)  {}
+
     Change(Command& _cmd, size_t& _fileId,
            Position& _position, char &_symbol):
            cmd(_cmd), fileId(_fileId), position(_position), symbol(_symbol) {}
+
+    explicit Change(const char& _symbol, const Position _position):
+    cmd(INSERT_SYMBOL), fileId(0), position(_position), symbol(_symbol) {}
+
     ~Change() = default;
     Command cmd;
     size_t fileId;

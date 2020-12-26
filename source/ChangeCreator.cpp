@@ -47,7 +47,7 @@ bool ChangeCreatorInsertSubString::CanCreate(const Mode &mode,
 Change ChangeCreatorInsertSubString::CreateChange(const Mode &mode,
                                                   const Position &position, const std::string_view &buffer) {
     Change chg;
-    chg.cmd = INSERT_SUB_STRING;
+    chg.cmd = INSERT_SYMBOL;
     chg.fileId = 0;
     chg.position = position;
     chg.symbol = buffer.back();

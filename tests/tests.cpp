@@ -46,7 +46,7 @@ TEST(ChangeCreator, CreateChange) {
     Position testPosition(1, 1);
     std::string testString = "1";
     size_t testFileId = 0;
-    Command testCommand = INSERT_SUB_STRING;
+    Command testCommand = INSERT_SYMBOL;
     Change expectedChange(testCommand, testFileId, testPosition, testString[0]);
     Change gotChange = parser.CreateChange(testMode, testPosition, testString);
     EXPECT_EQ(expectedChange, gotChange);
@@ -66,7 +66,7 @@ TEST(ChangeCreatorInsertSubString, CreateChange) {
     Position testPosition(1, 1);
     std::string testBuffer = "1";
     size_t testFileId = 0;
-    Command testCommand = INSERT_SUB_STRING;
+    Command testCommand = INSERT_SYMBOL;
     Change expectedChange(testCommand, testFileId, testPosition, testBuffer.back());
     Change gotChange = parseInsertSubString.CreateChange(testMode, testPosition, testBuffer);
     EXPECT_EQ(expectedChange, gotChange);
@@ -225,7 +225,7 @@ TEST(Interpretator, Interpret_Insertation_mode) {
     size_t testFileId = 0;
     Mode testMode = INSERTATION_MODE;
     Position testPosition(0, 0);
-    Command testCommand = INSERT_SUB_STRING;
+    Command testCommand = INSERT_SYMBOL;
     char testSymblol = '1';
     Change expectedChange(testCommand, testFileId, testPosition, testSymblol);
     Change gotChange = interpretator.Interpret(testSymblol, testMode, testPosition);
