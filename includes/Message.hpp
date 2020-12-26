@@ -26,13 +26,14 @@ struct Change {
     Change(): cmd(NOTHING), fileId(0), position({0, 0}), symbol(0)  {}
 
     Change(Command& _cmd, size_t& _fileId,
-           Position& _position, char& _symbol):
+           Position& _position, char &_symbol):
            cmd(_cmd), fileId(_fileId), position(_position), symbol(_symbol) {}
 
-    Change(const char& _symbol, const Position& _position):
+    explicit Change(const char& _symbol, const Position _position):
     cmd(INSERT_SYMBOL), fileId(0), position(_position), symbol(_symbol) {}
- // 123312132313
+
     ~Change() = default;
+
     Command cmd;
     size_t fileId;
     Position position;
