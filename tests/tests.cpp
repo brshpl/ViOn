@@ -258,8 +258,8 @@ TEST(JsonParser, ParseToJson) {
         {"cmd", testChg.cmd},
         {"fileId", testChg.fileId},
         {"position", {
-            {"SymbolId", testChg.position.symbolId},
-            {"StringId", testChg.position.stringId}
+            {"symbolId", testChg.position.symbolId},
+            {"stringId", testChg.position.stringId}
             }
         },
         {"symbol", testChg.symbol}

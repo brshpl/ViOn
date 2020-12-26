@@ -10,8 +10,8 @@ std::string JsonParser::ParseToJson(const Change& ch) {
             {"cmd", ch.cmd},
             {"fileId", ch.fileId},
             {"position", {
-                {"SymbolId", ch.position.symbolId},
-                {"StringId", ch.position.stringId}
+                {"symbolId", ch.position.symbolId},
+                {"stringId", ch.position.stringId}
                 }
             },
             {"symbol", ch.symbol}
@@ -21,7 +21,7 @@ std::string JsonParser::ParseToJson(const Change& ch) {
 
 Change JsonParser::ParseFromJson(const std::string_view& change) {
     json j = json::parse(change);
-    Change result {};
+    Change result;
     result.cmd = j["cmd"].get<Command>();
     result.fileId = j["fileId"].get<size_t>();
     result.position = Position{j["position"]["symbolId"].get<size_t>(), j["position"]["stringId"].get<size_t>()};
