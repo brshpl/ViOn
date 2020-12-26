@@ -1,7 +1,3 @@
-//
-// Created by Dashik on 12.11.2020.
-//
-
 #ifndef VION_PARSER_H
 #define VION_PARSER_H
 
@@ -25,18 +21,4 @@ private:
     FileStorage file_;
 };
 
-//вынести из библиотеки
-//class ParserToJson : public Parser{
-//public:
-//    explicit ParserToJson(Change ch);
-//    json parse();
-//};
-//
-//class ParserFromJson{
-//public:
-//    explicit ParserFromJson(const json &j);
-//    Change parse();
-//private:
-//    json j_;
-//};
-#endif //VION_PARSER_H
+#endif  // VION_PARSER_H

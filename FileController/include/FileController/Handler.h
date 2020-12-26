@@ -1,14 +1,11 @@
-//
-// Created by Dashik on 23.12.2020.
-//
-
 #ifndef VION_HANDLER_H
 #define VION_HANDLER_H
-#include "FileController/Handler.h"
-#include "FileController/TextManager.h"
+
 #include "FileController/TextUpDater.h"
-#include <iostream>
+
 #include <memory>
+
+
 class Handler {
 public:
     virtual std::shared_ptr<Handler> SetNext(std::shared_ptr<Handler> handler) = 0;
@@ -47,5 +44,4 @@ public:
 
 bool selector(Handler &handler, Change ch);
 
-
-#endif //VION_HANDLER_H
+#endif  // VION_HANDLER_H

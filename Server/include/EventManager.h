@@ -1,7 +1,6 @@
 #ifndef VION_EVENTMANAGER_H
 #define VION_EVENTMANAGER_H
 
-
 #include <list>
 #include <string>
 #include <memory>

@@ -1,6 +1,3 @@
-//
-// Created by Dashik on 12.11.2020.
-//
 #include "FileController/ChangeApplier.h"
 #include "FileController/Parser.h"
 #include "FileController/Handler.h"
