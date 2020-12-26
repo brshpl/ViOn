@@ -19,16 +19,17 @@ public:
 
 class Subject {
 public:
-    Subject(): file_(std::make_shared<FileStorage>()) {}
-    void attach(std::shared_ptr<IObserver> observer);
-    void detach(std::shared_ptr<IObserver> observer);
+    Subject() = default;
+    explicit Subject(size_t file_id);
+    void attach(IObserver *observer);
+    void detach(IObserver *observer);
     void notify(const std::string& change);
     void setChange(const Change& change);
     std::shared_ptr<FileStorage> getFile();
     int amountOfObservers();
 
 private:
-    std::list<std::shared_ptr<IObserver>> observers_;
+    std::list<IObserver *> observers_;
     std::shared_ptr<FileStorage> file_;
 };
 
@@ -40,6 +41,7 @@ public:
     void update(const std::string& ch) override;
     void removeMeFromTheList();
 
+    void updateFile();
     void editFile();
 
 private:

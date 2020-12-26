@@ -14,7 +14,8 @@ enum Command{
     DELETE_SYMBOL,
     CREATE_FILE,
     CLOSE_CONNECT,
-    CONNECT_TO_FILE
+    CONNECT_TO_FILE,
+    NO_SUCH_FILE_ID,
 };
 
 struct Position {
@@ -49,8 +50,7 @@ struct SymbolState{
 };
 
 struct FileStorage{
-    FileStorage(): symbols_length(0), file_id(0) { symbols.push_back(SymbolState('\0', true, 0)); }
-    explicit FileStorage(size_t file_id);
+    explicit FileStorage(size_t file_id = 0);
     std::list<SymbolState> symbols;
     size_t symbols_length;
     size_t file_id;

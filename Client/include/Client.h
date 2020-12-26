@@ -15,7 +15,7 @@ public:
     void closeConnect();
 
     size_t createNewFile();
-    size_t connectToFile(size_t id);
+    ssize_t connectToFile(size_t id);
 
     void sendChanges(const Change& ch);
     Change recvChanges();

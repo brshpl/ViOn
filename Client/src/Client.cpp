@@ -16,6 +16,8 @@ void Client::closeConnect() {
     Position pos = {0};
     Change ch = Change(CLOSE_CONNECT, 0, pos, 0, '0');
     sendChanges(ch);
+    ch = recvChanges();
+    std::cout << ParserToJson(ch) << std::endl;
 }
 
 size_t Client::createNewFile() {
@@ -27,12 +29,15 @@ size_t Client::createNewFile() {
     return ch.fileId;
 }
 
-size_t Client::connectToFile(size_t id) {
+ssize_t Client::connectToFile(size_t id) {
     Position pos = {0};
     Change ch = Change(CONNECT_TO_FILE, id, pos, 0, '0');
-    sendChanges(ch);
 
+    sendChanges(ch);
     ch = recvChanges();
+    if (ch.cmd == NO_SUCH_FILE_ID) {
+        return -1;
+    }
     return ch.fileId;
 }
 
