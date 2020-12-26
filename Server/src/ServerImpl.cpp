@@ -15,7 +15,6 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<siz
 
     size_t file_id;
 
-
     std::shared_lock<std::shared_mutex> s_lock(mtx, std::defer_lock);
     switch (request.cmd) {
         case CREATE_FILE: {
@@ -49,13 +48,13 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<siz
     request.fileId = file_id;
     client->send(ParserToJson(request));
 
-    std::shared_ptr<Observer> observer = std::make_shared<Observer>(subjects[file_id], client);
+    auto* observer = new Observer(subjects[file_id], client);
     if (s_lock) s_lock.unlock();
 
     observer->updateFile();
     observer->editFile();
-    subjects[file_id].detach(std::move(observer));
-//    observer->removeMeFromTheList();
+    observer->removeMeFromTheList();
+    delete observer;
 
     if (subjects[file_id].amountOfObservers() == 0) {
         std::unique_lock<std::shared_mutex> u_lock(mtx);

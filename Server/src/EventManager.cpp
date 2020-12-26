@@ -8,10 +8,10 @@
 static std::shared_mutex mtx;
 
 Subject::Subject(size_t file_id) : file_(std::make_shared<FileStorage>(file_id)) {}
-void Subject::attach(std::shared_ptr<IObserver> observer) {
+void Subject::attach(IObserver *observer) {
     observers_.push_back(observer);
 }
-void Subject::detach(std::shared_ptr<IObserver> observer) {
+void Subject::detach(IObserver *observer) {
     observers_.remove(observer);
 }
 void Subject::notify(const std::string& change) {
@@ -52,13 +52,13 @@ std::shared_ptr<FileStorage> Subject::getFile() {
 
 
 Observer::Observer(Subject &subject, std::shared_ptr<utils::Socket> sock) : subject_(subject), sock_(sock) {
-    this->subject_.attach(std::shared_ptr<IObserver>(this));
+    this->subject_.attach(this);
 }
 void Observer::update(const std::string& change) {
     sock_->send(change);
 }
 void Observer::removeMeFromTheList() {
-    subject_.detach(std::shared_ptr<IObserver>(this));
+    subject_.detach(this);
 }
 void Observer::updateFile() {
     std::shared_lock<std::shared_mutex> lock(mtx);
