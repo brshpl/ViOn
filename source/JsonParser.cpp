@@ -24,7 +24,8 @@ Change JsonParser::ParseFromJson(const std::string_view& change) {
     Change result;
     result.cmd = j["cmd"].get<Command>();
     result.fileId = j["fileId"].get<size_t>();
-    result.position = Position{j["position"]["symbolId"].get<size_t>(), j["position"]["stringId"].get<size_t>()};
+    result.position = Position{j["position"]["symbolId"].get<size_t>(),
+                               j["position"]["stringId"].get<size_t>()};
     result.symbol = j["symbol"].get<char>();
     return result;
 }

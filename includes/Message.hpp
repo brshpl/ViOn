@@ -6,6 +6,7 @@
 
 enum Command {
     NOTHING,
+    ERROR,
     MOVE_UP,
     MOVE_DOWN,
     MOVE_RIGHT,
@@ -15,7 +16,10 @@ enum Command {
     INSERT_SYMBOL,
     DELETE_STRING,
     DELETE_SYMBOL,
-    CHANGE_MODE
+    CHANGE_MODE,
+    CLOSE_CONNECT,
+    CONNECT_TO_FILE,
+    NO_SUCH_FILE_ID
 };
 
 struct Change {
@@ -29,6 +33,7 @@ struct Change {
     cmd(INSERT_SYMBOL), fileId(0), position(_position), symbol(_symbol) {}
 
     ~Change() = default;
+
     Command cmd;
     size_t fileId;
     Position position;

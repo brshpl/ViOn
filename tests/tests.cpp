@@ -271,7 +271,7 @@ TEST(JsonParser, ParseToJson) {
 TEST(JsonParser, ParseFromJson) {
     Change expectedChange('a', {0, 0});
     nlohmann::json expectedJson = nlohmann::json::object({
-        {"cmd", 7},
+        {"cmd", expectedChange.cmd},
         {"fileId", expectedChange.fileId},
         {"position", {
             {"symbolId", expectedChange.position.symbolId},
@@ -282,6 +282,13 @@ TEST(JsonParser, ParseFromJson) {
     });
     std::string str = expectedJson.dump();
     Change gotChange = JsonParser::ParseFromJson(str);
+    EXPECT_EQ(expectedChange, gotChange);
+}
+
+TEST(JsonParser, FunctionsCompatibility) {
+    Change expectedChange('a', {0, 0});
+    std::string testStr = JsonParser::ParseToJson(expectedChange);
+    Change gotChange = JsonParser::ParseFromJson(testStr);
     EXPECT_EQ(expectedChange, gotChange);
 }
 
