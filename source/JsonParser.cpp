@@ -1,26 +1,30 @@
 #include "JsonParser.hpp"
 #include "json.hpp"
+#include <iostream>
 
 // for convenience
 using json = nlohmann::json;
 
 std::string JsonParser::ParseToJson(const Change& ch) {
-    json j =  {{"cmd", ch.cmd},
-               {"fileId", ch.fileId},
-               {"position",{
-                               {"symbolId", ch.position.symbolId}}
-               },
-               {"newSymbolId", ch.position.symbolId},
-               {"symbol", ch.symbol}};
+    json j =  json::object({
+            {"cmd", ch.cmd},
+            {"fileId", ch.fileId},
+            {"position", {
+                {"SymbolId", ch.position.symbolId},
+                {"StringId", ch.position.stringId}
+                }
+            },
+            {"symbol", ch.symbol}
+        });
     return j.dump();
 }
 
 Change JsonParser::ParseFromJson(const std::string_view& change) {
     json j = json::parse(change);
-    Change m_ch {};
-    m_ch.cmd = j["cmd"].get<Command>();
-    m_ch.fileId = j["fileId"].get<size_t>();
-    m_ch.position = Position {j["position"]["symbolId"].get<size_t>(), j["position"]["stringId"].get<size_t>()};
-    m_ch.symbol = j["symbol"].get<char>();
-    return m_ch;
+    Change result {};
+    result.cmd = j["cmd"].get<Command>();
+    result.fileId = j["fileId"].get<size_t>();
+    result.position = Position{j["position"]["symbolId"].get<size_t>(), j["position"]["stringId"].get<size_t>()};
+    result.symbol = j["symbol"].get<char>();
+    return result;
 }

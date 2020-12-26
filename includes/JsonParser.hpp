@@ -6,10 +6,8 @@
 
 class JsonParser {
 public:
-    JsonParser() = default;
-    ~JsonParser() = default;
-    std::string ParseToJson(const Change& ch);
-    Change ParseFromJson(const std::string_view& change);
+    static std::string ParseToJson(const Change& ch);
+    static Change ParseFromJson(const std::string_view& change);
 };
 
-#endif
+#endif  // JSON_PARSER_H

@@ -4,6 +4,8 @@
 #include "Position.hpp"
 #include <gtest/gtest.h>
 #include "ChangeCreator.hpp"
+#include "JsonParser.hpp"
+#include "json.hpp"
 
 bool operator==(const Change &lhs, const Change &rhs) {
     return std::tie(lhs.position.symbolId,
@@ -246,6 +248,40 @@ TEST(Interpretator, Interpret_command_mode) {
     Change expectedChange(testCommand, testFileId, testPosition, gotSymbol);
     interpretator.Interpret(testSymblol, testMode, testPosition);
     Change gotChange = interpretator.Interpret(testSymblol, testMode, testPosition);
+    EXPECT_EQ(expectedChange, gotChange);
+}
+
+TEST(JsonParser, ParseToJson) {
+    Change testChg('a', {0, 0});
+    std::string gotString = JsonParser::ParseToJson(testChg);
+    nlohmann::json expectedJson = nlohmann::json::object({
+        {"cmd", testChg.cmd},
+        {"fileId", testChg.fileId},
+        {"position", {
+            {"SymbolId", testChg.position.symbolId},
+            {"StringId", testChg.position.stringId}
+            }
+        },
+        {"symbol", testChg.symbol}
+    });
+    std::string expectedString = expectedJson.dump();
+    EXPECT_EQ(gotString, expectedString);
+}
+
+TEST(JsonParser, ParseFromJson) {
+    Change expectedChange('a', {0, 0});
+    nlohmann::json expectedJson = nlohmann::json::object({
+        {"cmd", 7},
+        {"fileId", expectedChange.fileId},
+        {"position", {
+            {"symbolId", expectedChange.position.symbolId},
+            {"stringId", expectedChange.position.stringId}
+            }
+        },
+        {"symbol", expectedChange.symbol}
+    });
+    std::string str = expectedJson.dump();
+    Change gotChange = JsonParser::ParseFromJson(str);
     EXPECT_EQ(expectedChange, gotChange);
 }
 
