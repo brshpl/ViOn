@@ -24,14 +24,14 @@ void listenServ(Client& client, std::shared_ptr<FileStorage> file) {
     } while (change.cmd != CLOSE_CONNECT);
 }
 
-ClientEditor::ClientEditor(int port, std::string host): port_(port), host_(std::move(host)) {
+ClientEditor::ClientEditor(const std::string& file_name, int port, std::string host) : port_(port), host_(std::move(host)), file_(file_name) {
     try {
         client_.connectToServer(host_, port_);
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
     }
 
-    file_ = std::make_shared<FileStorage>();
+    file_storage_ = std::make_shared<FileStorage>();
 }
 
 void ClientEditor::startEdit() {
@@ -52,12 +52,21 @@ void ClientEditor::startEdit() {
             break;
         }
     }
-    file_->file_id = file_id;
+    file_storage_->file_id = file_id;
     std::cout << "File id: " << file_id << std::endl;
 
-    std::thread thread_listen(listenServ, std::ref(client_), file_);
+    std::thread thread_listen(listenServ, std::ref(client_), file_storage_);
     edit();
     thread_listen.join();
+}
+
+void ClientEditor::save() {
+    for (SymbolState s : file_storage_->symbols) {
+        if (s.is_visible) {
+            file_ << s.symbol;
+        }
+    }
+    file_ << std::endl;
 }
 
 void ClientEditor::edit() {
@@ -72,6 +81,6 @@ void ClientEditor::edit() {
         change.symbol = change_c;
 
         client_.sendChanges(change);
-    } // while (change.cmd != CLOSE_CONNECT);
+    }
+    save();
 }
-

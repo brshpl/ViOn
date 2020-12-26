@@ -35,11 +35,6 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<siz
             file_id = request.fileId;   // logic fileId
             break;
         }
-        case CLOSE_CONNECT: {
-            //
-            return;
-            break;
-        }
         default: {
             //
             return;

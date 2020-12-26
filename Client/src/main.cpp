@@ -3,12 +3,12 @@
 
 
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
+    if (argc != 3) {
         return 1;
     }
-    int port = std::stoi(argv[1]);
+    int port = std::stoi(argv[2]);
 
-    ClientEditor editor(port);
+    ClientEditor editor(argv[1], port);
     editor.startEdit();
 
     return 0;
