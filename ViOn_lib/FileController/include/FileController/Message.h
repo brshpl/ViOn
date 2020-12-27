@@ -23,7 +23,7 @@ enum Command {
 };
 
 struct Change {
-  Change() : cmd(NOTHING), fileId(0), position({0, 0}), symbol('\0') {}
+  Change() : cmd(NOTHING), fileId(0), newSymbolId(0), position({0, 0}), symbol('\0') {}
 
   Change(Command _cmd, size_t _fileId, size_t _newSymbolId, Position &_position, char _symbol)
       : cmd(_cmd), fileId(_fileId), newSymbolId(_newSymbolId), position(_position), symbol(_symbol) {}
@@ -32,7 +32,7 @@ struct Change {
       : cmd(_cmd), fileId(0), newSymbolId(0), position(), symbol('\0') {}
 
   Change(const char &_symbol, const Position _position)
-      : cmd(INSERT_SYMBOL), fileId(0), position(_position), symbol(_symbol) {}
+      : cmd(INSERT_SYMBOL), fileId(0), newSymbolId(0), position(_position), symbol(_symbol) {}
 
   ~Change() = default;
 

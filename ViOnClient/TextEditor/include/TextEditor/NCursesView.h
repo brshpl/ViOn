@@ -9,8 +9,8 @@
 
 class NCursesView : public View {
 public:
-    explicit NCursesView(Interpretator interpretator, int port = 5555, std::string host="localhost")
-            : View(std::move(interpretator), port, std::move(host)) {}
+    explicit NCursesView(Interpretator& interpretator, Client& client)
+            : View(interpretator), client_(client) {}
     void listen_test();
     [[noreturn]] void listen();
     void insertChar(const Change& ch);
@@ -22,7 +22,7 @@ public:
 private:
     Text text_;
     Cursor cursor;
-    Client client_;
+    Client& client_;
 
     void show(const std::string& text);
 

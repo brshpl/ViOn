@@ -19,12 +19,15 @@ void Client::closeConnect() {
     std::cout << JsonParser::ParseToJson(ch) << std::endl;
 }
 
-size_t Client::createNewFile() {
+ssize_t Client::createNewFile() {
     Position pos;
     Change ch(CREATE_FILE);
     sendChanges(ch);
 
     ch = recvChanges();
+    if (ch.cmd != CREATE_FILE) {
+        return -1;
+    }
     return ch.fileId;
 }
 

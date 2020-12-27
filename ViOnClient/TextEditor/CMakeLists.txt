@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(ViOn_ncurses)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -ggdb3 -pthread")
 
 
 # Создаем статическую библиотеку Socket
@@ -29,11 +30,11 @@ find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR}
         include/TextEditor)
 
-
+include_directories(include/TextEditor)
 file(GLOB sources
-        ../../ViOnServer/include/TextEditor/*.h
-        ../../ViOnServer/src/*.cpp)
-add_executable(ViOn_ncurses ${sources} src/main.cpp)
+        "${PROJECT_SOURCE_DIR}/src/*.cpp")
+
+add_executable(ViOn_ncurses ${sources})
 
 target_link_libraries(ViOn_ncurses PRIVATE ${CURSES_LIBRARIES})
 target_link_libraries(ViOn_ncurses PRIVATE socket_lib)

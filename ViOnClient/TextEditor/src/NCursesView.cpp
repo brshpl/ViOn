@@ -1,17 +1,24 @@
-#include "NCursesView.h"
 #include <ncurses.h>
+#include "NCursesView.h"
 
+#include "FileController/JsonParser.h"
+
+#include <fstream>
+
+std::ofstream err("ept");
 
 [[noreturn]] void NCursesView::listen() {
     while (true) {
         noecho();
         int code = getch();
-        notify(code, Position(text_.getText().at(cursor.posY).at(cursor.posX).symbolId, 0));
+        Position pos(text_.getText().at(cursor.posY).at(cursor.posX).symbolId, 0);
+        notify(code, pos);
     }
 }
 
 void NCursesView::notify(int symbol, Position next_symbol) {
     Change cur_change = interpretator_.Interpret(symbol, mode_, next_symbol);
+    err << JsonParser::ParseToJson(cur_change) << std::endl;
     applyChange(cur_change);
 }
 
@@ -59,7 +66,6 @@ void NCursesView::moveCursor(Direction direction) {
 }
 
 void NCursesView::insertChar(const Change& ch) {
-//    mvaddch(cursor.posY, cursor.posX++, ch.symbol);
     client_.sendChanges(ch);
 }
 
@@ -102,4 +108,8 @@ void NCursesView::applyChange(const Change &change) {
 void NCursesView::insertString() {
     cursor.posY++;
     cursor.posX = 0;
+}
+
+void NCursesView::show(const std::string &text) {
+    View::show(text);
 }

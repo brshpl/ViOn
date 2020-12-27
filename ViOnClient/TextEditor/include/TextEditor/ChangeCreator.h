@@ -6,9 +6,16 @@
 #include <string>
 #include <vector>
 
+////
+#include <fstream>
+extern std::ofstream err;
+////
+
 class ChangeCreator {
 public:
-  ChangeCreator() = default;
+  ChangeCreator() {
+      err << "Construct ChangeCreator " << changeCreators.size() << std::endl;
+  };
   ~ChangeCreator() = default;
   Change virtual CreateChange(const Mode &mode, const Position &position,
                               const std::string_view &buffer);

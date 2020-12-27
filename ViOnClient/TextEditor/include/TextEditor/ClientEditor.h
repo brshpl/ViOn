@@ -4,6 +4,7 @@
 #include <fstream>
 #include "Client.h"
 #include "FileController/FileStorage.h"
+#include "ChangeCreator.h"
 
 
 class ClientEditor {
@@ -14,6 +15,10 @@ public:
     void save();
 
 private:
+    void createFileView();
+    void connectToFileView();
+
+    void runTextEditor();
     void edit();
 
     int port_;
@@ -21,6 +26,8 @@ private:
     Client client_;
     std::shared_ptr<FileStorage> file_storage_;
     std::ofstream file_;
+
+    ChangeCreator changeCreator_;
 };
 
 #endif //CLIENT_CLIENTEDITOR_H

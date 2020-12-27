@@ -11,8 +11,10 @@ class Interpretator {
 public:
   Interpretator() : changeCreator(), buffer() {}
 
-  Interpretator(const ChangeCreator &_changeCreator)
-      : changeCreator(_changeCreator), buffer() {}
+  explicit Interpretator(ChangeCreator &_changeCreator)
+      : changeCreator(_changeCreator), buffer() {
+      buffer.resize(20);
+  }
 
   Change Interpret(int &curChar, const Mode &mode, const Position &position);
 

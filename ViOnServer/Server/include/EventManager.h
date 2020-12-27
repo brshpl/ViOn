@@ -5,8 +5,8 @@
 #include <string>
 #include <memory>
 
-#include "FileController/TextManager.h"
 #include "Socket.h"
+#include "FileController/FileStorage.h"
 
 
 class IObserver {

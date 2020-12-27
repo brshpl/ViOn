@@ -1,5 +1,6 @@
 // CLass must be implemented by user of the library using e.g. ncurses (by me before next RC)
 #include <algorithm>
+#include <ncurses.h>
 #include "View.h"
 
 void View::moveCursor(Direction direction) {}
@@ -10,7 +11,10 @@ void View::insertChar(char ch) {}
 
 void View::deleteChar(char ch) {}
 
-void View::show(const std::string &text) {}
+void View::show(const std::string &text) {
+    clear();
+    mvprintw(0, 0, "%s", text.data());
+}
 
 std::string_view View::getStringFromText() {
     std::string str;

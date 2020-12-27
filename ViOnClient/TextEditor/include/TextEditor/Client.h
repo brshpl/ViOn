@@ -14,7 +14,7 @@ public:
     void connectToServer(const std::string& host, int port);
     void closeConnect();
 
-    size_t createNewFile();
+    ssize_t createNewFile();
     ssize_t connectToFile(size_t id);
 
     void sendChanges(const Change& ch);

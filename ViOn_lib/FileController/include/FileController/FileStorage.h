@@ -22,9 +22,9 @@ struct FileStorage{
     size_t file_id;
 };
 
-struct Symbol{
-    char symbol;
-    size_t symbol_id;
-};
+//struct Symbol {
+//    char symbol;
+//    size_t symbol_id;
+//};
 
 #endif  // VION_FILESTORAGE_H

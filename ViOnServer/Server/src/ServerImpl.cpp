@@ -21,6 +21,7 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<siz
             file_id = ++numberOfFilesCreated;
             std::unique_lock<std::shared_mutex> u_lock(mtx);
             subjects.insert(std::pair<size_t, Subject>(file_id, Subject(file_id)));
+            std::cout << "CREATE_FILE" << std::endl;
             break;
         }
         case CONNECT_TO_FILE: {
@@ -41,13 +42,22 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<siz
         }
     }
     request.fileId = file_id;
-    client->send(JsonParser::ParseToJson(request));
+    try {
+        client->send(JsonParser::ParseToJson(request));
+    } catch (...) {
+        std::cerr << "ParseToJson" << std::endl;
+    }
 
     auto* observer = new Observer(subjects[file_id], client);
     if (s_lock) s_lock.unlock();
 
-    observer->updateFile();
-    observer->editFile();
+    try {
+        observer->updateFile();
+        observer->editFile();
+    } catch (...) {
+        std::cerr << "editFile" << std::endl;
+    }
+
     observer->removeMeFromTheList();
     delete observer;
 
@@ -55,6 +65,7 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<siz
         std::unique_lock<std::shared_mutex> u_lock(mtx);
         subjects.erase(file_id);
     }
+
 }
 
 Server::ServerImpl::ServerImpl(uint32_t port, uint32_t queue_size) {
