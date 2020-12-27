@@ -1,10 +1,9 @@
 #ifndef VION_CHANGEAPPLIER_H
 #define VION_CHANGEAPPLIER_H
 
-#include "TextUpDater.h"
-
 #include <memory>
-
+#include "Message.h"
+#include "FileStorage.h"
 
 class ChangeApplier {
 public:

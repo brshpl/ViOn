@@ -1,13 +1,6 @@
 #ifndef VION_TEXTMANAGER_H
 #define VION_TEXTMANAGER_H
 
-#include <iostream>
-#include <vector>
-
-#include "FileController/FileStorage.h"
-#include "FileController/Parser.h"
-
-
 class TextManager{
 public:
     TextManager() = default;

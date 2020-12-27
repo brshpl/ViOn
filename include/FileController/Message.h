@@ -1,9 +1,6 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include "Position.h"
-#include <cstdlib>
-
 enum Command {
   NOTHING,
   ERROR,

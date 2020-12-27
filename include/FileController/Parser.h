@@ -1,8 +1,9 @@
 #ifndef VION_PARSER_H
 #define VION_PARSER_H
 
+#include <vector>
+#include "Message.h"
 #include "FileStorage.h"
-
 
 class Parser{
 public:

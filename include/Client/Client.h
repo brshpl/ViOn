@@ -1,12 +1,6 @@
 #ifndef VION_CLIENT_INCLUDE_CLIENT_H_
 #define VION_CLIENT_INCLUDE_CLIENT_H_
 
-#include <string>
-
-#include "FileController/Message.h"
-#include "Socket.h"
-
-
 class Client {
 public:
     ~Client();

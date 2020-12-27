@@ -1,8 +1,9 @@
-#include "FileController/ChangeApplier.h"
-#include "FileController/Parser.h"
-#include "FileController/Handler.h"
+
+#include <FileController/Message.h>
+#include <FileController/FileStorage.h>
 #include <memory>
-#include <utility>
+#include <FileController/ChangeApplier.h>
+#include <FileController/Handler.h>
 
 ChangeApplier::ChangeApplier(const Change &ch, std::shared_ptr<FileStorage> file) : ch_(ch), file_(std::move(file)){}
 

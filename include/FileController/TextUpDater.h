@@ -1,8 +1,8 @@
 #ifndef VION_TEXTUPDATER_H
 #define VION_TEXTUPDATER_H
 
-#include "FileController/FileStorage.h"
-
+#include "Message.h"
+#include "FileStorage.h"
 
 class TextUpDater {
 public:

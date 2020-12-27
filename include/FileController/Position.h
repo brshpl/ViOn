@@ -1,7 +1,6 @@
 #ifndef POSITION_H
 #define POSITION_H
 
-#include <cstdlib>
 struct Position {
   Position() : stringId(0), symbolId(0) {}
 

@@ -1,13 +1,6 @@
 #ifndef VION_FILESTORAGE_H
 #define VION_FILESTORAGE_H
 
-#include <iostream>
-#include <list>
-#include <vector>
-#include "Message.h"
-#include "Position.h"
-
-
 struct SymbolState{
     SymbolState(char symbol, bool is_visible, size_t id) : symbol(symbol), is_visible(is_visible), id(id) {}
     char symbol;
@@ -16,7 +9,11 @@ struct SymbolState{
 };
 
 struct FileStorage{
-    explicit FileStorage(size_t file_id = 0);
+    explicit FileStorage(size_t file_id): symbols_length(0), file_id(file_id) {
+        SymbolState symbol = {'\0', true, 0};
+        symbols.emplace_back(symbol);
+    };
+
     std::list<SymbolState> symbols;
     size_t symbols_length;
     size_t file_id;
