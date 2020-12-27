@@ -1,5 +1,6 @@
-#ifndef VION_FILESTORAGE_H
-#define VION_FILESTORAGE_H
+#pragma once
+
+#include <list>
 
 struct SymbolState{
     SymbolState(char symbol, bool is_visible, size_t id) : symbol(symbol), is_visible(is_visible), id(id) {}
@@ -23,5 +24,3 @@ struct Symbol{
     char symbol;
     size_t symbol_id;
 };
-
-#endif  // VION_FILESTORAGE_H

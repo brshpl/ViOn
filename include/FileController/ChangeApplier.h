@@ -1,9 +1,4 @@
-#ifndef VION_CHANGEAPPLIER_H
-#define VION_CHANGEAPPLIER_H
-
-#include <memory>
-#include "Message.h"
-#include "FileStorage.h"
+#pragma once
 
 class ChangeApplier {
 public:
@@ -15,5 +10,3 @@ public:
     Change ch_{};
     std::shared_ptr<FileStorage> file_;
 };
-
-#endif  // VION_CHANGEAPPLIER_H

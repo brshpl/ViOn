@@ -1,10 +1,11 @@
-#ifndef VION_EVENTMANAGER_H
-#define VION_EVENTMANAGER_H
+#pragma once
 
 #include <list>
 #include <string>
 #include <memory>
 #include <Socket/Socket.h>
+#include <FileController/Message.h>
+#include <FileController/FileStorage.h>
 
 #include "FileController/TextManager.h"
 
@@ -47,5 +48,3 @@ private:
     Subject& subject_;
     std::shared_ptr<utils::Socket> sock_;
 };
-
-#endif  // VION_EVENTMANAGER_H

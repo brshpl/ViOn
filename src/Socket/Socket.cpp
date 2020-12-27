@@ -6,8 +6,8 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include "Exceptions.h"
-#include "Socket.h"
+#include "Socket/Exceptions.h"
+#include "Socket/Socket.h"
 
 
 namespace utils {

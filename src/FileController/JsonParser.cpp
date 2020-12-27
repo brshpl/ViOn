@@ -1,3 +1,6 @@
+#include <FileController/json.hpp>
+#include <FileController/Message.h>
+#include <FileController/JsonParser.h>
 
 using json = nlohmann::json;
 

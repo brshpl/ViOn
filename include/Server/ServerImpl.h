@@ -1,10 +1,8 @@
-#ifndef VION_SERVER_INCLUDE_SERVERIMPL_H_
-#define VION_SERVER_INCLUDE_SERVERIMPL_H_
+#pragma once
 
 #include <unordered_map>
 
 #include "EventManager.h"
-#include "FileController/FileStorage.h"
 #include "Server.h"
 
 
@@ -20,6 +18,3 @@ private:
     utils::Socket server_sock_;
     std::unordered_map<size_t, Subject> subjects_;
 };
-
-
-#endif  // VION_SERVER_INCLUDE_SERVERIMPL_H_

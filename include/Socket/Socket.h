@@ -1,6 +1,4 @@
-#ifndef VION_SOCKET_INCLUDE_SOCKET_H_
-#define VION_SOCKET_INCLUDE_SOCKET_H_
-
+#pragma once
 
 #include <memory>
 
@@ -28,5 +26,3 @@ namespace utils {
         int sock_;
     };
 }  // namespace utils
-
-#endif  // VION_SOCKET_INCLUDE_SOCKET_H_

@@ -1,12 +1,13 @@
-
+#include <vector>
+#include <FileController/Parser.h>
 
 Parser::Parser(Change ch) {
     ch_ = ch;
 };
-
-ParserForEditor::ParserForEditor(Change ch, FileStorage file) : Parser(ch){
-    file_ = std::move(file);
-};
+//
+//ParserForEditor::ParserForEditor(Change ch, FileStorage file) : Parser(ch) {
+//    file_ = std::move(file);
+//};
 
 std::vector<Symbol> ParserForEditor::parse() {
     std::vector<Symbol> file;

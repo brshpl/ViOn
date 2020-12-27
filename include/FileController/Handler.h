@@ -1,5 +1,4 @@
-#ifndef VION_HANDLER_H
-#define VION_HANDLER_H
+#pragma once
 
 #include <memory>
 #include "Message.h"
@@ -42,5 +41,3 @@ public:
 };
 
 bool selector(Handler &handler, Change ch);
-
-#endif  // VION_HANDLER_H

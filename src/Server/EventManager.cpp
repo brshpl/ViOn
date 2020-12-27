@@ -1,4 +1,5 @@
 #include <shared_mutex>
+#include <iostream>
 #include <Server/EventManager.h>
 #include "FileController/JsonParser.h"
 #include "FileController/ChangeApplier.h"

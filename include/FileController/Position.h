@@ -1,5 +1,4 @@
-#ifndef POSITION_H
-#define POSITION_H
+#pragma once
 
 struct Position {
   Position() : stringId(0), symbolId(0) {}
@@ -13,5 +12,3 @@ struct Position {
   size_t stringId;
   size_t symbolId;
 };
-
-#endif // POSITION_H

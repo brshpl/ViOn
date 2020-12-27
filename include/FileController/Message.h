@@ -1,5 +1,7 @@
-#ifndef MESSAGE_H
-#define MESSAGE_H
+#pragma once
+
+#include <cstring>
+#include "Position.h"
 
 enum Command {
   NOTHING,
@@ -39,5 +41,3 @@ struct Change {
   Position position;
   char symbol;
 };
-
-#endif // MESSAGE_H

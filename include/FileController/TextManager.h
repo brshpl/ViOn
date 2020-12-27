@@ -1,5 +1,4 @@
-#ifndef VION_TEXTMANAGER_H
-#define VION_TEXTMANAGER_H
+#pragma once
 
 class TextManager{
 public:
@@ -17,5 +16,3 @@ public:
 //    FileStorage file_;
 //    Change ch_;
 };
-
-#endif  // VION_TEXTMANAGER_H

@@ -1,5 +1,4 @@
-#ifndef VION_TEXTUPDATER_H
-#define VION_TEXTUPDATER_H
+#pragma once
 
 #include "Message.h"
 #include "FileStorage.h"
@@ -34,5 +33,3 @@ public:
     ~DeleteChar() = default;;
     bool deleteSymbol();
 };
-
-#endif  // VION_TEXTUPDATER_H

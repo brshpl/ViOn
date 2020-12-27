@@ -1,4 +1,5 @@
-
+#include <algorithm>
+#include "FileController/TextUpDater.h"
 TextUpDater::TextUpDater(FileStorage* file, Change ch) {
     file_ = file;
     ch_ = ch;

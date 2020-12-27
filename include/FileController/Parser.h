@@ -1,5 +1,4 @@
-#ifndef VION_PARSER_H
-#define VION_PARSER_H
+#pragma once
 
 #include <vector>
 #include "Message.h"
@@ -15,11 +14,9 @@ protected:
 
 class ParserForEditor : public Parser{
 public:
-    ParserForEditor(Change ch, FileStorage file);
+    ParserForEditor(Change ch, FileStorage file) : Parser(ch), file_(file) {};
     ~ParserForEditor() override{};
     std::vector<Symbol> parse();
 private:
     FileStorage file_;
 };
-
-#endif  // VION_PARSER_H
