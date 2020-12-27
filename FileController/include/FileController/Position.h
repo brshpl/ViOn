@@ -8,8 +8,7 @@ struct Position {
   Position(size_t _stringId, size_t _symbolId)
       : stringId(_stringId), symbolId(_symbolId) {}
 
-  Position(const Position &_position)
-      : stringId(_position.stringId), symbolId(_position.symbolId) {}
+  Position(const Position &_position) = default;
 
   ~Position() = default;
   size_t stringId;

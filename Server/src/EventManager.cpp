@@ -1,7 +1,7 @@
 #include <shared_mutex>
 
 #include "EventManager.h"
-#include "Parser.h"
+#include "FileController/JsonParser.h"
 #include "FileController/ChangeApplier.h"
 
 
@@ -29,7 +29,7 @@ void Subject::setChange(const Change& change) {
 
     lock.unlock();
 
-    std::string ret_change_s = ParserToJson(ret_change);
+    std::string ret_change_s = JsonParser::ParseToJson(ret_change);
 
     notify(ret_change_s);
 
@@ -65,13 +65,11 @@ void Observer::updateFile() {
 
     std::shared_ptr<FileStorage> file = subject_.getFile();
 
-    Position pos = {0};
-    Change change;
-
+    Position pos;
     for (auto symbol : file->symbols) {
         if (symbol.is_visible && symbol.symbol != '\0') {
-            change = {INSERT_SYMBOL, 0, pos, symbol.id, symbol.symbol};
-            sock_->send(ParserToJson(change));
+            Change change(INSERT_SYMBOL, 0, symbol.id, pos, symbol.symbol);
+            sock_->send(JsonParser::ParseToJson(change));
         }
     }
 }
@@ -80,7 +78,7 @@ void Observer::editFile() {
     do {
         std::string change_str;
         change_str = sock_->recv();
-        change = ParserFromJson(change_str);
+        change = JsonParser::ParseFromJson(change_str);
         if (change.cmd == CLOSE_CONNECT) { sock_->send(change_str); }
         else { subject_.setChange(change); }
     } while (change.cmd != CLOSE_CONNECT);

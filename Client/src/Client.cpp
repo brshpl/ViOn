@@ -1,28 +1,27 @@
 #include <iostream>
 #include <cstdlib>
 
+#include "FileController/JsonParser.h"
 #include "Client.h"
 
 
-Client::~Client() {
-    closeConnect();
-}
+Client::~Client() = default;
 
 void Client::connectToServer(const std::string& host, int port) {
     client_sock_.connect(host, port);
 }
 
 void Client::closeConnect() {
-    Position pos = {0};
-    Change ch = Change(CLOSE_CONNECT, 0, pos, 0, '0');
+    Position pos;
+    Change ch(CLOSE_CONNECT);
     sendChanges(ch);
     ch = recvChanges();
-    std::cout << ParserToJson(ch) << std::endl;
+    std::cout << JsonParser::ParseToJson(ch) << std::endl;
 }
 
 size_t Client::createNewFile() {
-    Position pos = {0};
-    Change ch = Change(CREATE_FILE, 0, pos, 0, '0');
+    Position pos;
+    Change ch(CREATE_FILE);
     sendChanges(ch);
 
     ch = recvChanges();
@@ -30,8 +29,8 @@ size_t Client::createNewFile() {
 }
 
 ssize_t Client::connectToFile(size_t id) {
-    Position pos = {0};
-    Change ch = Change(CONNECT_TO_FILE, id, pos, 0, '0');
+    Position pos;
+    Change ch(CONNECT_TO_FILE, id, 0, pos, '0');
 
     sendChanges(ch);
     ch = recvChanges();
@@ -42,12 +41,12 @@ ssize_t Client::connectToFile(size_t id) {
 }
 
 void Client::sendChanges(const Change& ch) {
-    client_sock_.send(ParserToJson(ch));
+    client_sock_.send(JsonParser::ParseToJson(ch));
 }
 
 Change Client::recvChanges() {
     std::string ch;
     ch = client_sock_.recv();
 
-    return ParserFromJson(ch);
+    return JsonParser::ParseFromJson(ch);
 }

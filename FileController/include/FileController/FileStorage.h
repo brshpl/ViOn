@@ -4,8 +4,8 @@
 #include <iostream>
 #include <list>
 #include <vector>
-#include "Message.hpp"
-#include "Position.hpp"
+#include "Message.h"
+#include "Position.h"
 
 
 struct SymbolState{
