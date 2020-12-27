@@ -12,23 +12,27 @@ set(SOCKET_LIB
 add_library(socket_lib STATIC ${SOCKET_LIB})
 target_include_directories(socket_lib PUBLIC ${SOCKET_PATH}/include)
 
-# Создаем статическую библиотеку
+# Создаем статическую библиотеку FileController
 set(FILECONTROLLER_PATH ../FileController)
 file(GLOB sources1
-        "../FileController/include/FileController/*.h"
-        "../FileController/src/*.cpp")
+        ${FILECONTROLLER_PATH}/include/FileController/*.h
+        ${FILECONTROLLER_PATH}/src/*.cpp)
 add_library(file_controller_lib STATIC ${sources1})
 target_include_directories(file_controller_lib PUBLIC ${FILECONTROLLER_PATH}/include)
 
-include_directories(../FileController/nlohmann)
 
+# Добавляем в заголовочные файлы парсер json
+include_directories(${FILECONTROLLER_PATH}/nlohmann)
 
+# Добавляем Curses
 find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/include/TextEditor)
+
+
 file(GLOB sources
-        "${PROJECT_SOURCE_DIR}/include/TextEditor/*.h"
-        "${PROJECT_SOURCE_DIR}/src/*.cpp")
+        ${PROJECT_SOURCE_DIR}/include/TextEditor/*.h
+        ${PROJECT_SOURCE_DIR}/src/*.cpp)
 add_executable(ViOn_ncurses ${sources} src/main.cpp)
 
 target_link_libraries(ViOn_ncurses PRIVATE ${CURSES_LIBRARIES})
