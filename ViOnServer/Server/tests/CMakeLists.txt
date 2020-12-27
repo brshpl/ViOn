@@ -1,7 +1,7 @@
-include_directories("../../FileController/include")
+include_directories("../../ViOn_lib/FileController/include")
 
-file(GLOB sources "../../FileController/src/*.cpp")
-list(REMOVE_ITEM sources "../../FileController/src/main.cpp")
+file(GLOB sources "../../ViOn_lib/FileController/src/*.cpp")
+list(REMOVE_ITEM sources "../../ViOn_lib/FileController/src/main.cpp")
 
 file(GLOB tests "${PROJECT_SOURCE_DIR}/tests/*.cpp")
 list(REMOVE_ITEM tests "${PROJECT_SOURCE_DIR}/tests/main.cpp")

@@ -5,13 +5,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -ggdb3 -pthread")
 
 # add the Server library
+set(VION_LIB_DIR ../ViOn_lib)
 add_subdirectory(Server)
 
-file(GLOB sources
-        ${PROJECT_SOURCE_DIR}/include/*.h
-        ${PROJECT_SOURCE_DIR}/src/*.cpp)
-
 include_directories(include)
+
+file(GLOB sources
+        "include/*.h"
+        "src/*.cpp")
 
 # add the executable
 add_executable(ViOn_server ${sources})
@@ -23,6 +24,6 @@ target_link_libraries(ViOn_server PUBLIC Server)
 target_include_directories(ViOn_server PUBLIC
         "${PROJECT_BINARY_DIR}"
         "${PROJECT_SOURCE_DIR}/Server/include"
-        "${PROJECT_SOURCE_DIR}/FileController/include"
-        "${PROJECT_SOURCE_DIR}/Socket/include"
+        "${VION_LIB_DIR}/FileController/include"
+        "${VION_LIB_DIR}/Socket/include"
         )

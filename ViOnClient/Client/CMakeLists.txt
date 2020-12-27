@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -ggdb3 -pthread")
 
 
 # Создаем статическую библиотеку Socket
-set(SOCKET_PATH ../Socket)
+set(SOCKET_PATH ../../ViOn_lib/Socket)
 set(SOCKET_LIB
         ${SOCKET_PATH}/include/Socket.h
         ${SOCKET_PATH}/src/Socket.cpp)
@@ -14,7 +14,7 @@ add_library(socket_lib STATIC ${SOCKET_LIB})
 target_include_directories(socket_lib PUBLIC ${SOCKET_PATH}/include)
 
 # Создаем статическую библиотеку
-set(FILECONTROLLER_PATH ../FileController)
+set(FILECONTROLLER_PATH ../../ViOn_lib/FileController)
 file(GLOB sources1
         "../FileController/include/FileController/*.h"
         "../FileController/src/*.cpp")
@@ -36,10 +36,10 @@ if(NOT json_POPULATED)
     FetchContent_Populate(json)
     add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
-include_directories(../FileController/nlohmann)
+include_directories(../../ViOn_lib/FileController/nlohmann)
 
 
-set(APP_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(APP_ROOT_DIR .)
 set(APP_ROOT_SRC_DIR ${APP_ROOT_DIR}/src)
 set(INCLUDES ${APP_ROOT_DIR}/include)
 

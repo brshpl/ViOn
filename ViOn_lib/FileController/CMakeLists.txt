@@ -10,9 +10,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 configure_file(CMakeLists.txt.in
         googletest-download/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" ..
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" ../..
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
-execute_process(COMMAND ${CMAKE_COMMAND} --build ..
+execute_process(COMMAND ${CMAKE_COMMAND} --build ../..
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
 
 add_subdirectory(${CMAKE_BINARY_DIR}/googletest-src
