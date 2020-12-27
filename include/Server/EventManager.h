@@ -4,9 +4,9 @@
 #include <list>
 #include <string>
 #include <memory>
+#include <Socket/Socket.h>
 
 #include "FileController/TextManager.h"
-#include "Socket.h"
 
 
 class IObserver {
