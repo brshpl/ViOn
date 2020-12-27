@@ -2,10 +2,9 @@
 #ifndef INTERPRETATOR_H
 #define INTERPRETATOR_H
 
-#include "ChangeCreator.hpp"
-#include "Message.hpp"
-#include "Mode.hpp"
-#include "Position.hpp"
+#include "ChangeCreator.h"
+#include "FileController/Message.h"
+#include "Mode.h"
 #include <string>
 
 class Interpretator {
@@ -15,7 +14,7 @@ public:
   Interpretator(const ChangeCreator &_changeCreator)
       : changeCreator(_changeCreator), buffer() {}
 
-  Change Interpret(char &curChar, const Mode &mode, const Position &position);
+  Change Interpret(int &curChar, const Mode &mode, const Position &position);
 
 private:
   ChangeCreator changeCreator;

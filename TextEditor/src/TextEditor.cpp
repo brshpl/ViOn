@@ -5,7 +5,7 @@
 
 
 void TextEditor::sendChange(const Change &change) {
-    client_.sendChanges(change);
+//    client_.sendChanges(change);
 }
 
 void TextEditor::update(Text& text) {

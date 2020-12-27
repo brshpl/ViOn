@@ -1,7 +1,7 @@
-#include "ChangeCreator.hpp"
-#include "Interpretator.hpp"
+#include "ChangeCreator.h"
+#include "Interpretator.h"
 #include "Message.hpp"
-#include "Mode.hpp"
+#include "Mode.h"
 #include "Position.hpp"
 #include "json.hpp"
 #include <gtest/gtest.h>

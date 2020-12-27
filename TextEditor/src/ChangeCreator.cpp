@@ -1,4 +1,4 @@
-#include "ChangeCreator.hpp"
+#include "ChangeCreator.h"
 #include <iostream>
 
 void ChangeCreator::AddChangeCreator(ChangeCreator *_changeCreator) {
