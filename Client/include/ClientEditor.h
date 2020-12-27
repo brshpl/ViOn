@@ -1,8 +1,9 @@
 #ifndef CLIENT_CLIENTEDITOR_H
 #define CLIENT_CLIENTEDITOR_H
 
-#include "Client.h"
 #include <fstream>
+#include "Client.h"
+#include "FileController/FileStorage.h"
 
 
 class ClientEditor {

@@ -2,7 +2,7 @@
 #include <shared_mutex>
 #include <thread>
 
-#include "Parser.h"
+#include "FileController/JsonParser.h"
 #include "ServerImpl.h"
 
 static std::shared_mutex mtx;
@@ -11,7 +11,7 @@ static std::atomic<size_t> numberOfFilesCreated;
 void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<size_t, Subject>& subjects) {
     std::string request_str;
     request_str = client->recv();
-    Change request = ParserFromJson(request_str);
+    Change request = JsonParser::ParseFromJson(request_str);
 
     size_t file_id;
 
@@ -28,9 +28,9 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<siz
             while (subjects.count(request.fileId) == 0 && request.cmd == CONNECT_TO_FILE) {
                 std::cout << " CONNECT_TO_FILE: такого файла нет" << std::endl;
                 request.cmd = NO_SUCH_FILE_ID;
-                client->send(ParserToJson(request));
+                client->send(JsonParser::ParseToJson(request));
                 request_str = client->recv();
-                request = ParserFromJson(request_str);
+                request = JsonParser::ParseFromJson(request_str);
             }
             file_id = request.fileId;   // logic fileId
             break;
@@ -41,7 +41,7 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<siz
         }
     }
     request.fileId = file_id;
-    client->send(ParserToJson(request));
+    client->send(JsonParser::ParseToJson(request));
 
     auto* observer = new Observer(subjects[file_id], client);
     if (s_lock) s_lock.unlock();

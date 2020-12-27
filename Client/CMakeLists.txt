@@ -36,6 +36,7 @@ if(NOT json_POPULATED)
     FetchContent_Populate(json)
     add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
+include_directories(../FileController/nlohmann)
 
 
 set(APP_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})

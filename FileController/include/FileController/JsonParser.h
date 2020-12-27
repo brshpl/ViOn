@@ -1,8 +1,8 @@
 #ifndef JSON_PARSER_H
 #define JSON_PARSER_H
 
-#include "Message.hpp"
 #include <string>
+#include "Message.h"
 
 class JsonParser {
 public:
@@ -10,4 +10,4 @@ public:
   static Change ParseFromJson(const std::string_view &change);
 };
 
-#endif // JSON_PARSER_H
+#endif  // JSON_PARSER_H

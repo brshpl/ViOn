@@ -24,14 +24,6 @@ file(GLOB sources1
 add_library(file_controller_lib STATIC ${sources1})
 target_include_directories(file_controller_lib PUBLIC ${FILECONTROLLER_PATH}/include)
 
-# Создаем статическую библиотеку Socket
-#set(PARSER_PATH ../Parser)
-#set(PARSER_LIB
-#        ${PARSER_PATH}/include/Parser.h
-#        ${PARSER_PATH}/src/Parser.cpp)
-#add_library(parser_lib STATIC ${PARSER_LIB})
-##add_subdirectory(../Parser)
-#target_include_directories(parser_lib PUBLIC ${PARSER_PATH}/include)
 
 include(FetchContent)
 
@@ -44,6 +36,7 @@ if(NOT json_POPULATED)
     FetchContent_Populate(json)
     add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
+include_directories(../FileController/nlohmann)
 
 
 set(APP_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
@@ -59,7 +52,6 @@ add_executable(server ${sources})
 # Линкуем библиотеку Socket
 target_link_libraries(server PRIVATE socket_lib)
 target_link_libraries(server PRIVATE file_controller_lib)
-#target_link_libraries(server PRIVATE parser_lib)
 
 target_link_libraries(server PRIVATE nlohmann_json::nlohmann_json)
 
