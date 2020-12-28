@@ -4,7 +4,7 @@
 
 #include "NCursesView.h"
 #include "Parser.h"
-#include "ClientEditor.h"
+#include "ClientEditorImpl.h"
 #include "FileController/ChangeApplier.h"
 
 #include "FileController/JsonParser.h"
@@ -52,7 +52,7 @@ void listenServ(Client& client, std::shared_ptr<FileStorage> file, View& view) {
     }
 }
 
-ClientEditor::ClientEditor(const std::string& file_name, int port, std::string host) : port_(port), host_(std::move(host)), file_(file_name) {
+ClientEditorImpl::ClientEditorImpl(const std::string& file_name, int port, std::string host) : port_(port), host_(std::move(host)), file_(file_name) {
     try {
         client_.connectToServer(host_, port_);
         initscr();
@@ -70,7 +70,7 @@ ClientEditor::ClientEditor(const std::string& file_name, int port, std::string h
     file_storage_ = std::make_shared<FileStorage>();
 }
 
-void ClientEditor::startEdit() {
+void ClientEditorImpl::startEdit() {
     while (true) {
         int cmd = mainMenu();
         switch (cmd) {
@@ -89,7 +89,7 @@ void ClientEditor::startEdit() {
     }
 }
 
-void ClientEditor::save() {
+void ClientEditorImpl::save() {
     for (SymbolState s : file_storage_->symbols) {
         if (s.is_visible) {
             file_ << s.symbol;
@@ -98,7 +98,7 @@ void ClientEditor::save() {
     file_ << std::endl;
 }
 
-void ClientEditor::edit() {
+void ClientEditorImpl::edit() {
     Change change;
 //    Position pos = {0};
 
@@ -150,7 +150,7 @@ int mainMenu() {
     }
 }
 
-void ClientEditor::createFileView() {
+void ClientEditorImpl::createFileView() {
     int row = getmaxy(stdscr);
     int file_id = client_.createNewFile();
     if (file_id != -1) {
@@ -164,7 +164,7 @@ void ClientEditor::createFileView() {
     }
 }
 
-void ClientEditor::connectToFileView() {
+void ClientEditorImpl::connectToFileView() {
     int row = getmaxy(stdscr);
     mvwaddstr(stdscr, row - 1, 0, "Input file id: ");
     curs_set(1);
@@ -182,7 +182,7 @@ void ClientEditor::connectToFileView() {
     }
 }
 
-void ClientEditor::runTextEditor() {
+void ClientEditorImpl::runTextEditor() {
     Interpretator interpretator(changeCreator_);
     NCursesView view(interpretator, client_);
 

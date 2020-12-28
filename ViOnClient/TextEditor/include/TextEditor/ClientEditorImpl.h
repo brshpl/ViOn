@@ -7,9 +7,9 @@
 #include "ChangeCreator.h"
 
 
-class ClientEditor {
+class ClientEditorImpl {
 public:
-    explicit ClientEditor(const std::string& file_name, int port = 5555, std::string host="localhost");
+    explicit ClientEditorImpl(const std::string& file_name, int port = 5555, std::string host="localhost");
     void startEdit();
 
     void save();
