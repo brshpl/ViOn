@@ -18,7 +18,7 @@ private:
     void createFileView();
     void connectToFileView();
 
-    void runTextEditor();
+    void runTextEditor(int file_id);
     void edit();
 
     int port_;

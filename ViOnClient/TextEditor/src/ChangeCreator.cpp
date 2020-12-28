@@ -1,6 +1,5 @@
 #include "ChangeCreator.h"
-
-
+#include "ncurses.h"
 
 void ChangeCreator::AddChangeCreator(ChangeCreator *_changeCreator) {
     changeCreators.push_back(_changeCreator);
@@ -31,7 +30,9 @@ bool ChangeCreatorInsertSubString::CanCreate(const Mode &mode,
                                              const Position &position,
                                              const std::string_view &buffer) {
     char curChar = buffer.back();
-    if (mode == INSERTATION_MODE && !(curChar == 127 || curChar == 8)) {
+    if (buffer[buffer.size() - 3] != 27 &&
+        buffer[buffer.size() - 2] != 91 &&
+        mode == INSERTATION_MODE && !(curChar == 127 || curChar == 8)) {
         return true;
     } else {
         return false;

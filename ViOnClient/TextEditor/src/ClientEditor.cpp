@@ -129,6 +129,8 @@ int mainMenu() {
     for (size_t i = 0; i < menu.size(); ++i) {
         mvwaddstr(stdscr, row / 2 - menu.size() / 2 + i, (col - menu.at(i).length()) / 2, menu.at(i).data());
     }
+    mvprintw(0,0,"%d %d %d %d", KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT);
+    refresh();
     curs_set(0);
     keypad(stdscr, true);
     noecho();
@@ -156,7 +158,8 @@ void ClientEditor::createFileView() {
     if (file_id != -1) {
         mvprintw(row - 1, 0, "file_id = %d", file_id);
         file_storage_->file_id = file_id;
-        runTextEditor();
+        move(0, 0);
+        runTextEditor(file_id);
     } else {
         clear();
         mvprintw(row - 1, 0, "File creating failed. Press any key to get back to main menu...", file_id);
@@ -174,7 +177,7 @@ void ClientEditor::connectToFileView() {
     clear();
     mvprintw(row - 1, 0, "Connecting to file with id=%d. Please wait...", file_id);
     if (client_.connectToFile(file_id) != -1) {
-        runTextEditor();
+        runTextEditor(file_id);
     } else {
         clear();
         mvprintw(row - 1, 0, "Connection failed. Press any key to get back to main menu...", file_id);
@@ -182,9 +185,9 @@ void ClientEditor::connectToFileView() {
     }
 }
 
-void ClientEditor::runTextEditor() {
+void ClientEditor::runTextEditor(int file_id) {
     Interpretator interpretator(changeCreator_);
-    NCursesView view(interpretator, client_);
+    NCursesView view(interpretator, client_, file_id);
 
     std::thread thread_listen(listenServ, std::ref(client_), file_storage_, std::ref(view));
     thread_listen.detach();
@@ -193,7 +196,7 @@ void ClientEditor::runTextEditor() {
 
 }
 
-void show(std::string_view text) {
-    clear();
-    mvprintw(0, 0, "%s", text.data());
-}
+//void show(std::string_view text) {
+//    clear();
+//    mvprintw(0, 0, "%s", text.data());
+//}
