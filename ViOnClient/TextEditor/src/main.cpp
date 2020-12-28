@@ -1,5 +1,5 @@
 #include <string>
-#include "ClientEditor.h"
+#include "ClientEditorImpl.h"
 
 
 int main(int argc, char* argv[]) {
@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
     }
     int port = std::stoi(argv[2]);
 
-    ClientEditor editor(argv[1], port);
+    ClientEditorImpl editor(argv[1], port);
     editor.startEdit();
 
     return 0;

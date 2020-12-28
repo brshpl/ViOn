@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Server"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\Server\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Server">
+				<Option output="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/libServer.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/FileController/nlohmann"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/include"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/Socket/include"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/FileController/include"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 Server"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Server/fast">
+				<Option output="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/libServer.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/FileController/nlohmann"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/include"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/Socket/include"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/FileController/include"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 Server/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="socket_lib">
+				<Option output="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/libsocket_lib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/Socket/include"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/FileController/nlohmann"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/include"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 socket_lib"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="socket_lib/fast">
+				<Option output="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/libsocket_lib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/Socket/include"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/FileController/nlohmann"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/include"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 socket_lib/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="file_controller_lib">
+				<Option output="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/libfile_controller_lib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/FileController/include"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/FileController/nlohmann"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/include"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 file_controller_lib"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="file_controller_lib/fast">
+				<Option output="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/libfile_controller_lib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/FileController/include"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/../../ViOn_lib/FileController/nlohmann"/>
+					<Add directory="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/include"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 file_controller_lib/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug/Server/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/include/EventManager.h">
+			<Option target="Server"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/include/ServerImpl.h">
+			<Option target="Server"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/src/EventManager.cpp">
+			<Option target="Server"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/src/ServerImpl.cpp">
+			<Option target="Server"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/FileController/include/FileController/ChangeApplier.h">
+			<Option target="file_controller_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/FileController/include/FileController/FileStorage.h">
+			<Option target="file_controller_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/FileController/include/FileController/Handler.h">
+			<Option target="file_controller_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/FileController/include/FileController/JsonParser.h">
+			<Option target="file_controller_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/FileController/include/FileController/Message.h">
+			<Option target="file_controller_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/FileController/include/FileController/Position.h">
+			<Option target="file_controller_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/FileController/include/FileController/TextUpDater.h">
+			<Option target="file_controller_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/FileController/src/ChangeApplier.cpp">
+			<Option target="file_controller_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/FileController/src/FileStorage.cpp">
+			<Option target="file_controller_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/FileController/src/Handler.cpp">
+			<Option target="file_controller_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/FileController/src/JsonParser.cpp">
+			<Option target="file_controller_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/FileController/src/TextUpDater.cpp">
+			<Option target="file_controller_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/Socket/include/Socket.h">
+			<Option target="socket_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOn_lib/Socket/src/Socket.cpp">
+			<Option target="socket_lib"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOnServer/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Server\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

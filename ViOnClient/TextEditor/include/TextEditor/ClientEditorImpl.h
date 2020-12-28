@@ -7,26 +7,25 @@
 #include "ChangeCreator.h"
 
 
-class ClientEditorImpl {
+class Client::ClientEditorImpl {
 public:
     explicit ClientEditorImpl(const std::string& file_name, int port = 5555, std::string host="localhost");
     void startEdit();
 
-    void save();
-
 private:
+    void save();
     void createFileView();
     void connectToFileView();
 
     void runTextEditor();
     void edit();
 
+private:
     int port_;
     std::string host_;
     Client client_;
     std::shared_ptr<FileStorage> file_storage_;
     std::ofstream file_;
-
     ChangeCreator changeCreator_;
 };
 
