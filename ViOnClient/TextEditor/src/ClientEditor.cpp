@@ -24,14 +24,31 @@ void listenServ(Client& client, std::shared_ptr<FileStorage> file, View& view) {
         ChangeApplier change_applier(change, file);
         change_applier.applyChange();
 
-        for (auto i : file->symbols) err << i.symbol << std::endl;
+
+//        std::list <SymbolState> :: iterator it;
+//
+//        for (it = file->symbols.begin(); it != file->symbols.end(); it++) {
+//            err << (*it).symbol << " ";
+//        }
 
         err << "Change: " << JsonParser::ParseToJson(change) << std::endl;
         ParserForEditor parser(change, file);
         Text text(parser.parse());
         err << "listenServ: " << text.getTextStr() << std::endl;
 
-        textEditor.update(text);
+
+        std::string str;
+
+        clear();
+        for (auto i : file->symbols) {
+            if (i.symbol != '\0') {
+                str.push_back(i.symbol);
+            }
+        }
+
+        err << "Dats: " << str << std::endl;
+        mvprintw(0, 0, "%s", str.c_str());
+        refresh();
     }
 }
 

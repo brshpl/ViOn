@@ -6,7 +6,7 @@
 #define VIONTEXTEDITOR_SYMBOL_H
 
 
-struct Symbol{
+struct Symbol {
     char symbol;
     size_t symbolId;
 };

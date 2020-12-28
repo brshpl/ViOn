@@ -42,12 +42,13 @@ public:
     explicit TextEditor(View& view) :
             view_ {view} {}
     void update(Text& text) {
+        err << text.getTextStr() << std::endl;
+        view_.show(text.getTextStr());
+        ///
         view_.setText(text);
 
 //        std::string text_show = "Jopa";
 //        text_show = text.getTextStr();
-        err << text.getTextStr() << std::endl;
-        view_.show(text.getTextStr());
     }
 
 private:

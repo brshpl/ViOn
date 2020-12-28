@@ -4,13 +4,10 @@
 
 void ChangeCreator::AddChangeCreator(ChangeCreator *_changeCreator) {
     changeCreators.push_back(_changeCreator);
-    err << "AddChangeCreator" << std::endl;
-
 }
 
 bool ChangeCreator::CanCreate(const Mode &mode, const Position &position,
                               const std::string_view &buffer) {
-    err << "Begin: CanCreate" << std::endl;
     for (auto creator : changeCreators) {
         if (creator->CanCreate(mode, position, buffer)) {
             return true;
@@ -21,8 +18,6 @@ bool ChangeCreator::CanCreate(const Mode &mode, const Position &position,
 
 Change ChangeCreator::CreateChange(const Mode &mode, const Position &position,
                                    const std::string_view &buffer) {
-    err << "Begin: CreateChange buffer=" << buffer << std::endl;
-    err << "Begin: CreateChange changeCreators=" << changeCreators.size() << std::endl;
     for (auto creator : changeCreators) {
         if (creator->CanCreate(mode, position, buffer)) {
             return creator->CreateChange(mode, position, buffer);
