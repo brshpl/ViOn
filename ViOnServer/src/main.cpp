@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Server.h"
+#include "FileIds.h"
 
 
 int main(int argc, char* argv[]) {

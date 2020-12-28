@@ -4,9 +4,12 @@
 
 #include "FileController/JsonParser.h"
 #include "ServerImpl.h"
+#include "FileIds.h"
+
 
 static std::shared_mutex mtx;
-static std::atomic<size_t> numberOfFilesCreated;
+static std::mutex mtx_file_id;
+static FileIds file_ids;
 
 void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<size_t, Subject>& subjects) {
     std::string request_str;
@@ -21,7 +24,10 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<siz
         std::shared_lock<std::shared_mutex> s_lock(mtx, std::defer_lock);
         switch (request.cmd) {
             case CREATE_FILE: {
-                file_id = ++numberOfFilesCreated;
+                std::unique_lock<std::mutex> lock(mtx_file_id);
+                file_id = file_ids.getFileId();
+                lock.unlock();
+
                 std::unique_lock<std::shared_mutex> u_lock(mtx);
                 subjects.insert(std::pair<size_t, Subject>(file_id, Subject(file_id)));
                 std::clog << "CREATE_FILE" << std::endl;
@@ -36,7 +42,7 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<siz
                     request_str = client->recv();
                     request = JsonParser::ParseFromJson(request_str);
                 }
-                file_id = request.fileId;   // logic fileId
+                file_id = request.fileId;
                 break;
             }
             default: {

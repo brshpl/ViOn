@@ -364,6 +364,33 @@ src/EventManager.cpp.s:
 	cd /home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug && $(MAKE) $(MAKESILENT) -f Server/CMakeFiles/Server.dir/build.make Server/CMakeFiles/Server.dir/src/EventManager.cpp.s
 .PHONY : src/EventManager.cpp.s
 
+src/FileIds.o: src/FileIds.cpp.o
+
+.PHONY : src/FileIds.o
+
+# target to build an object file
+src/FileIds.cpp.o:
+	cd /home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug && $(MAKE) $(MAKESILENT) -f Server/CMakeFiles/Server.dir/build.make Server/CMakeFiles/Server.dir/src/FileIds.cpp.o
+.PHONY : src/FileIds.cpp.o
+
+src/FileIds.i: src/FileIds.cpp.i
+
+.PHONY : src/FileIds.i
+
+# target to preprocess a source file
+src/FileIds.cpp.i:
+	cd /home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug && $(MAKE) $(MAKESILENT) -f Server/CMakeFiles/Server.dir/build.make Server/CMakeFiles/Server.dir/src/FileIds.cpp.i
+.PHONY : src/FileIds.cpp.i
+
+src/FileIds.s: src/FileIds.cpp.s
+
+.PHONY : src/FileIds.s
+
+# target to generate assembly for a file
+src/FileIds.cpp.s:
+	cd /home/vladimir/Документы/Project/ViOn/ViOnServer/cmake-build-debug && $(MAKE) $(MAKESILENT) -f Server/CMakeFiles/Server.dir/build.make Server/CMakeFiles/Server.dir/src/FileIds.cpp.s
+.PHONY : src/FileIds.cpp.s
+
 src/ServerImpl.o: src/ServerImpl.cpp.o
 
 .PHONY : src/ServerImpl.o
@@ -423,6 +450,9 @@ help:
 	@echo "... src/EventManager.o"
 	@echo "... src/EventManager.i"
 	@echo "... src/EventManager.s"
+	@echo "... src/FileIds.o"
+	@echo "... src/FileIds.i"
+	@echo "... src/FileIds.s"
 	@echo "... src/ServerImpl.o"
 	@echo "... src/ServerImpl.i"
 	@echo "... src/ServerImpl.s"

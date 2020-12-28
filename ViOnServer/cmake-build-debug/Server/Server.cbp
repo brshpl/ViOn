@@ -173,10 +173,16 @@
 		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/include/EventManager.h">
 			<Option target="Server"/>
 		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/include/FileIds.h">
+			<Option target="Server"/>
+		</Unit>
 		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/include/ServerImpl.h">
 			<Option target="Server"/>
 		</Unit>
 		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/src/EventManager.cpp">
+			<Option target="Server"/>
+		</Unit>
+		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/src/FileIds.cpp">
 			<Option target="Server"/>
 		</Unit>
 		<Unit filename="/home/vladimir/Документы/Project/ViOn/ViOnServer/Server/src/ServerImpl.cpp">
