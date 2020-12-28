@@ -10,52 +10,53 @@ static std::atomic<size_t> numberOfFilesCreated;
 
 void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<size_t, Subject>& subjects) {
     std::string request_str;
-    request_str = client->recv();
-    Change request = JsonParser::ParseFromJson(request_str);
-
+    Change request;
+    Observer* observer;
     size_t file_id;
 
-    std::shared_lock<std::shared_mutex> s_lock(mtx, std::defer_lock);
-    switch (request.cmd) {
-        case CREATE_FILE: {
-            file_id = ++numberOfFilesCreated;
-            std::unique_lock<std::shared_mutex> u_lock(mtx);
-            subjects.insert(std::pair<size_t, Subject>(file_id, Subject(file_id)));
-            std::cout << "CREATE_FILE" << std::endl;
-            break;
-        }
-        case CONNECT_TO_FILE: {
-            s_lock.lock();
-            while (subjects.count(request.fileId) == 0 && request.cmd == CONNECT_TO_FILE) {
-                std::cout << " CONNECT_TO_FILE: такого файла нет" << std::endl;
-                request.cmd = NO_SUCH_FILE_ID;
-                client->send(JsonParser::ParseToJson(request));
-                request_str = client->recv();
-                request = JsonParser::ParseFromJson(request_str);
+    try {
+        request_str = client->recv();
+        request = JsonParser::ParseFromJson(request_str);
+
+        std::shared_lock<std::shared_mutex> s_lock(mtx, std::defer_lock);
+        switch (request.cmd) {
+            case CREATE_FILE: {
+                file_id = ++numberOfFilesCreated;
+                std::unique_lock<std::shared_mutex> u_lock(mtx);
+                subjects.insert(std::pair<size_t, Subject>(file_id, Subject(file_id)));
+                std::clog << "CREATE_FILE" << std::endl;
+                break;
             }
-            file_id = request.fileId;   // logic fileId
-            break;
+            case CONNECT_TO_FILE: {
+                s_lock.lock();
+                while (subjects.count(request.fileId) == 0 && request.cmd == CONNECT_TO_FILE) {
+                    std::clog << " CONNECT_TO_FILE: no such file" << std::endl;
+                    request.cmd = NO_SUCH_FILE_ID;
+                    client->send(JsonParser::ParseToJson(request));
+                    request_str = client->recv();
+                    request = JsonParser::ParseFromJson(request_str);
+                }
+                file_id = request.fileId;   // logic fileId
+                break;
+            }
+            default: {
+                //
+                return;
+            }
         }
-        default: {
-            //
-            return;
-        }
-    }
-    request.fileId = file_id;
-    try {
+        request.fileId = file_id;
+
         client->send(JsonParser::ParseToJson(request));
-    } catch (...) {
         std::cerr << "ParseToJson" << std::endl;
-    }
 
-    auto* observer = new Observer(subjects[file_id], client);
-    if (s_lock) s_lock.unlock();
+        observer = new Observer(subjects[file_id], client);
+        if (s_lock) s_lock.unlock();
 
-    try {
         observer->updateFile();
         observer->editFile();
+
     } catch (...) {
-        std::cerr << "editFile" << std::endl;
+        std::cerr << "Client dead" << std::endl;
     }
 
     observer->removeMeFromTheList();
