@@ -43,9 +43,9 @@ public:
             view_ {view} {}
     void update(Text& text) {
         err << text.getTextStr() << std::endl;
-        view_.show(text.getTextStr());
         ///
         view_.setText(text);
+        view_.show(text.getTextStr());
 
 //        std::string text_show = "Jopa";
 //        text_show = text.getTextStr();

@@ -1,7 +1,7 @@
 #include "TextEditor/Cursor.h"
+#include "ncurses.h"
 
 
-void Cursor::getYX(int &y, int &x) const {
-    y = posY;
-    x = posX;
+void Cursor::getYX() {
+    getyx(stdscr, posY, posX);
 }

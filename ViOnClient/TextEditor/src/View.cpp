@@ -11,10 +11,7 @@ void View::insertChar(char ch) {}
 
 void View::deleteChar(char ch) {}
 
-void View::show(const std::string &text) {
-    clear();
-    mvprintw(0, 0, "%s", text.data());
-}
+void View::show(const std::string &text) {}
 
 std::string_view View::getStringFromText() {
     std::string str;

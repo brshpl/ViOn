@@ -9,10 +9,33 @@ std::ofstream err("ept");
 
 [[noreturn]] void NCursesView::listen() {
     while (true) {
+        curs_set(1);
         noecho();
         int code = getch();
+        noecho();
+        cursor.getYX();
         Position pos(text_.getText().at(cursor.posY).at(cursor.posX).symbolId, 0);
-        notify(code, pos);
+        switch (code) {
+            case KEY_ENTER:
+                text_.getText().emplace_back(1);
+                notify(code, pos);
+                break;
+            case KEY_RIGHT:
+                moveCursor(RIGHT);
+                break;
+            case KEY_LEFT:
+                moveCursor(LEFT);
+                break;
+            case KEY_DOWN:
+                moveCursor(DOWN);
+                break;
+            case KEY_UP:
+                moveCursor(UP);
+                break;
+            default:
+                notify(code, pos);
+                break;
+        }
     }
 }
 
@@ -23,6 +46,7 @@ void NCursesView::notify(int symbol, Position next_symbol) {
 }
 
 void NCursesView::moveCursor(Direction direction) {
+    cursor.getYX();
     switch (direction) {
         case LEFT:
             if (cursor.posX > 0)
@@ -67,6 +91,8 @@ void NCursesView::moveCursor(Direction direction) {
 
 void NCursesView::insertChar(const Change& ch) {
     client_.sendChanges(ch);
+    cursor.getYX();
+    text_.getText().at(cursor.posY).emplace_back();
 }
 
 void NCursesView::deleteChar(const Change& ch) {
@@ -111,5 +137,14 @@ void NCursesView::insertString() {
 }
 
 void NCursesView::show(const std::string &text) {
-    View::show(text);
+    cursor.getYX();
+    int y = cursor.posY;
+    int x = cursor.posX;
+    clear();
+    int row, col;
+    getmaxyx(stdscr, row, col);
+    mvprintw(row - 1, 0, "File_id = ", fileId_);
+    mvprintw(0, 0, "%s", text.data());
+    move(y, x);
+    refresh();
 }

@@ -7,7 +7,7 @@
 struct Cursor {
     size_t posY = 0;
     size_t posX = 0;
-    void getYX(int& y, int& x) const;
+    void getYX();
 };
 
 

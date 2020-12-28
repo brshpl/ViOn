@@ -128,7 +128,8 @@ void ClientEditor::ClientEditorImpl::createFileView() {
     if (file_id != -1) {
         mvprintw(row - 1, 0, "file_id = %d", file_id);
         file_storage_->file_id = file_id;
-        runTextEditor();
+        move(0, 0);
+        runTextEditor(file_id);
     } else {
         clear();
         mvprintw(row - 1, 0, "File creating failed. Press any key to get back to main menu...", file_id);
@@ -146,7 +147,7 @@ void ClientEditor::ClientEditorImpl::connectToFileView() {
     clear();
     mvprintw(row - 1, 0, "Connecting to file with id=%d. Please wait...", file_id);
     if (client_.connectToFile(file_id) != -1) {
-        runTextEditor();
+        runTextEditor(file_id);
     } else {
         clear();
         mvprintw(row - 1, 0, "Connection failed. Press any key to get back to main menu...", file_id);
@@ -154,9 +155,9 @@ void ClientEditor::ClientEditorImpl::connectToFileView() {
     }
 }
 
-void ClientEditor::ClientEditorImpl::runTextEditor() {
+void ClientEditor::ClientEditorImpl::runTextEditor(int file_id) {
     Interpretator interpretator(changeCreator_);
-    NCursesView view(interpretator, client_);
+    NCursesView view(interpretator, client_, file_id);
 
     std::thread thread_listen(listenServ, std::ref(client_), file_storage_, std::ref(view));
     thread_listen.detach();

@@ -9,9 +9,8 @@
 
 class NCursesView : public View {
 public:
-    explicit NCursesView(Interpretator& interpretator, Client& client)
-            : View(interpretator), client_(client) {}
-    void listen_test();
+    explicit NCursesView(Interpretator& interpretator, Client& client, int file_id)
+            : View(interpretator), client_(client), fileId_(file_id) {}
     [[noreturn]] void listen();
     void insertChar(const Change& ch);
     void insertString();
@@ -23,6 +22,7 @@ private:
     Text text_;
     Cursor cursor;
     Client& client_;
+    int fileId_;
 
     void show(const std::string& text);
 
