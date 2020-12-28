@@ -1,7 +1,7 @@
 // CLass must be implemented by user of the library using e.g. ncurses (by me before next RC)
 #include <algorithm>
 #include <ncurses.h>
-#include "View.h"
+#include "TextEditor/View.h"
 
 void View::moveCursor(Direction direction) {}
 

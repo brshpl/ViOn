@@ -1,5 +1,5 @@
 #include <ncurses.h>
-#include "NCursesView.h"
+#include "TextEditor/NCursesView.h"
 
 #include "FileController/JsonParser.h"
 

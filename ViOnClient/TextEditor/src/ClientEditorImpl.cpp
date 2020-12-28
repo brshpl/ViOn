@@ -1,118 +1,16 @@
 #include <thread>
-#include <utility>
 #include <ncurses.h>
 
-#include "NCursesView.h"
-#include "Parser.h"
-#include "ClientEditorImpl.h"
+#include "TextEditor/NCursesView.h"
+#include "TextEditor/Parser.h"
+#include "TextEditor/ClientEditorImpl.h"
 #include "FileController/ChangeApplier.h"
 
-#include "FileController/JsonParser.h"
 
 #define CREATE_FILE 1
 #define CONNECT_TO_FILE 2
 #define EXIT 'q'
 
-int mainMenu();
-
-void listenServ(Client& client, std::shared_ptr<FileStorage> file, View& view) {
-    TextEditor textEditor(view);
-    Change change;
-    while (change.cmd != CLOSE_CONNECT) {
-        change = client.recvChanges();
-
-        ChangeApplier change_applier(change, file);
-        change_applier.applyChange();
-
-
-//        std::list <SymbolState> :: iterator it;
-//
-//        for (it = file->symbols.begin(); it != file->symbols.end(); it++) {
-//            err << (*it).symbol << " ";
-//        }
-
-        err << "Change: " << JsonParser::ParseToJson(change) << std::endl;
-        ParserForEditor parser(change, file);
-        Text text(parser.parse());
-        err << "listenServ: " << text.getTextStr() << std::endl;
-
-
-        std::string str;
-
-        clear();
-        for (auto i : file->symbols) {
-            if (i.symbol != '\0') {
-                str.push_back(i.symbol);
-            }
-        }
-
-        err << "Dats: " << str << std::endl;
-        mvprintw(0, 0, "%s", str.c_str());
-        refresh();
-    }
-}
-
-ClientEditorImpl::ClientEditorImpl(const std::string& file_name, int port, std::string host) : port_(port), host_(std::move(host)), file_(file_name) {
-    try {
-        client_.connectToServer(host_, port_);
-        initscr();
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
-    }
-
-    changeCreator_.AddChangeCreator(new ChangeCreatorCreateFile);
-    changeCreator_.AddChangeCreator(new ChangeCreatorDeleteFile);
-    changeCreator_.AddChangeCreator(new ChangeCreatorDeleteString);
-    changeCreator_.AddChangeCreator(new ChangeCreatorDeleteSymbol);
-    changeCreator_.AddChangeCreator(new ChangeCreatorInsertSubString);
-    changeCreator_.AddChangeCreator(new ChangeCreatorMoveCursor);
-
-    file_storage_ = std::make_shared<FileStorage>();
-}
-
-void ClientEditorImpl::startEdit() {
-    while (true) {
-        int cmd = mainMenu();
-        switch (cmd) {
-            case CREATE_FILE:
-                createFileView();
-                break;
-            case CONNECT_TO_FILE:
-                connectToFileView();
-                break;
-            case EXIT:
-                endwin();
-                return;
-            default:
-                break;
-        }
-    }
-}
-
-void ClientEditorImpl::save() {
-    for (SymbolState s : file_storage_->symbols) {
-        if (s.is_visible) {
-            file_ << s.symbol;
-        }
-    }
-    file_ << std::endl;
-}
-
-void ClientEditorImpl::edit() {
-    Change change;
-//    Position pos = {0};
-
-    while (change.cmd != CLOSE_CONNECT) {
-        char change_c;
-        std::cin >> change_c;
-
-        change.cmd = (change_c == '#') ? CLOSE_CONNECT : INSERT_SYMBOL;
-        change.symbol = change_c;
-
-        client_.sendChanges(change);
-    }
-    save();
-}
 
 int mainMenu() {
     std::vector<std::string_view> menu {
@@ -150,7 +48,81 @@ int mainMenu() {
     }
 }
 
-void ClientEditorImpl::createFileView() {
+void listenServ(Client& client, std::shared_ptr<FileStorage> file, View& view) {
+    TextEditor textEditor(view);
+    Change change;
+    while (change.cmd != CLOSE_CONNECT) {
+        change = client.recvChanges();
+
+        ChangeApplier change_applier(change, file);
+        change_applier.applyChange();
+
+        ParserForEditor parser(change, file);
+        Text text(parser.parse());
+
+        std::string str;
+
+        clear();
+        for (auto i : file->symbols) {
+            if (i.symbol != '\0') {
+                str.push_back(i.symbol);
+            }
+        }
+
+        mvprintw(0, 0, "%s", str.c_str());
+        refresh();
+    }
+}
+
+ClientEditor::ClientEditorImpl::ClientEditorImpl(
+        const std::string& file_name, int port, std::string host)
+        : port_(port), host_(std::move(host)), file_(file_name) {
+    try {
+        client_.connectToServer(host_, port_);
+        initscr();
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+    changeCreator_.AddChangeCreator(new ChangeCreatorCreateFile);
+    changeCreator_.AddChangeCreator(new ChangeCreatorDeleteFile);
+    changeCreator_.AddChangeCreator(new ChangeCreatorDeleteString);
+    changeCreator_.AddChangeCreator(new ChangeCreatorDeleteSymbol);
+    changeCreator_.AddChangeCreator(new ChangeCreatorInsertSubString);
+    changeCreator_.AddChangeCreator(new ChangeCreatorMoveCursor);
+
+    file_storage_ = std::make_shared<FileStorage>();
+}
+
+void ClientEditor::ClientEditorImpl::startEdit() {
+    while (true) {
+        int cmd = mainMenu();
+        switch (cmd) {
+            case CREATE_FILE:
+                createFileView();
+                break;
+            case CONNECT_TO_FILE:
+                connectToFileView();
+                break;
+            case EXIT:
+                endwin();
+                return;
+            default:
+                break;
+        }
+    }
+}
+
+void ClientEditor::ClientEditorImpl::save() {
+    for (SymbolState s : file_storage_->symbols) {
+        if (s.is_visible) {
+            file_ << s.symbol;
+        }
+    }
+    file_ << std::endl;
+}
+
+void ClientEditor::ClientEditorImpl::createFileView() {
     int row = getmaxy(stdscr);
     int file_id = client_.createNewFile();
     if (file_id != -1) {
@@ -164,7 +136,7 @@ void ClientEditorImpl::createFileView() {
     }
 }
 
-void ClientEditorImpl::connectToFileView() {
+void ClientEditor::ClientEditorImpl::connectToFileView() {
     int row = getmaxy(stdscr);
     mvwaddstr(stdscr, row - 1, 0, "Input file id: ");
     curs_set(1);
@@ -182,7 +154,7 @@ void ClientEditorImpl::connectToFileView() {
     }
 }
 
-void ClientEditorImpl::runTextEditor() {
+void ClientEditor::ClientEditorImpl::runTextEditor() {
     Interpretator interpretator(changeCreator_);
     NCursesView view(interpretator, client_);
 
@@ -190,10 +162,4 @@ void ClientEditorImpl::runTextEditor() {
     thread_listen.detach();
 
     view.listen();
-
-}
-
-void show(std::string_view text) {
-    clear();
-    mvprintw(0, 0, "%s", text.data());
 }

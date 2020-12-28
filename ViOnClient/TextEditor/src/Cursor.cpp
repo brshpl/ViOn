@@ -1,4 +1,4 @@
-#include "Cursor.h"
+#include "TextEditor/Cursor.h"
 
 
 void Cursor::getYX(int &y, int &x) const {

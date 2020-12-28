@@ -2,7 +2,7 @@
 #include <cstdlib>
 
 #include "FileController/JsonParser.h"
-#include "Client.h"
+#include "TextEditor/Client.h"
 
 
 Client::~Client() = default;

@@ -1,4 +1,4 @@
-#include "Interpretator.h"
+#include "TextEditor/Interpretator.h"
 #include <fstream>
 extern std::ofstream err;
 Change Interpretator::Interpret(int &curChar, const Mode &mode,

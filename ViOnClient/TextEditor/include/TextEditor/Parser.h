@@ -2,7 +2,7 @@
 #define VION_PARSER_H
 
 #include "FileController/FileStorage.h"
-#include <Symbol.h>
+#include <TextEditor/Symbol.h>
 #include <memory>
 
 class Parser{

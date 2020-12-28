@@ -15,13 +15,13 @@ file(GLOB sources
         "src/*.cpp")
 
 # add the executable
-add_executable(bin/ViOn_server ${sources})
+add_executable(ViOn_server ${sources})
 
-target_link_libraries(bin/ViOn_server PUBLIC Server)
+target_link_libraries(ViOn_server PUBLIC Server)
 
 # add the binary tree to the search path for include files
 # so that we will find ViOn_serverConfig.h
-target_include_directories(bin/ViOn_server PUBLIC
+target_include_directories(ViOn_server PUBLIC
         "${PROJECT_BINARY_DIR}"
         "${PROJECT_SOURCE_DIR}/Server/include"
         "${VION_LIB_DIR}/FileController/include"
