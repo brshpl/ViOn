@@ -47,7 +47,6 @@ void handlerClient(std::shared_ptr<utils::Socket> client, std::unordered_map<siz
         request.fileId = file_id;
 
         client->send(JsonParser::ParseToJson(request));
-        std::cerr << "ParseToJson" << std::endl;
 
         observer = new Observer(subjects[file_id], client);
         if (s_lock) s_lock.unlock();
