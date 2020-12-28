@@ -48,7 +48,7 @@ int mainMenu() {
     }
 }
 
-void listenServ(Client& client, std::shared_ptr<FileStorage> file, View& view) {
+void listenServ(Client& client, std::shared_ptr<FileStorage>& file, View& view) {
     TextEditor textEditor(view);
     Change change;
     while (change.cmd != CLOSE_CONNECT) {
@@ -59,6 +59,7 @@ void listenServ(Client& client, std::shared_ptr<FileStorage> file, View& view) {
 
         ParserForEditor parser(change, file);
         Text text(parser.parse());
+        view.setText(text);
 
         std::string str;
 
@@ -68,8 +69,15 @@ void listenServ(Client& client, std::shared_ptr<FileStorage> file, View& view) {
                 str.push_back(i.symbol);
             }
         }
-
         mvprintw(0, 0, "%s", str.c_str());
+        int x, y;
+        getyx(stdscr, y, x);
+        int row, col;
+        getmaxyx(stdscr, row, col);
+        mvprintw(row - 1, 0, "File_id = %d", file->file_id);
+        std::string message{"Press F3 to exit"};
+        mvprintw(row - 1, col - message.length(), "%s", message.c_str());
+        move(y,x);
         refresh();
     }
 }
@@ -159,7 +167,7 @@ void ClientEditor::ClientEditorImpl::runTextEditor(int file_id) {
     Interpretator interpretator(changeCreator_);
     NCursesView view(interpretator, client_, file_id);
 
-    std::thread thread_listen(listenServ, std::ref(client_), file_storage_, std::ref(view));
+    std::thread thread_listen(listenServ, std::ref(client_), std::ref(file_storage_), std::ref(view));
     thread_listen.detach();
 
     view.listen();

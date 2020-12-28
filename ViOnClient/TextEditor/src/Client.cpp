@@ -12,11 +12,8 @@ void Client::connectToServer(const std::string& host, int port) {
 }
 
 void Client::closeConnect() {
-    Position pos;
     Change ch(CLOSE_CONNECT);
     sendChanges(ch);
-    ch = recvChanges();
-    std::cout << JsonParser::ParseToJson(ch) << std::endl;
 }
 
 ssize_t Client::createNewFile() {

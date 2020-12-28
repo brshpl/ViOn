@@ -16,6 +16,9 @@ std::ofstream err("ept");
         cursor.getYX();
         Position pos(text_.getText().at(cursor.posY).at(cursor.posX).symbolId, 0);
         switch (code) {
+            case KEY_F(3):
+                client_.closeConnect();
+                exit(0);
             case KEY_ENTER:
                 text_.getText().emplace_back(1);
                 notify(code, pos);

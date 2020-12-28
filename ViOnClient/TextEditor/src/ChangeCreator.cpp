@@ -1,5 +1,5 @@
 #include "TextEditor/ChangeCreator.h"
-
+#include "ncurses.h"
 
 
 void ChangeCreator::AddChangeCreator(ChangeCreator *_changeCreator) {
@@ -47,6 +47,8 @@ ChangeCreatorInsertSubString::CreateChange(const Mode &mode,
     Change chg;
     chg.cmd = INSERT_SYMBOL;
     chg.fileId = 0;
+    int x, y;
+    getyx(stdscr, y, x);
     chg.position = position;
     chg.symbol = buffer.back();
     return chg;
@@ -56,7 +58,7 @@ bool ChangeCreatorDeleteSymbol::CanCreate(const Mode &mode,
                                           const Position &position,
                                           const std::string_view &buffer) {
     char curChar = buffer.back();
-    if (mode == INSERTATION_MODE && (curChar == 127 || curChar == 8)) {
+    if (mode == INSERTATION_MODE && (curChar == (char) KEY_BACKSPACE || curChar == 8)) {
         return true;
     } else {
         return false;

@@ -14,7 +14,7 @@ class Text {
 public:
     Text() : text_(20, std::vector<Symbol>(20)) {}
     explicit Text(std::vector<std::vector<Symbol>> text)
-    : text_ {std::move(text)} {}
+    : text_ {text} {}
 
     std::vector<std::vector<Symbol>>& getText();
     std::string getTextStr();
