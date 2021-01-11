@@ -11,3 +11,4 @@ googletest/
 .idea
 
 travis.yml
+/ViOnServer/cmake-build-debug/
