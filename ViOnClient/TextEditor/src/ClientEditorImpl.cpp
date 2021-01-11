@@ -57,8 +57,12 @@ void listenServ(Client& client, std::shared_ptr<FileStorage>& file, View& view) 
         ChangeApplier change_applier(change, file);
         change_applier.applyChange();
 
-        ParserForEditor parser(change, file);
-        Text text(parser.parse());
+        ParserForEditor parser(file);
+        std::vector<std::vector<Symbol>> pars_file;
+        parser.parse(pars_file);
+
+        Text text(pars_file);
+        err << "Text" << text.getTextStr() << std::endl;
         view.setText(text);
 
         std::string str;

@@ -11,5 +11,5 @@ std::string Text::getTextStr() {
             text.push_back(symbol.symbol);
         }
     }
-    return std::string();
+    return text;
 }

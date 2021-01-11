@@ -18,6 +18,7 @@ std::ofstream err("ept");
         switch (code) {
             case KEY_F(3):
                 client_.closeConnect();
+                system("clear");
                 exit(0);
             case KEY_ENTER:
                 text_.getText().emplace_back(1);

@@ -13,11 +13,11 @@ protected:
     Change ch_;
 };
 
-class ParserForEditor : public Parser {
+class ParserForEditor {
 public:
-    ParserForEditor(const Change& ch, std::shared_ptr<FileStorage> file);
-    ~ParserForEditor() override = default;
-    std::vector<std::vector<Symbol>> parse();
+    explicit ParserForEditor(std::shared_ptr<FileStorage> file);
+    ~ParserForEditor() = default;
+    void parse(std::vector<std::vector<Symbol>>& file);
 private:
     std::shared_ptr<FileStorage> file_;
 };
